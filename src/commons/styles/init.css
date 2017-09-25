@@ -1,0 +1,217 @@
+/*间距*/
+html{
+    height: 100%;    
+}
+body {
+    height: 100%;
+    font-family: "Helvetica Neue", helvetica, 'lucida grande', 'lucida sans unicode', lucida, 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+textarea,
+p,
+blockquote,
+th,
+td,
+label {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ol,
+ul {
+    list-style: none
+}
+
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.font-flow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fa {
+    min-width: 14px;
+    min-height: 14px;
+    color: #AAA;
+}
+
+
+/*滚动条*/
+
+
+/** ::-webkit-scrollbar {
+  width: 6px;
+  height: 10px; }
+* ::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.09);
+  border-radius: 3px; }
+* ::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px; }
+* ::-webkit-scrollbar-thumb:hover {
+  background-color: #AAAAAA; }
+* ::-webkit-scrollbar-button {
+  display: none; }*/
+
+
+/*按钮*/
+
+.btn {
+    color: #777;
+    border: none;
+    background-image: none;
+    text-shadow: 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 transparent;
+    box-shadow: 0 0 0 transparent;
+    padding: 6px 28px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+}
+
+.btn:hover {
+    color: #484744;
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+.btn:focus {
+    outline: 0;
+}
+
+.btn:active {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 transparent;
+    box-shadow: 0 0 0 transparent;
+}
+
+.btn:active:focus {
+    outline: 0;
+}
+
+.btn.btn-success {
+    color: #fff;
+    background-color: #fe9600;
+}
+
+.btn.btn-success:active:focus {
+    background-color: #fe9600;
+}
+
+.btn.btn-success:active:hover {
+    background-color: #fe9600;
+}
+
+.btn.btn-success:hover,
+.btn.btn-success:focus {
+    background-color: #fe9600;
+    border: none;
+}
+
+.btn.btn-danger {
+    color: #fff;
+    background-color: #d84742;
+}
+
+.btn.btn-danger:active:focus {
+    background-color: #d84742;
+}
+
+.btn.btn-cancel {
+    color: #acaba7;
+    background-color: transparent;
+}
+
+.btn.btn-cancel:hover {
+    text-decoration: none;
+}
+
+.btn.btn-cancel:focus {
+    color: #92a0a9;
+    text-decoration: none;
+}
+
+
+/*input*/
+
+.form-control {
+    color: #00bfa5;
+    border-radius: 2px;
+    box-shadow: none;
+    outline: 0;
+}
+
+.form-control.has-error {
+    border-color: rgba(255, 0, 0, 0.5);
+}
+
+.form-control::-ms-input-placeholder {
+    font-size: 12px;
+    color: #ddd;
+    font-family: sans-serif;
+}
+
+.form-control::-moz-placeholder {
+    font-size: 12px;
+    color: #ddd;
+    font-family: sans-serif;
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+.form-control::-webkit-input-placeholder {
+    font-size: 12px;
+    color: #ddd;
+    font-family: sans-serif;
+}
+
+.form-control:focus {
+    border-color: #1de9b6;
+    box-shadow: none;
+    outline: 0;
+}
+
+
+/*select*/
+
+select {
+    outline: none;
+}

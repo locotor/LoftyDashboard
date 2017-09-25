@@ -1,0 +1,11 @@
+<div class="msg-container" [ngClass]="{'base-sent': !incoming, 'base-receive': incoming}">
+    <div class="msg-inner-container" [ngClass]="{'msg-sent':!incoming,'msg-receive':incoming}">
+        <div class="avatar">
+            <img class="mat-elevation-z2" src="{{message.author.avatarSrc}}">
+        </div>
+        <div class="messages mat-elevation-z2">
+            <div [innerHTML]="message.text"></div>
+            <p class="time">{{message.sender}} • {{message.sentAt | fromNow}}</p>
+        </div>
+    </div>
+</div>

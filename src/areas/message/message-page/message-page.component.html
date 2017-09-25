@@ -1,0 +1,33 @@
+<div class="message-page-container container">
+    <div class="thread-container">
+        <md-tab-group>
+            <md-tab label="邮件">
+                <md-list>
+                    <md-list-item *ngFor="let message of emailList.messageList" (click)="onMessageClicked(message,$event)" [class.active]="currentNote == message">
+                        <img md-list-avatar src="{{message.user.avatarSrc}}" alt="">
+                        <h3 md-line>{{message.user.name}} </h3>
+                        <p md-line [innerHtml]="message.Remark"></p>
+                        <span *ngIf="currentNote == message">></span>
+                    </md-list-item>
+                </md-list>
+                <div class="thread-paginator">
+                    <md-paginator [length]="100" [pageSize]="10"></md-paginator>
+                </div>
+            </md-tab>
+            <md-tab label="短讯">
+                <md-list>
+                    <md-list-item *ngFor="let message of smsNoteList" (click)="onMessageClicked(message,$event)" [class.active]="currentNote == message">
+                        <img md-list-avatar src="{{message.user.avatarSrc}}" alt="">
+                        <h3 md-line>{{message.user.name}} </h3>
+                        <p md-line [innerHtml]="message.Remark"></p>
+                        <span *ngIf="currentNote == message">></span>
+                    </md-list-item>
+                </md-list>
+                <div class="thread-paginator">
+                    <md-paginator [length]="100" [pageSize]="10"></md-paginator>
+                </div>
+            </md-tab>
+        </md-tab-group>
+    </div>
+    <message-window class="message-window" [currentMessage]="currentMessage"></message-window>
+</div>

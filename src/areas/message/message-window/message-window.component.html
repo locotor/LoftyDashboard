@@ -1,0 +1,27 @@
+<div class="message-window-container">
+  <div class="top-bar">
+    <div class="title-container">
+      <md-toolbar color="primary">
+        <span>当前聊天对象</span>
+        <span class="header-spacer"></span>
+      </md-toolbar>
+    </div>
+  </div>
+
+  <div class="msg-container">
+    <md-card class="example-card" *ngIf="currentMessage">
+      <md-card-header>
+        <img md-card-avatar src="assets/images/avatars/male-avatar-1.png" />
+        <md-card-title>{{"用户:"+currentMessage.user.name}}</md-card-title>
+        <md-card-subtitle>{{currentMessage.type==1?"邮箱: ":"电话: "}}{{currentMessage.TargetAddress}}</md-card-subtitle>
+      </md-card-header>
+      <md-card-content>
+        <p>{{currentMessage.Remark}}</p>
+      </md-card-content>
+    </md-card>
+  </div>
+
+  <div class="msg-editor-container">
+    <editor (onOutput)="onEnter($event)"></editor>
+  </div>
+</div>

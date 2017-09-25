@@ -1,0 +1,82 @@
+.messages {
+    background: white;
+    position: relative;
+    padding: 10px;
+    border-radius: 2px;
+    max-width: 100%;
+    > {
+        p {
+            font-size: 13px;
+            margin: 0 0 .2rem;
+        }
+        .time {
+            font-size: 11px;
+            color: #ccc;
+        }
+    }
+}
+
+.avatar {
+    position: relative;
+    img {
+        display: block;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+    }
+}
+
+.msg-container {
+    padding: 10px;
+    .msg-inner-container {
+        float: left;
+        width: 100%;
+        padding: 5px 0;
+    }
+}
+
+.msg-sent {
+    .avatar {
+        float: right;
+    }
+    .messages {
+        float: right;
+        margin-right: 20px;
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            right: -30px;
+            height: 0;
+            width: 0;
+            border-right: 15px solid transparent;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+        }
+    }
+}
+
+.msg-receive {
+    .avatar {
+        float: left;
+    }
+    .messages {
+        float: left;
+        margin-left: 20px;
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -30px;
+            height: 0;
+            width: 0;
+            border-right: 25px solid white;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 15px solid transparent;
+        }
+    }
+}

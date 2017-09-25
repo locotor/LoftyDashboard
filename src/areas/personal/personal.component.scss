@@ -1,0 +1,17 @@
+@import '~@angular/material/theming';
+$teal-yellow-primary: mat-palette($mat-teal, 500);
+$teal-yellow-accent: mat-palette($mat-yellow, A200, A100, A400);
+$teal-yellow-warn: mat-palette($mat-red);
+$input-ligth-theme: mat-light-theme($teal-yellow-primary, $teal-yellow-accent, $teal-yellow-warn);
+.input-ligth-theme {
+    @include mat-input-theme($input-ligth-theme);
+}
+
+.personal-container {
+    background: #fafafa;
+    height: 100%;
+    padding: 24px;
+    fieldset {
+        border: 0;
+    }
+}

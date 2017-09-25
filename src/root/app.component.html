@@ -1,0 +1,34 @@
+<main>
+    <div class="header mat-elevation-z5 teal-700-toolbar">
+        <md-toolbar color="primary">
+            <img src="/assets/images/logo/logo.png" class="logo">
+            <span>lofty-控制台</span>
+            <span class="header-spacer"></span>
+        </md-toolbar>
+    </div>
+    <div class="main-container">
+        <div class="left-panel">
+            <nav>
+                <md-nav-list>
+                    <a md-list-item routerLink="/message" routerLinkActive="active">
+                        <md-icon md-list-icon fontSet="fa" fontIcon="fa-envelope-o" color="primary"></md-icon>留言箱
+                    </a>
+                    <a md-list-item routerLink="/dashboard" routerLinkActive="active">
+                        <md-icon md-list-icon fontSet="fa" fontIcon="fa-tachometer" color="primary"></md-icon>控制台
+                    </a>
+                    <a md-list-item routerLink="/chat" routerLinkActive="active">
+                        <md-icon md-list-icon fontSet="fa" fontIcon="fa-comments-o" color="primary"></md-icon>聊天列表
+                    </a>
+                    <a md-list-item routerLink="/personal" routerLinkActive="active">
+                        <md-icon md-list-icon fontSet="fa" fontIcon="fa-user-o" color="primary"></md-icon>个人设置
+                    </a>
+                </md-nav-list>
+            </nav>
+        </div>
+        <div class="right-panel">
+            <div class="main-panel">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</main>

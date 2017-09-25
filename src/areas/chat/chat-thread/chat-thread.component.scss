@@ -1,0 +1,20 @@
+.container {
+    float: left;
+    height: 100%;
+    width: 300px;
+    overflow: auto;
+    background: #757575;
+    .search-container {
+        padding: 10px 16px 0 16px;
+    }
+    md-list-item {
+        &:hover,
+        &.active {
+            background: #4db6ac;
+        }
+        border-top: 1px solid;
+        &:last-child {
+            border-bottom: 1px solid;
+        }
+    }
+}

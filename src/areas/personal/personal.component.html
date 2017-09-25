@@ -1,0 +1,61 @@
+<div class="personal-container">
+    <form class="example-form input-ligth-theme">
+        <fieldset>
+            <md-input-container>
+                <input class="" mdInput placeholder="用户名" value="admin-test" [disabled]="!isEditingUsername">
+            </md-input-container>
+            <a md-raised-button (click)="editUsername()" color="primary">修改用户名</a>
+            <a md-raised-button (click)="changePassword()" color="primary">修改密码</a>
+            <ng-container *ngIf="isEditingPasswords">
+                <p>
+                    <md-input-container>
+                        <input mdInput placeholder="原密码" value="" />
+                    </md-input-container>
+                </p>
+                <p>
+                    <md-input-container>
+                        <input mdInput placeholder="新密码" value="" />
+                    </md-input-container>
+                </p>
+                <p>
+                    <md-input-container>
+                        <input mdInput placeholder="确认密码" value="" />
+                    </md-input-container>
+                </p>
+            </ng-container>
+        </fieldset>
+        <fieldset>
+            <md-input-container>
+                <input mdInput placeholder="姓名" value="test">
+            </md-input-container>
+        </fieldset>
+        <fieldset>
+            <md-input-container>
+                <input mdInput placeholder="邮箱" value="support@lofty.com" />
+            </md-input-container>
+            <md-input-container>
+                <input mdInput placeholder="联系电话" value="1234567" />
+            </md-input-container>
+        </fieldset>
+        <table cellspacing="0">
+            <tr>
+                <td>
+                    <md-input-container>
+                        <input mdInput placeholder="City">
+                    </md-input-container>
+                </td>
+                <td>
+                    <md-input-container>
+                        <input mdInput placeholder="State">
+                    </md-input-container>
+                </td>
+                <td>
+                    <md-input-container>
+                        <input mdInput #postalCode maxlength="5" placeholder="Postal Code" value="94043">
+                        <md-hint align="end">{{postalCode.value.length}} / 5</md-hint>
+                    </md-input-container>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
