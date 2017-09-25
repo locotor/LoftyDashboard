@@ -1,18 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {
-  MdListModule,
-  MdToolbarModule,
-  MdMenuModule,
-  MdIconModule,
-  MdButtonModule,
-  MdInputModule,
-  MdSnackBarModule,
-  MdTabsModule,
-  MdCardModule,
-  MdPaginatorModule,
-} from '@angular/material';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { MessageService } from "./message.service";
 
@@ -23,24 +12,26 @@ import { MessageWindowComponent } from './message-window/message-window.componen
 const messageRoutes: Routes = [
   {
     path: '',
-    component: MessagePageComponent
+    component: MessagePageComponent,
+    children:[
+      {
+        path:'unread',
+      },
+      {
+        path:'unprocessed',
+      },
+      {
+        path:'processed',
+      }
+    ]
   },
 ];
 
 @NgModule({
   imports: [
     CommonModule,
-    MdListModule,
-    MdToolbarModule,
-    MdMenuModule,
-    MdIconModule,
-    MdButtonModule,
-    MdInputModule,
-    MdSnackBarModule,
-    MdTabsModule,
-    MdCardModule,
-    MdPaginatorModule,
     EditorModule,
+    NgZorroAntdModule,
     RouterModule.forChild(messageRoutes),
   ],
   declarations: [

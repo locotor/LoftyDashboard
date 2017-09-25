@@ -1,33 +1,19 @@
 <div class="message-page-container container">
     <div class="thread-container">
-        <md-tab-group>
-            <md-tab label="邮件">
-                <md-list>
-                    <md-list-item *ngFor="let message of emailList.messageList" (click)="onMessageClicked(message,$event)" [class.active]="currentNote == message">
-                        <img md-list-avatar src="{{message.user.avatarSrc}}" alt="">
-                        <h3 md-line>{{message.user.name}} </h3>
-                        <p md-line [innerHtml]="message.Remark"></p>
-                        <span *ngIf="currentNote == message">></span>
-                    </md-list-item>
-                </md-list>
-                <div class="thread-paginator">
-                    <md-paginator [length]="100" [pageSize]="10"></md-paginator>
-                </div>
-            </md-tab>
-            <md-tab label="短讯">
-                <md-list>
-                    <md-list-item *ngFor="let message of smsNoteList" (click)="onMessageClicked(message,$event)" [class.active]="currentNote == message">
-                        <img md-list-avatar src="{{message.user.avatarSrc}}" alt="">
-                        <h3 md-line>{{message.user.name}} </h3>
-                        <p md-line [innerHtml]="message.Remark"></p>
-                        <span *ngIf="currentNote == message">></span>
-                    </md-list-item>
-                </md-list>
-                <div class="thread-paginator">
-                    <md-paginator [length]="100" [pageSize]="10"></md-paginator>
-                </div>
-            </md-tab>
-        </md-tab-group>
+        <nz-tabset>
+            <nz-tab>
+                <ng-template #nzTabHeading>
+                    <i class="anticon anticon-mail"></i> 邮箱留言
+                </ng-template>
+                <span>邮箱留言</span>
+            </nz-tab>
+            <nz-tab>
+                <ng-template #nzTabHeading>
+                    <i class="anticon anticon-phone"></i> 手机留言
+                </ng-template>
+                <span>手机留言</span>
+            </nz-tab>
+        </nz-tabset>
     </div>
     <message-window class="message-window" [currentMessage]="currentMessage"></message-window>
 </div>

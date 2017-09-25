@@ -1,27 +1,35 @@
 <div class="message-window-container">
-  <div class="top-bar">
-    <div class="title-container">
-      <md-toolbar color="primary">
-        <span>当前聊天对象</span>
-        <span class="header-spacer"></span>
-      </md-toolbar>
-    </div>
-  </div>
-
-  <div class="msg-container">
-    <md-card class="example-card" *ngIf="currentMessage">
-      <md-card-header>
-        <img md-card-avatar src="assets/images/avatars/male-avatar-1.png" />
-        <md-card-title>{{"用户:"+currentMessage.user.name}}</md-card-title>
-        <md-card-subtitle>{{currentMessage.type==1?"邮箱: ":"电话: "}}{{currentMessage.TargetAddress}}</md-card-subtitle>
-      </md-card-header>
-      <md-card-content>
-        <p>{{currentMessage.Remark}}</p>
-      </md-card-content>
-    </md-card>
-  </div>
-
-  <div class="msg-editor-container">
-    <editor (onOutput)="onEnter($event)"></editor>
-  </div>
+    <nz-layout class="layout">
+        <nz-header>
+            <div class="logo"></div>
+            <span>message</span>
+        </nz-header>
+        <nz-content style="padding:0 50px;">
+            <md-card class="example-card" *ngIf="currentMessage">
+                <md-card-header>
+                    <img md-card-avatar src="assets/images/avatars/male-avatar-1.png" />
+                    <md-card-title>{{"用户:"+currentMessage.user.name}}</md-card-title>
+                    <md-card-subtitle>{{currentMessage.type==1?"邮箱: ":"电话: "}}{{currentMessage.TargetAddress}}</md-card-subtitle>
+                </md-card-header>
+                <md-card-content>
+                    <p>{{currentMessage.Remark}}</p>
+                </md-card-content>
+            </md-card>
+            <nz-card style="width:300px;">
+                <ng-template #title>
+                    <h1>{{"用户:"+currentMessage.user.name}}</h1>
+                    <h2>{{currentMessage.TargetAddress}}</h2>
+                </ng-template>
+                <ng-template #extra>
+                    <a>More</a>
+                </ng-template>
+                <ng-template #body>
+                    <p>{{currentMessage.Remark}}</p>
+                </ng-template>
+            </nz-card>
+            <div class="msg-editor-container">
+                <editor (onOutput)="onEnter($event)"></editor>
+            </div>
+        </nz-content>
+    </nz-layout>
 </div>

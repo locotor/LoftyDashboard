@@ -15,7 +15,6 @@ import { MessageService } from "../message.service";
   styleUrls: ['./message-page.component.scss']
 })
 export class MessagePageComponent implements OnInit {
-
   /*---properties---*/
   public emailList = {
     messageList: Array<Message>(),
@@ -26,7 +25,7 @@ export class MessagePageComponent implements OnInit {
     currentPage: 1
   }
   public smsList = {
-    messageList: [],
+    messageList:Array<Message>(),
     type: 2,
     status: 1,
     totalPage: 1,
@@ -48,6 +47,7 @@ export class MessagePageComponent implements OnInit {
       },
       error => console.error("error: ", error)
       );
+
     this._messageService.getMessageList(
       this.smsList.status,
       this.smsList.type, 1, 10).subscribe(
@@ -55,6 +55,7 @@ export class MessagePageComponent implements OnInit {
       error => console.error("error: ", error)
       );
   };
+
   onMessageClicked(message, envent) {
     this._messageService.scanMessage(message.Id).subscribe(
       resp => this.currentMessage = message,

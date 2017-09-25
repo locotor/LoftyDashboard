@@ -1,34 +1,42 @@
 <main>
-    <div class="header mat-elevation-z5 teal-700-toolbar">
-        <md-toolbar color="primary">
-            <img src="/assets/images/logo/logo.png" class="logo">
-            <span>lofty-控制台</span>
-            <span class="header-spacer"></span>
-        </md-toolbar>
-    </div>
-    <div class="main-container">
-        <div class="left-panel">
-            <nav>
-                <md-nav-list>
-                    <a md-list-item routerLink="/message" routerLinkActive="active">
-                        <md-icon md-list-icon fontSet="fa" fontIcon="fa-envelope-o" color="primary"></md-icon>留言箱
-                    </a>
-                    <a md-list-item routerLink="/dashboard" routerLinkActive="active">
-                        <md-icon md-list-icon fontSet="fa" fontIcon="fa-tachometer" color="primary"></md-icon>控制台
-                    </a>
-                    <a md-list-item routerLink="/chat" routerLinkActive="active">
-                        <md-icon md-list-icon fontSet="fa" fontIcon="fa-comments-o" color="primary"></md-icon>聊天列表
-                    </a>
-                    <a md-list-item routerLink="/personal" routerLinkActive="active">
-                        <md-icon md-list-icon fontSet="fa" fontIcon="fa-user-o" color="primary"></md-icon>个人设置
-                    </a>
-                </md-nav-list>
-            </nav>
-        </div>
-        <div class="right-panel">
-            <div class="main-panel">
-                <router-outlet></router-outlet>
-            </div>
-        </div>
-    </div>
+    <nz-layout class="main-layout">
+        <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed">
+            <img class="logo" src="/assets/images/logo/logo.png" />
+            <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
+                <li nz-menu-item><span><i class="anticon anticon-line-chart"></i><span class="nav-text">控制台</span></span>
+                </li>
+                <li nz-submenu>
+                    <span title><i class="anticon anticon-mail"></i><span class="nav-text">留言箱</span></span>
+                    <ul>
+                        <li nz-menu-item routerLink="/message">未读留言</li>
+                        <li nz-menu-item routerLink="/message">未处理留言</li>
+                        <li nz-menu-item routerLink="/message">已处理留言</li>
+                    </ul>
+                </li>
+                <li nz-submenu>
+                    <span title><i class="anticon anticon-database"></i><span class="nav-text">数据管理</span></span>
+                    <ul>
+                        <li nz-menu-item routerLink="/dashboard">房间管理</li>
+                        <li nz-menu-item routerLink="/dashboard">会员管理</li>
+                        <li nz-menu-item routerLink="/dashboard">订单管理</li>
+                    </ul>
+                </li>
+                <li nz-menu-item><span><i class="anticon anticon-message"></i><span class="nav-text">聊天列表</span></span>
+                </li>
+                <li nz-menu-item routerLink="/personal"><span><i class="anticon anticon-idcard"></i><span class="nav-text">个人设置</span></span>
+                </li>
+            </ul>
+        </nz-sider>
+        <nz-layout>
+            <nz-header class="main-header">
+                <span>控制台</span>
+            </nz-header>
+            <nz-content>
+                <div style="padding:24px; background: #fff; min-height: 600px;">
+                    <router-outlet></router-outlet>
+                </div>
+            </nz-content>
+            <nz-footer style="text-align: center;">little big squad ©2017 Implement By Angular</nz-footer>
+        </nz-layout>
+    </nz-layout>
 </main>

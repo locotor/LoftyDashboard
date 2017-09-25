@@ -3,10 +3,11 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-
-interface IInfoOperation extends Function {
-  (infos: string[]): string[];
-}
+import {
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 
 @Component({
   selector: 'personal',
@@ -15,16 +16,25 @@ interface IInfoOperation extends Function {
   encapsulation: ViewEncapsulation.None
 })
 export class PersonalComponent implements OnInit {
-  isEditingPasswords: boolean = false;
-  isEditingUsername:boolean = false;
 
-  constructor() { };
+  public validateForm: FormGroup;
+
+  constructor(private fb: FormBuilder) { };
+
   ngOnInit() {
+    this.validateForm = this.fb.group({
+      userName: [null, [Validators.required]],
+      password: [null, [Validators.required]],
+      name: [null, [Validators.required]],
+      telphone: [null, [Validators.required]],
+      email: [null, [Validators.required]]
+    });
   };
-  changePassword() {
-    this.isEditingPasswords = !this.isEditingPasswords;
+
+  _submitForm() {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+    }
   }
-  editUsername(){
-    this.isEditingUsername = true;
-  }
+
 }

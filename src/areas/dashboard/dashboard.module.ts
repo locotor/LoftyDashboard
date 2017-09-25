@@ -14,9 +14,6 @@ import {
   MdGridListModule,
   MdTableModule
 } from '@angular/material';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { ChartComponent } from './chart/chart.component';
 import { MessageTableComponent } from './message-table/message-table.component';
@@ -43,8 +40,6 @@ const dashboardRoutes: Routes = [
     MdCardModule,
     MdGridListModule,
     MdTableModule,
-    NgxChartsModule,
-    NgxDatatableModule,
     RouterModule.forChild(dashboardRoutes),
   ],
   declarations: [

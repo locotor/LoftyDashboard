@@ -1,61 +1,74 @@
 <div class="personal-container">
-    <form class="example-form input-ligth-theme">
-        <fieldset>
-            <md-input-container>
-                <input class="" mdInput placeholder="用户名" value="admin-test" [disabled]="!isEditingUsername">
-            </md-input-container>
-            <a md-raised-button (click)="editUsername()" color="primary">修改用户名</a>
-            <a md-raised-button (click)="changePassword()" color="primary">修改密码</a>
-            <ng-container *ngIf="isEditingPasswords">
-                <p>
-                    <md-input-container>
-                        <input mdInput placeholder="原密码" value="" />
-                    </md-input-container>
-                </p>
-                <p>
-                    <md-input-container>
-                        <input mdInput placeholder="新密码" value="" />
-                    </md-input-container>
-                </p>
-                <p>
-                    <md-input-container>
-                        <input mdInput placeholder="确认密码" value="" />
-                    </md-input-container>
-                </p>
-            </ng-container>
-        </fieldset>
-        <fieldset>
-            <md-input-container>
-                <input mdInput placeholder="姓名" value="test">
-            </md-input-container>
-        </fieldset>
-        <fieldset>
-            <md-input-container>
-                <input mdInput placeholder="邮箱" value="support@lofty.com" />
-            </md-input-container>
-            <md-input-container>
-                <input mdInput placeholder="联系电话" value="1234567" />
-            </md-input-container>
-        </fieldset>
-        <table cellspacing="0">
-            <tr>
-                <td>
-                    <md-input-container>
-                        <input mdInput placeholder="City">
-                    </md-input-container>
-                </td>
-                <td>
-                    <md-input-container>
-                        <input mdInput placeholder="State">
-                    </md-input-container>
-                </td>
-                <td>
-                    <md-input-container>
-                        <input mdInput #postalCode maxlength="5" placeholder="Postal Code" value="94043">
-                        <md-hint align="end">{{postalCode.value.length}} / 5</md-hint>
-                    </md-input-container>
-                </td>
-            </tr>
-        </table>
+    <form nz-form [nzLayout]="'horizontal'" [formGroup]="validateForm" (ngSubmit)="_submitForm()">
+        <!-- username -->
+        <div nz-form-item>
+            <div nz-form-label nz-form-item-required>
+                <label>用户名</label>
+            </div>
+            <div nz-form-control [nzValidateStatus]="validateForm.controls.userName">
+                <nz-input formControlName="userName" [nzPlaceHolder]="'Username'" [nzSize]="'large'">
+                    <ng-template #prefix>
+                        <i class="anticon anticon-user"></i>
+                    </ng-template>
+                </nz-input>
+                <div nz-form-explain *ngIf="validateForm.controls.userName.dirty&&validateForm.controls.userName.hasError('required')">请输入用户名</div>
+            </div>
+        </div>
+        <!-- password -->
+        <div nz-form-item>
+            <div nz-form-label nz-form-item-required nz-col>
+                <label>密码</label>
+            </div>
+            <div nz-form-control [nzValidateStatus]="validateForm.controls.password">
+                <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'Password'" [nzSize]="'large'">
+                    <ng-template #prefix>
+                        <i class="anticon anticon-lock"></i>
+                    </ng-template>
+                </nz-input>
+                <div nz-form-explain *ngIf="validateForm.controls.password.dirty&&validateForm.controls.password.hasError('required')">请输入密码</div>
+            </div>
+        </div>
+        <!-- realname -->
+        <div nz-form-item>
+            <div nz-form-label nz-form-item-required nz-col>
+                <label>姓名</label>
+            </div>
+            <div nz-form-control [nzValidateStatus]="validateForm.controls.name">
+                <nz-input formControlName="name" [nzType]="'name'" [nzPlaceHolder]="'name'" [nzSize]="'name'">
+                    <ng-template #prefix>
+                        <i class="anticon anticon-lock"></i>
+                    </ng-template>
+                </nz-input>
+                <div nz-form-explain *ngIf="validateForm.controls.name.dirty&&validateForm.controls.name.hasError('required')">请输入真实姓名</div>
+            </div>
+        </div>
+        <!-- telphone -->
+        <div nz-form-item>
+            <div nz-form-label nz-form-item-required nz-col>
+                <label>电话</label>
+            </div>
+            <div nz-form-control [nzValidateStatus]="validateForm.controls.telphone">
+                <nz-input formControlName="telphone" [nzType]="'telphone'" [nzPlaceHolder]="'telphone'" [nzSize]="'large'">
+                    <ng-template #prefix>
+                        <i class="anticon anticon-lock"></i>
+                    </ng-template>
+                </nz-input>
+                <div nz-form-explain *ngIf="validateForm.controls.telphone.dirty&&validateForm.controls.telphone.hasError('required')">请输入联系邮箱</div>
+            </div>
+        </div>
+        <!-- email -->
+        <div nz-form-item>
+            <div nz-form-label nz-form-item-required nz-col>
+                <label>邮箱</label>
+            </div>
+            <div nz-form-control [nzValidateStatus]="validateForm.controls.email">
+                <nz-input formControlName="email" [nzType]="'email'" [nzPlaceHolder]="'email'" [nzSize]="'large'">
+                    <ng-template #prefix>
+                        <i class="anticon anticon-lock"></i>
+                    </ng-template>
+                </nz-input>
+                <div nz-form-explain *ngIf="validateForm.controls.email.dirty&&validateForm.controls.email.hasError('required')">请输入密码</div>
+            </div>
+        </div>
     </form>
 </div>

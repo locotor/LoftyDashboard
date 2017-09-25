@@ -1,12 +1,9 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common"
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PersonalComponent } from './personal.component';
-import {
-    MdInputModule,
-    MdIconModule,
-    MdButtonModule
-} from '@angular/material';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 const personalRoutes: Routes = [
     {
@@ -16,11 +13,11 @@ const personalRoutes: Routes = [
 ];
 @NgModule({
     imports: [
-        MdInputModule,
-        MdIconModule,
-        MdButtonModule,
         CommonModule,
-        RouterModule.forChild(personalRoutes)
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(personalRoutes),
+        NgZorroAntdModule
     ],
     declarations: [
         PersonalComponent
