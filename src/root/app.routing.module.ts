@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'personal' },
   { path: "chat", loadChildren: "../areas/chat/chat.module#ChatModule" },
-  { path: "message", loadChildren: "../areas/message/message.module#MessageModule" }  ,
+  { path: "message/:status", loadChildren: "../areas/message/message.module#MessageModule" }  ,
   { path: "dashboard", loadChildren: "../areas/dashboard/dashboard.module#DashboardModule" }  
 ];
 

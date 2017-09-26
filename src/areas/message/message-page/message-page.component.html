@@ -1,19 +1,32 @@
-<div class="message-page-container container">
-    <div class="thread-container">
-        <nz-tabset>
-            <nz-tab>
-                <ng-template #nzTabHeading>
-                    <i class="anticon anticon-mail"></i> 邮箱留言
-                </ng-template>
-                <span>邮箱留言</span>
-            </nz-tab>
-            <nz-tab>
-                <ng-template #nzTabHeading>
-                    <i class="anticon anticon-phone"></i> 手机留言
-                </ng-template>
-                <span>手机留言</span>
-            </nz-tab>
-        </nz-tabset>
-    </div>
-    <message-window class="message-window" [currentMessage]="currentMessage"></message-window>
+<div class="thread-container">
+    <nz-tabset>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-mail"></i> 邮箱留言
+            </ng-template>
+            <ul *ngFor="let message of emailList.messages" class="message-list">
+                <li>
+                    <nz-card style="width:300px;">
+                        <ng-template #title>
+                            <h1>{{"用户:"+message.User.name}}</h1>
+                            <h2>{{message.TargetAddress}}</h2>
+                        </ng-template>
+                        <ng-template #extra>
+                            <a>More</a>
+                        </ng-template>
+                        <ng-template #body>
+                            <p>{{message.Remark}}</p>
+                        </ng-template>
+                    </nz-card>
+                </li>
+            </ul>
+        </nz-tab>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-phone"></i> 手机留言
+            </ng-template>
+            <span>手机留言</span>
+        </nz-tab>
+    </nz-tabset>
 </div>
+<message-window class="message-window" [currentMessage]="currentMessage"></message-window>

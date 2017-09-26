@@ -12,18 +12,7 @@ import { MessageWindowComponent } from './message-window/message-window.componen
 const messageRoutes: Routes = [
   {
     path: '',
-    component: MessagePageComponent,
-    children:[
-      {
-        path:'unread',
-      },
-      {
-        path:'unprocessed',
-      },
-      {
-        path:'processed',
-      }
-    ]
+    component: MessagePageComponent
   },
 ];
 

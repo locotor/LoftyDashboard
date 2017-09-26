@@ -1,30 +1,8 @@
-.message-page-container {
-  float: left;
-  height: 100%;
-  width: 100%;
-}
-
 .thread-container {
-  float: left;
   height: 100%;
   width: 300px;
-  overflow: auto;
   background: #757575;
-  .search-container {
-    padding: 10px 16px 0;
-  }
-  .thread-paginator{
-    position: fixed;
-    bottom: 0;
-  }
-  md-list-item {
-    &.active,
-    &:hover {
-      background: #4db6ac;
-    }
-    border-top: 1px solid;
-    &:last-child {
-      border-bottom: 1px solid;
-    }
+  .message-list{
+    overflow: auto;
   }
 }
