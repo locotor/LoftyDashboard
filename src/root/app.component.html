@@ -1,9 +1,9 @@
 <main>
-    <nz-layout class="main-layout">
+    <nz-layout class="app-layout">
         <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed">
             <img class="logo" src="/assets/images/logo/logo.png" />
             <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
-                <li nz-menu-item><span><i class="anticon anticon-line-chart"></i><span class="nav-text">控制台</span></span>
+                <li nz-menu-item routerLink="/dashboard"><span><i class="anticon anticon-line-chart"></i><span class="nav-text">控制台</span></span>
                 </li>
                 <li nz-submenu>
                     <span title><i class="anticon anticon-mail"></i><span class="nav-text">留言箱</span></span>
@@ -16,9 +16,9 @@
                 <li nz-submenu>
                     <span title><i class="anticon anticon-database"></i><span class="nav-text">数据管理</span></span>
                     <ul>
-                        <li nz-menu-item routerLink="/dashboard">房间管理</li>
-                        <li nz-menu-item routerLink="/dashboard">会员管理</li>
-                        <li nz-menu-item routerLink="/dashboard">订单管理</li>
+                        <li nz-menu-item routerLink="">房间管理</li>
+                        <li nz-menu-item routerLink="">会员管理</li>
+                        <li nz-menu-item routerLink="">订单管理</li>
                     </ul>
                 </li>
                 <li nz-menu-item><span><i class="anticon anticon-message"></i><span class="nav-text">聊天列表</span></span>
@@ -27,14 +27,14 @@
                 </li>
             </ul>
         </nz-sider>
-        <nz-layout>
-            <nz-header class="main-header">
+        <nz-layout class="main-layout">
+            <nz-header class="header">
                 <span>控制台</span>
             </nz-header>
-            <nz-content class="main-router-container">
+            <nz-content class="router-container">
                 <router-outlet></router-outlet>
             </nz-content>
-            <nz-footer style="text-align: center;">little big squad ©2017 Implement By Angular</nz-footer>
+            <nz-footer class="footer">little big squad ©2017 Implement By Angular</nz-footer>
         </nz-layout>
     </nz-layout>
 </main>

@@ -1,32 +1,29 @@
-<div class="thread-container">
-    <nz-tabset>
-        <nz-tab>
-            <ng-template #nzTabHeading>
-                <i class="anticon anticon-mail"></i> 邮箱留言
-            </ng-template>
-            <ul *ngFor="let message of emailList.messages" class="message-list">
-                <li>
-                    <nz-card style="width:300px;">
-                        <ng-template #title>
-                            <h1>{{"用户:"+message.User.name}}</h1>
-                            <h2>{{message.TargetAddress}}</h2>
-                        </ng-template>
-                        <ng-template #extra>
-                            <a>More</a>
-                        </ng-template>
-                        <ng-template #body>
-                            <p>{{message.Remark}}</p>
-                        </ng-template>
-                    </nz-card>
-                </li>
-            </ul>
-        </nz-tab>
-        <nz-tab>
-            <ng-template #nzTabHeading>
-                <i class="anticon anticon-phone"></i> 手机留言
-            </ng-template>
-            <span>手机留言</span>
-        </nz-tab>
-    </nz-tabset>
-</div>
-<message-window class="message-window" [currentMessage]="currentMessage"></message-window>
+<nz-layout class="main-layout">
+    <nz-sider class="thread-wrapper" [nzWidth]="300" style="background:#fff">
+        <nz-tabset class="thread">
+            <nz-tab>
+                <ng-template #nzTabHeading>
+                    <i class="anticon anticon-mail"></i> 邮箱留言
+                </ng-template>
+                <div class="scroller">
+                    <ul nz-menu>
+                        <li nz-menu-item class="clearfix" *ngFor="let message of emailList.messages">
+                            <span class="nav-text">{{message.User.account}}:{{message.Remark}}</span>
+                            <i class="anticon anticon-folder"></i>
+                        </li>
+                    </ul>
+                </div>
+                <nz-pagination [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>`,
+            </nz-tab>
+            <nz-tab>
+                <ng-template #nzTabHeading>
+                    <i class="anticon anticon-phone"></i> 手机留言
+                </ng-template>
+                <span>手机留言</span>
+            </nz-tab>
+        </nz-tabset>
+    </nz-sider>
+    <nz-content class="window-wrapper">
+        <message-window class="message-window" [currentMessage]="currentMessage"></message-window>
+    </nz-content>
+</nz-layout>

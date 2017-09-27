@@ -1,33 +1,44 @@
 main {
     height: 100%;
-    .main-layout {
-        height: 100%;
+}
+
+.app-layout,
+.main-layout {
+    height: inherit;
+}
+
+.header {
+    background: #5DBBAF;
+    color: #555;
+    font-size: 18px;
+}
+
+.router-container {
+    overflow: hidden;
+    height: calc(100% - 128px);
+    padding: 24px 0 24px 24px;
+    background: #fff;
+}
+
+.footer {
+    text-align: center;
+}
+
+.logo {
+    height: 28px;
+    background: white;
+    border-radius: 6px;
+    margin: 16px;
+}
+
+.ant-layout-sider-collapsed {
+    .nav-text,
+    .ant-menu-submenu-title:after {
+        display: none;
     }
-    .main-header {
-        background: #5DBBAF;
-        color: #555;
-        font-size: 18px;
-    }
-    .main-router-container{
-        padding-left:24px; 
-        padding-top:24px;
-        background: #fff;
-        min-height: 600px;
-    }
-    .logo {
-        height: 32px;
-        background: white;
-        border-radius: 6px;
-        margin: 16px;
-    }
-    .ant-layout-sider-collapsed {
-        .nav-text,
-        .ant-menu-submenu-title:after {
-            display: none;
-        }
-    }
-    .anticon {
-        font-size: 16px;
-        margin-left: 8px;
-    }
+}
+
+.anticon {
+    font-size: 16px;
+    margin-left: 8px;
 }

@@ -40,7 +40,7 @@ export class MessagePageComponent implements OnInit {
   /*---事件handler---*/
   ngOnInit() {
     /*-- for test --*/
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 20; i++) {
       this.emailList.messages.push({
         Id:i,
         User:yang,

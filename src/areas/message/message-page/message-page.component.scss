@@ -1,8 +1,17 @@
-.thread-container {
-  height: 100%;
-  width: 300px;
-  background: #757575;
-  .message-list{
-    overflow: auto;
-  }
+:host {
+    height: 100%;
+}
+
+.main-layout,
+.thread-wrapper,
+.window-wrapper,
+.thread {
+    height: inherit;
+}
+
+.scroller {
+    overflow-y: auto;
+    height: 470px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
 }

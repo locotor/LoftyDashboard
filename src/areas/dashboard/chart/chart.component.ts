@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 
 @Component({
   selector: 'chart',
@@ -6,10 +6,59 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit {
+  constructor(el: ElementRef) { 
+    console.log(el.nativeElement);
+  }
 
-  constructor() { }
-
-  ngOnInit() { }
+  ngOnInit() {
+    var posList = [
+      'left', 'right', 'top', 'bottom',
+      'inside',
+      'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+      'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+    ];
+    console.log()
+    let dom = document.getElementById("charts");
+    let myChart = echarts.init(dom);
+    // let option = {
+    //   color: ['#3398DB'],
+    //   tooltip: {
+    //     trigger: 'axis',
+    //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+    //       type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+    //     }
+    //   },
+    //   grid: {
+    //     left: '3%',
+    //     right: '4%',
+    //     bottom: '3%',
+    //     containLabel: true
+    //   },
+    //   xAxis: [
+    //     {
+    //       type: 'category',
+    //       data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    //       axisTick: {
+    //         alignWithLabel: true
+    //       }
+    //     }
+    //   ],
+    //   yAxis: [
+    //     {
+    //       type: 'value'
+    //     }
+    //   ],
+    //   series: [
+    //     {
+    //       name: '直接访问',
+    //       type: 'bar',
+    //       barWidth: '60%',
+    //       data: [10, 52, 200, 334, 390, 330, 220]
+    //     }
+    //   ]
+    // };
+    // myChart.setOption(option);
+  }
 
   single = [
     {
@@ -92,21 +141,4 @@ export class ChartComponent implements OnInit {
       ]
     }
   ];
-
-  // options
-  chartView = [800,350];
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'month';
-  showYAxisLabel = true;
-  yAxisLabel = 'visit-amount';
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
-  // line, area
-  autoScale = true;
-
 }
