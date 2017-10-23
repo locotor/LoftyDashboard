@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import echarts from "echarts";
 
 @Component({
   selector: 'chart',
