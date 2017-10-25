@@ -1,5 +1,21 @@
-.chat-page-container {
-    float: left;
+:host {
     height: 100%;
-    width: 100%;
+}
+
+.main-layout,
+.thread-wrapper,
+.window-wrapper,
+.thread {
+    height: inherit;
+}
+
+.message-filter {
+    width: 70px;
+}
+
+.scroller {
+    overflow-y: auto;
+    height: 470px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
 }

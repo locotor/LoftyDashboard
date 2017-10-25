@@ -5,8 +5,6 @@ import {
 } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import User from "../models/user/user.model";
-// import { AppContextService } from "./app-context.service";
-// import { UserService } from "./user.service";
 @Component({
   selector: 'app-root',
   templateUrl: "./app.component.html",

@@ -51,7 +51,7 @@ module.exports = function() {
     }), {
         devtool: custom.DEV_SOURCE_MAP,
         output: {
-            path: helpers.root("/dist"),
+            path: helpers.root("dist/LoftyAdmin"),
             filename: "[name].js"
         },
         module: {

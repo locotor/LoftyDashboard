@@ -32,6 +32,7 @@ export class MessagePageComponent implements OnInit {
     totalAmount: 0,
     currentPage: 1
   }
+  public currentFilter:string = "全部";
   public currentMessage: Message;
   constructor() { };
 

@@ -1,4 +1,30 @@
-<div class="chat-page-container container">
-    <chat-thread class="chat-thread"></chat-thread>
-    <chat-window class="chat-window"></chat-window>
-</div>
+<nz-layout class="main-layout">
+    <nz-sider class="thread-wrapper" [nzWidth]="350" style="background:#fff">
+        <nz-tabset class="thread" [nzTabPosition]="'top'" [nzType]="'card'">
+            <nz-tab>
+                <ng-template #nzTabHeading>
+                    <i class="anticon anticon-mail"></i> 邮箱留言
+                </ng-template>
+                <div class="scroller">
+                    <ul nz-menu>
+                        <!-- <li nz-menu-item class="clearfix" *ngFor="let message of emailList.messages">
+                            <span class="nav-text">{{message.User.account}}:{{message.Remark}}</span>
+                            <i class="anticon anticon-folder"></i>
+                        </li> -->
+                    </ul>
+                </div>
+                <nz-pagination [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>`,
+            </nz-tab>
+            <ng-template #nzTabBarExtraContent>
+                <nz-select class="message-filter">
+                    <nz-option [nzLabel]="'全部'" [nzValue]="0"></nz-option>
+                    <nz-option [nzLabel]="'未读'" [nzValue]="1"></nz-option>
+                    <nz-option [nzLabel]="'未处理'" [nzValue]="2"></nz-option>
+                </nz-select>
+            </ng-template>
+        </nz-tabset>
+    </nz-sider>
+    <nz-content class="window-wrapper">
+
+    </nz-content>
+</nz-layout>

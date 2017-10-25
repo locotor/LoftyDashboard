@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { MessageService } from "./message.service";
@@ -19,6 +20,7 @@ const messageRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     EditorModule,
     NgZorroAntdModule,
     RouterModule.forChild(messageRoutes),
