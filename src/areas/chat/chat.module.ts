@@ -1,20 +1,20 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { RouterModule, Routes } from "@angular/router";
+import { NgZorroAntdModule } from "ng-zorro-antd";
 
-import { PipesModule } from "../../commons/pipes/pipes.module";
-import { EditorModule } from "../../commons/components/editor/editor.module";
-import { ModelsModule } from "../../models/models.module";
+import { PipesModule } from "commons/pipes/pipes.module";
+import { EditorModule } from "commons/components/editor/editor.module";
+import { ModelsModule } from "models/models.module";
 
+import { ChatService } from "./chat.service";
 import { ChatPageComponent } from "./chat-page/chat-page.component";
-import { ChatWindowComponent } from "./chat-window/chat-window.component";
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 
 const chatRoutes: Routes = [
     {
-        path: '',
+        path: "",
         component: ChatPageComponent
     },
 ];
@@ -31,8 +31,10 @@ const chatRoutes: Routes = [
     ],
     declarations: [
         ChatPageComponent,
-        ChatWindowComponent,
         ChatMessageComponent
+    ],
+    providers:[
+        ChatService
     ]
 })
 export class ChatModule { }

@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlElementsPlugin = require('./html-elements-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
 //const
 const HMR = helpers.hasProcessFlag("hot");
@@ -28,14 +29,18 @@ module.exports = function(options) {
         },
         resolve: {
             extensions: ['.ts', '.js', '.json'],
-            modules: [helpers.root('src'), helpers.root('node_modules')]
+            modules: [
+                helpers.root('src'),
+                helpers.root('node_modules')
+            ]
         },
         module: {
             rules: [{
                     test: /\.js$/,
                     loader: 'source-map-loader',
                     exclude: [custom.EXCLUDE_SOURCE_MAPS]
-                }, {
+                },
+                {
                     test: /\.ts$/,
                     use: [{
                             loader: 'ng-router-loader',
@@ -48,8 +53,7 @@ module.exports = function(options) {
                         {
                             loader: "awesome-typescript-loader",
                             options: {
-                                configFileName: helpers.root("tsconfig.webpack.json"),
-                                useCache: !isProd
+                                configFileName: helpers.root("./tsconfig.json")
                             }
                         },
                         {
@@ -103,6 +107,7 @@ module.exports = function(options) {
         },
         plugins: [
             new CheckerPlugin(),
+            new TsConfigPathsPlugin({ configFileName: helpers.root("./tsconfig.json") }),
             new ExtractTextPlugin({
                 filename: '[name].[contenthash].css',
                 allChunks: true,

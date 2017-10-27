@@ -2,15 +2,15 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
-} from '@angular/core';
+} from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
   Validators
-} from '@angular/forms';
+} from "@angular/forms";
 
 @Component({
-  selector: 'personal',
+  selector: "personal",
   templateUrl: "./personal.component.html",
   styleUrls: ["./personal.component.scss"],
   encapsulation: ViewEncapsulation.None
@@ -19,9 +19,11 @@ export class PersonalComponent implements OnInit {
 
   public validateForm: FormGroup;
 
-  constructor(private fb: FormBuilder) { };
+  constructor(private fb: FormBuilder) {
+    // todo
+  }
 
-  ngOnInit() {
+  ngOnInit (): void {
     this.validateForm = this.fb.group({
       userName: [null, [Validators.required]],
       password: [null, [Validators.required]],
@@ -29,12 +31,13 @@ export class PersonalComponent implements OnInit {
       telphone: [null, [Validators.required]],
       email: [null, [Validators.required]]
     });
-  };
-
-  _submitForm() {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-    }
   }
 
+  _submitForm (): void {
+    for (const i in this.validateForm.controls) {
+      if (this.validateForm.controls.hasOwnProperty(i)) {
+        this.validateForm.controls[i].markAsDirty();
+      }
+    }
+  }
 }

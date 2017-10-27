@@ -1,18 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 import Message from "../../../models/message/message.model";
 import { MessageService } from "../message.service";
 
 @Component({
-  selector: 'message-window',
-  templateUrl: './message-window.component.html',
-  styleUrls: ['./message-window.component.scss']
+  selector: "message-window",
+  templateUrl: "./message-window.component.html",
+  styleUrls: ["./message-window.component.scss"]
 })
 export class MessageWindowComponent implements OnInit {
-  @Input() currentMessage: Message
-  constructor(
+  @Input() currentMessage: Message;
+  constructor() {
     // private _messageService: MessageService,
-  ) { }
-  ngOnInit() {
+  }
+  ngOnInit (): void {
+    // todo
   }
   // onEnter(content: string): void {
   //   if (content) {

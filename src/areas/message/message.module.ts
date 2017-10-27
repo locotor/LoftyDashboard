@@ -1,18 +1,18 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { NgZorroAntdModule } from "ng-zorro-antd";
 
 import { MessageService } from "./message.service";
 
-import { EditorModule } from "../../commons/components/editor/editor.module";
-import { MessagePageComponent } from './message-page/message-page.component';
-import { MessageWindowComponent } from './message-window/message-window.component';
+import { EditorModule } from "commons/components/editor/editor.module";
+import { MessagePageComponent } from "./message-page/message-page.component";
+import { MessageWindowComponent } from "./message-window/message-window.component";
 
 const messageRoutes: Routes = [
   {
-    path: '',
+    path: "",
     component: MessagePageComponent
   },
 ];

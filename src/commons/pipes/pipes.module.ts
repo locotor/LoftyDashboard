@@ -1,7 +1,7 @@
 
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 
-import { FromNowPipe } from './from-now.pipe';
+import { FromNowPipe } from "./from-now.pipe";
 
 @NgModule({
     declarations: [

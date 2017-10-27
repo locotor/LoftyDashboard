@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { QuillEditorModule } from 'ngx-quill-editor';
+import { QuillEditorModule } from "ngx-quill-editor";
 import { MdButtonModule } from "@angular/material";
 
-import { editorComponent } from './editor.component';
+import { EditorComponent } from "./editor.component";
 
 @NgModule({
     imports: [
@@ -12,8 +12,8 @@ import { editorComponent } from './editor.component';
         MdButtonModule,
         QuillEditorModule
     ],
-    exports: [editorComponent],
-    declarations: [editorComponent],
+    exports: [EditorComponent],
+    declarations: [EditorComponent],
     providers: [],
 })
 export class EditorModule { }
