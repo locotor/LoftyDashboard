@@ -4,8 +4,8 @@ import "./commons/styles/init.css";
 
 require("expose-loader?echarts!echarts");
 
-declare var $: any;
-console.log("all for test: ",$.connection.LoftyHub);
+// declare var $: any;
+// console.log("all for test: ",$.connection.LoftyHub);
 
 platformBrowserDynamic()
     .bootstrapModule(AppModule)

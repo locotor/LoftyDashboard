@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from "@angular/core"
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ViewEncapsulation
+} from "@angular/core";
 
 @Component({
     selector: "editor",
@@ -13,7 +19,7 @@ import { Component, Input, Output, EventEmitter, ViewEncapsulation } from "@angu
             (change)="onContentChanged($event)">
         </quill-editor>
         <div class="sent-msg-btn">
-            <button md-fab (click)="onEnter($event)">发送</button>
+            <button>发送</button>
         </div>
     </div>
     `,
