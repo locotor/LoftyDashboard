@@ -53,6 +53,7 @@
     },
     "devDependencies": {
         "@types/echarts": "0.0.8",
+        "@types/jquery": "^3.2.16",
         "@types/node": "^8.0.14",
         "@types/webpack": "^3.0.4",
         "angular2-template-loader": "^0.6.2",

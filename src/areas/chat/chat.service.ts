@@ -8,7 +8,7 @@ import Message from "../../models/message/message.model";
 @Injectable()
 export class ChatService extends WebBaseService {
 
-    constructor(private http: HttpClient) { super() }
+    constructor(private http: HttpClient) { super(); }
 
     // 获取历史聊天人员
     public GetLastChatUsers (pageInde: number, pageSize: number): Observable<Object> {
@@ -31,7 +31,7 @@ export class ChatService extends WebBaseService {
             .append("targetId", targetId.toString());
         url = this.appendTimeStamp(url);
         return this.http.get(url, { params: params });
-    };
+    }
 
     // 获取单个聊天详情
     public getChatDetail (targetId: number, pageInde: number, pageSize: number): Observable<Object> {
