@@ -1,9 +1,10 @@
 <nz-layout class="main-layout">
-    <nz-sider class="thread-wrapper" [nzWidth]="350" style="background:#fff">
-        <nz-tabset class="thread" [nzTabPosition]="'top'" [nzType]="'card'">
+    <nz-sider class="thread-wrapper" [nzWidth]="350">
+        <nz-tabset class="tab-host" [nzSize]="'small'" [nzTabBarExtraTemplate]="tabBarExtraContent">
+            <!-- 邮箱 -->
             <nz-tab>
                 <ng-template #nzTabHeading>
-                    <i class="anticon anticon-mail"></i> 邮箱留言
+                    <i class="anticon anticon-mail"></i><span>邮箱留言</span>
                 </ng-template>
                 <div class="scroller">
                     <ul nz-menu>
@@ -13,15 +14,24 @@
                         </li>
                     </ul>
                 </div>
-                <nz-pagination [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>`,
+                <nz-pagination class="pagination" [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>
             </nz-tab>
+            <!-- 手机短信 -->
             <nz-tab>
                 <ng-template #nzTabHeading>
-                    <i class="anticon anticon-phone"></i> 手机留言
+                    <i class="anticon anticon-phone"></i><span>手机留言</span>
                 </ng-template>
-                <span>手机留言</span>
+                <div class="scroller">
+                    <ul nz-menu>
+                        <li nz-menu-item class="clearfix" *ngFor="let message of smsList.messages">
+                            <span class="nav-text">{{message.User.account}}:{{message.Remark}}</span>
+                            <i class="anticon anticon-folder"></i>
+                        </li>
+                    </ul>
+                </div>
+                <nz-pagination class="pagination" [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>
             </nz-tab>
-            <ng-template #nzTabBarExtraContent>
+            <ng-template #tabBarExtraContent>
                 <nz-select class="message-filter" [(ngModel)]="currentFilter">
                     <nz-option [nzLabel]="'全部'" [nzValue]="0"></nz-option>
                     <nz-option [nzLabel]="'未读'" [nzValue]="1"></nz-option>
@@ -30,7 +40,8 @@
             </ng-template>
         </nz-tabset>
     </nz-sider>
-    <nz-content class="window-wrapper">
-        <message-window class="message-window" [currentMessage]="currentMessage"></message-window>
+    <nz-content class="window-container">
+        <message-window class="message-window" [currentMessage]="currentMessage">
+        </message-window>
     </nz-content>
 </nz-layout>

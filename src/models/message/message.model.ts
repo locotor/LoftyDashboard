@@ -5,7 +5,8 @@ export default class Message {
     public User: User;
     public TargetAddress: string;
     public Remark: string;
-    public MessageStatus: number; //1未读,2未处理,3已处理
+    // 1未读,2未处理,3已处理
+    public MessageStatus: number;
     public ReadTime?: Date;
     public ProcessTime?: Date;
     public CreateTime?: Date;

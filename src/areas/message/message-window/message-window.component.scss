@@ -1,7 +1,13 @@
 .window-wrapper {
     height: 100%;
+    width: 100%;
+    background: white;
+    position: relative;
 }
 
-.message-card {
+.msg-content-wrapper {
     height: calc(100% - 208px);
+    border-left: 1px solid #ccc;
 }
+
+// .msg-editor-container {}

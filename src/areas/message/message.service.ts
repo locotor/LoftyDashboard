@@ -8,45 +8,42 @@ import Message from "../../models/message/message.model";
 @Injectable()
 export class MessageService extends WebBaseService {
 
-    constructor(private http: HttpClient) { super(); }
+    constructor(protected http: HttpClient) { super(http); }
 
     // 获取留言
-    public getMessageList (status: number, type: number, pageInde: number, pageSize: number): Observable<object> {
-        this.url = "/Message/GetMessage";
-        this.httpParam = new HttpParams();
-        this.httpParam = this.httpParam.append("status", status.toString())
-            .append("type", type.toString())
-            .append("pageInde", pageInde.toString())
-            .append("pageSize", pageSize.toString());
-        this.url = this.appendTimeStamp(this.url);
-        return this.http.get(this.url, { params: this.httpParam });
+    public getMessageList (status: number, type: number, pageIndex: number, pageSize: number): Observable<object> {
+        let url: string = "/Message/GetMessage",
+            httpParam: object = {
+                status: status,
+                type: type,
+                pageIndex: pageIndex,
+                pageSize: pageSize,
+            };
+        return this.getData(url, httpParam);
     }
 
     // 查看留言
     public scanMessage (id: number): Observable<Object> {
         let url: string = "/Message/ScanMessage";
-        url = this.appendTimeStamp(url);
-        return this.http.put(url, { id: id, }, { headers: this.headerBase });
+        return this.putData(url, { id: id, });
     }
 
     // 发送邮件
     public sendEmail (subject: string, MessageBody: string, to: string): Observable<object> {
         let url: string = "/Public/SendEmail";
-        url = this.appendTimeStamp(url);
-        return this.http.post(url, {
+        return this.postData(url, {
             subject: subject,
             MessageBody: MessageBody,
             to: to
-        }, { headers: this.headerBase });
+        });
     }
 
     // 发送短信
     public sendSMS (number: string, name: string): Observable<object> {
         let url: string = "/Public/SendPhoneMessage";
-        url = this.appendTimeStamp(url);
-        return this.http.post(url, {
+        return this.postData(url, {
             number: number,
             name: name,
-        }, { headers: this.headerBase });
+        });
     }
 }

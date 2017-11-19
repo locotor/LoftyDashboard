@@ -1,14 +1,14 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { NgZorroAntdModule } from "ng-zorro-antd";
-
-import { MessageService } from "./message.service";
-
 import { EditorModule } from "commons/components/editor/editor.module";
+
 import { MessagePageComponent } from "./message-page/message-page.component";
 import { MessageWindowComponent } from "./message-window/message-window.component";
+import { MessageService } from "./message.service";
 
 const messageRoutes: Routes = [
   {
@@ -21,8 +21,9 @@ const messageRoutes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    EditorModule,
+    HttpClientModule,
     NgZorroAntdModule,
+    EditorModule,
     RouterModule.forChild(messageRoutes),
   ],
   declarations: [

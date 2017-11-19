@@ -25,21 +25,22 @@ import { PersonalModule } from "areas/personal/personal.module";
         FormsModule,
         HttpModule,
         NgZorroAntdModule.forRoot(),
+        AppRoutingModule,
+        // project Module
         ChatModule,
         MessageModule,
-        PersonalModule,
-        AppRoutingModule
+        PersonalModule
     ],
     declarations: [
-        AppComponent
-    ],
-    bootstrap: [
         AppComponent
     ],
     providers: [
         AppContextService,
         WebBaseService,
         UserService
+    ],
+    bootstrap: [
+        AppComponent
     ]
 })
 export class AppModule { }
