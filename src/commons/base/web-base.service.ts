@@ -9,7 +9,7 @@ export class WebBaseService {
     this.http = http;
   }
   protected http: HttpClient;
-  protected baseUrl: string = "localhost:3001";
+  protected baseUrl: string = "";
   protected httpParam: HttpParams;
   protected headerBase = new HttpHeaders({
     "Content-Type": "application/json; charset=utf-8"
@@ -17,25 +17,19 @@ export class WebBaseService {
 
   // get方式发起请求
   protected getData (url: string, data: object): Observable<object> {
-    this.httpParam = new HttpParams();
-    for (let key in data) {
-      if (data.hasOwnProperty(key)) {
-        this.httpParam = this.httpParam.append(key, data[key].toString());
-      }
-    }
-    url = this.appendTimeStamp(url);
-    return this.http.get(this.baseUrl + url, { params: this.httpParam });
+    let queryString: string = $.param(data);
+    const httpParam: HttpParams = new HttpParams({ fromString: queryString });
+    url = this.baseUrl + url;
+    return this.http.get(url, { params: httpParam });
   }
 
   // post方式发起请求
   protected postData (url: string, data: object): Observable<object> {
-    url = this.appendTimeStamp(url);
     return this.http.post(this.baseUrl + url, data, { headers: this.headerBase });
   }
 
   // put方式发起请求
   protected putData (url: string, data: object): Observable<object> {
-    url = this.appendTimeStamp(url);
     return this.http.put(this.baseUrl + url, data, { headers: this.headerBase });
   }
 

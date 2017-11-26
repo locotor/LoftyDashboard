@@ -6,7 +6,7 @@ import { MessagePageComponent } from "areas/message/message-page/message-page.co
 
 
 const appRoutes: Routes = [
-  { path: "", pathMatch: "full", redirectTo: "personal" },
+  { path: "", pathMatch: "full", redirectTo: "message" },
   { path: "chat", component: ChatPageComponent },
   { path: "message", component: MessagePageComponent },
   // { path: "dashboard", loadChildren: "src/areas/dashboard/dashboard.module#DashboardModule" }

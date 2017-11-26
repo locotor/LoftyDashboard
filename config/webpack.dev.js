@@ -51,7 +51,7 @@ module.exports = function() {
     }), {
         devtool: custom.DEV_SOURCE_MAP,
         output: {
-            path: helpers.root("dist/LoftyAdmin"),
+            path: helpers.devRoot("dist"),
             filename: "[name].js"
         },
         module: {
@@ -71,13 +71,12 @@ module.exports = function() {
             }),
             new AutoDLLPlugin({
                 entry: {
-                    // polyfills: polyfills,
                     vendor: vendor
                 },
                 filename: "[name]_[hash].dll.js",
-                context: helpers.root(""),
+                context: helpers.devRoot("dist"),
                 inject: true,
-                path: "dll",
+                path: "../dist/dll",
                 debug: true,
                 plugins: [
                     new webpack.optimize.UglifyJsPlugin()

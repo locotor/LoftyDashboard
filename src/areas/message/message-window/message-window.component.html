@@ -1,8 +1,21 @@
 <div class="window-wrapper">
     <div class="msg-content-wrapper">
-
+        <nz-card [nzLoading]="isContentLoading" style="height:100%">
+            <ng-template #title>
+                留言详情
+            </ng-template>
+            <ng-template #extra>
+                <a>More</a>
+            </ng-template>
+            <ng-template #body *ngIf="currentMessage">
+                <h1 class="message-title">{{currentMessage.User?currentMessage.User.account:"匿名游客"+"留言："}}</h1>
+                <p class="message-content">{{currentMessage.Remark}}</p>
+                <p class="create-time">{{"创建时间： " + currentMessage.CreateTime}}</p>
+                <p class="contact-info">{{"联系方式：" + currentMessage.TargetAddress}}</p>
+            </ng-template>
+        </nz-card>
     </div>
     <div class="msg-editor-container">
-        <editor (onOutput)="onEnter($event)"></editor>
+        <editor [disabled]="isReadOnly" (onOutput)="onEnter($event)"></editor>
     </div>
 </div>

@@ -6,8 +6,13 @@
     "configurations": [{
         "type": "chrome",
         "request": "launch",
-        "name": "Launch Chrome",
-        "url": "http://localhost:3000",
+        "name": "lofty test",
+        "url": "http://localhost:3001/index.html",
         "webRoot": "${workspaceRoot}"
+    }, {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Program",
+        "program": "${workspaceFolder}/config/helpers.js"
     }]
 }

@@ -19,7 +19,9 @@ import {
             (change)="onContentChanged($event)">
         </quill-editor>
         <div class="sent-msg-btn">
-            <button>发送</button>
+            <button nz-button nzType="primary" [disabled]="disabled" (click)="handleSubmit($event)">
+                <span>发送</span>
+            </button>
         </div>
     </div>
     `,
@@ -27,19 +29,21 @@ import {
     encapsulation: ViewEncapsulation.None
 })
 export class EditorComponent {
+    @Input() disabled: boolean;
+    @Output() onOutput = new EventEmitter<string>();
     public editor;
     public editorContent;
     public editorOptions = {
         theme: "snow",
-        placeholder: "说点什么吧",
+        placeholder: "立即回复，别让客户久等",
         modules: {
             toolbar: [
                 ["bold", "italic", "underline", "strike"],
                 [{ "list": "ordered" }, { "list": "bullet" }],
             ]
-        }
+        },
+        readOnly: this.disabled
     };
-    @Output() onOutput = new EventEmitter<string>();
     onEditorBlured (quill: any): void {
         // console.log("editor blur!", quill);
     }
@@ -52,8 +56,9 @@ export class EditorComponent {
     onContentChanged ({ quill, html, text }: any): void {
         // console.log("quill content is changed!", quill, html, text);
     }
-    onEnter (event: MouseEvent): void {
+    handleSubmit (event: MouseEvent): void {
         this.onOutput.emit(this.editorContent);
+        this.editorContent = "";
         event.preventDefault();
     }
 }

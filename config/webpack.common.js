@@ -122,7 +122,7 @@ module.exports = function(options) {
             ]),
             new HtmlWebpackPlugin({
                 title: METADATA.title,
-                filename: "index.html",
+                filename: "../index.html",
                 template: helpers.root("./index-tpl.html"),
                 chunksSortMode: "dependency",
                 metadata: METADATA,

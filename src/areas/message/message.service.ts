@@ -16,19 +16,19 @@ export class MessageService extends WebBaseService {
             httpParam: object = {
                 status: status,
                 type: type,
-                pageIndex: pageIndex,
+                pageInde: pageIndex,
                 pageSize: pageSize,
             };
         return this.getData(url, httpParam);
     }
 
-    // 查看留言
+    // 阅读留言
     public scanMessage (id: number): Observable<Object> {
         let url: string = "/Message/ScanMessage";
-        return this.putData(url, { id: id, });
+        return this.postData(url, { id: id, });
     }
 
-    // 发送邮件
+    // 回复邮件
     public sendEmail (subject: string, MessageBody: string, to: string): Observable<object> {
         let url: string = "/Public/SendEmail";
         return this.postData(url, {
@@ -38,7 +38,7 @@ export class MessageService extends WebBaseService {
         });
     }
 
-    // 发送短信
+    // 回复短信
     public sendSMS (number: string, name: string): Observable<object> {
         let url: string = "/Public/SendPhoneMessage";
         return this.postData(url, {
