@@ -3,7 +3,6 @@ import { Observable } from "rxjs/Observable";
 import User from "models/user/user.model";
 import Message from "models/message/message.model";
 import { MessageService } from "../message.service";
-import { elementAt } from 'rxjs/operator/elementAt';
 
 @Component({
   selector: "message-page",

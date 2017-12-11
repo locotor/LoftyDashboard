@@ -5,14 +5,16 @@ main {
 .app-layout {
     height: inherit;
     .header {
-        background: #5DBBAF;
-        color: #555;
+        background: black;
         font-size: 18px;
-        .logo {
-            height: 28px;
-            background: white;
-            border-radius: 6px;
-            margin: 16px;
+        >.logo {
+            float: left;
+            height: 40px;
+            margin-top: 15px;
+        }
+        >.title {
+            color: #5DBBAF;
+            margin-left: 45px;
         }
     }
     .body {

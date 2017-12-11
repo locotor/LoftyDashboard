@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { AppContextService } from "commons/utilities/app-context.service";
 import { ChatService } from "../chat.service";
-import { AppContextService } from "../../../commons/utilities/app-context.service";
 
 
 @Component({
@@ -9,17 +9,25 @@ import { AppContextService } from "../../../commons/utilities/app-context.servic
   styleUrls: ["./chat-page.component.scss"]
 })
 export class ChatPageComponent implements OnInit {
+  public chatList = {
+    chats: Array<any>(),
+    loading: false,
+    pageSize: 10,
+    totalAmount: 0,
+    currentPage: 1
+  };
+  public currentChat: any;
 
   constructor(
     private _appContext: AppContextService,
-    // private _apiService: ChatService
+    private _apiService: ChatService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     // todo
   }
 
-  onEnter(content: string): void {
+  onEnter (content: string): void {
     // if (content) {
     //     this.sendMessage(content);
     // } else {
@@ -29,8 +37,15 @@ export class ChatPageComponent implements OnInit {
     // }
   }
 
+  public getChatList (): void {
+    // todo
+  }
 
-  sendMessage(content: string): void {
+  public handleChatClicked (chat: any): void {
+    // todo
+  }
+
+  sendMessage (content: string): void {
     // const m: Chat = this.draftChat;
     // m.text = content;
     // m.author = this.currentUser;
@@ -40,7 +55,7 @@ export class ChatPageComponent implements OnInit {
     // this.draftChat = new Chat();
   }
 
-  private scrollToBottom(): void {
+  private scrollToBottom (): void {
     // const scrollPane: any = this.el.nativeElement.querySelector(".msg-container");
     // scrollPane.scrollTop = scrollPane.scrollHeight;
   }
