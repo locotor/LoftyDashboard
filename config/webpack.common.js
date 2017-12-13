@@ -24,7 +24,7 @@ module.exports = function(options) {
     isProd = options.env === 'production';
     return {
         entry: {
-            "polyfill": helpers.root("/src/polyfills.ts"),
+            // "polyfill": helpers.root("/src/polyfills.ts"),
             "main": helpers.root("/src/main.ts")
         },
         resolve: {
@@ -43,18 +43,13 @@ module.exports = function(options) {
                 {
                     test: /\.ts$/,
                     use: [{
-                            loader: 'ng-router-loader',
-                            options: {
-                                loader: 'async-import',
-                                genDir: 'compiled',
-                                aot: AOT
-                            }
-                        },
-                        {
                             loader: "awesome-typescript-loader",
                             options: {
                                 configFileName: helpers.root("./tsconfig.json")
                             }
+                        },
+                        {
+                            loader: 'angular-router-loader',
                         },
                         {
                             loader: 'angular2-template-loader'
@@ -112,10 +107,10 @@ module.exports = function(options) {
                 filename: '[name].[contenthash].css',
                 allChunks: true,
             }),
-            new webpack.optimize.CommonsChunkPlugin({
-                name: 'polyfills',
-                chunks: ['polyfills']
-            }),
+            // new webpack.optimize.CommonsChunkPlugin({
+            //     name: 'polyfills',
+            //     chunks: ['polyfills']
+            // }),
             new CopyWebpackPlugin([
                 { from: 'src/assets', to: 'assets' },
                 ...custom.MY_COPY_FOLDERS
@@ -129,12 +124,12 @@ module.exports = function(options) {
                 showErrors: true,
                 inject: 'body'
             }),
-            new ScriptExtHtmlWebpackPlugin({
-                sync: /polyfill|vendor/,
-                defaultAttribute: 'async',
-                preload: [/polyfill|vendor|main/],
-                prefetch: [/chunk/]
-            }),
+            // new ScriptExtHtmlWebpackPlugin({
+            //     sync: /polyfill|vendor/,
+            //     defaultAttribute: 'async',
+            //     preload: [/polyfill|vendor|main/],
+            //     prefetch: [/chunk/]
+            // }),
             new HtmlElementsPlugin({
                 headTags: require('./head-config.common')
             }),

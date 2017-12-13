@@ -10,11 +10,11 @@ export class ChatService extends WebBaseService implements OnInit {
     private _singlrService: any;
     constructor(protected http: HttpClient) {
         super(http);
-        let jQuery: any = $;
-        this._singlrService = jQuery.connection.LoftyHub;
     }
 
     ngOnInit (): void {
+        let jQuery: any = $;
+        this._singlrService = jQuery.connection.LoftyHub;
         this._singlrService.connection.start();
         this._singlrService.client.ReceiveChatMessage = (detail: any) => {
             console.log(JSON.parse(detail).MessageBody);
