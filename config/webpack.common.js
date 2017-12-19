@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlElementsPlugin = require('./html-elements-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
 //const
 const HMR = helpers.hasProcessFlag("hot");
@@ -23,34 +24,32 @@ module.exports = function(options) {
     isProd = options.env === 'production';
     return {
         entry: {
-            "polyfill": helpers.root("/src/polyfills.ts"),
+            // "polyfill": helpers.root("/src/polyfills.ts"),
             "main": helpers.root("/src/main.ts")
         },
         resolve: {
             extensions: ['.ts', '.js', '.json'],
-            modules: [helpers.root('src'), helpers.root('node_modules')]
+            modules: [
+                helpers.root('src'),
+                helpers.root('node_modules')
+            ]
         },
         module: {
             rules: [{
                     test: /\.js$/,
                     loader: 'source-map-loader',
                     exclude: [custom.EXCLUDE_SOURCE_MAPS]
-                }, {
+                },
+                {
                     test: /\.ts$/,
                     use: [{
-                            loader: 'ng-router-loader',
+                            loader: "awesome-typescript-loader",
                             options: {
-                                loader: 'async-import',
-                                genDir: 'compiled',
-                                aot: AOT
+                                configFileName: helpers.root("./tsconfig.json")
                             }
                         },
                         {
-                            loader: "awesome-typescript-loader",
-                            options: {
-                                configFileName: helpers.root("tsconfig.webpack.json"),
-                                useCache: !isProd
-                            }
+                            loader: 'angular-router-loader',
                         },
                         {
                             loader: 'angular2-template-loader'
@@ -103,33 +102,34 @@ module.exports = function(options) {
         },
         plugins: [
             new CheckerPlugin(),
+            new TsConfigPathsPlugin({ configFileName: helpers.root("./tsconfig.json") }),
             new ExtractTextPlugin({
                 filename: '[name].[contenthash].css',
                 allChunks: true,
             }),
-            new webpack.optimize.CommonsChunkPlugin({
-                name: 'polyfills',
-                chunks: ['polyfills']
-            }),
+            // new webpack.optimize.CommonsChunkPlugin({
+            //     name: 'polyfills',
+            //     chunks: ['polyfills']
+            // }),
             new CopyWebpackPlugin([
                 { from: 'src/assets', to: 'assets' },
                 ...custom.MY_COPY_FOLDERS
             ]),
             new HtmlWebpackPlugin({
                 title: METADATA.title,
-                filename: "index.html",
+                filename: "../index.html",
                 template: helpers.root("./index-tpl.html"),
                 chunksSortMode: "dependency",
                 metadata: METADATA,
                 showErrors: true,
                 inject: 'body'
             }),
-            new ScriptExtHtmlWebpackPlugin({
-                sync: /polyfill|vendor/,
-                defaultAttribute: 'async',
-                preload: [/polyfill|vendor|main/],
-                prefetch: [/chunk/]
-            }),
+            // new ScriptExtHtmlWebpackPlugin({
+            //     sync: /polyfill|vendor/,
+            //     defaultAttribute: 'async',
+            //     preload: [/polyfill|vendor|main/],
+            //     prefetch: [/chunk/]
+            // }),
             new HtmlElementsPlugin({
                 headTags: require('./head-config.common')
             }),

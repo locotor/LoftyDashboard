@@ -1,7 +1,30 @@
 .window-wrapper {
     height: 100%;
+    width: 100%;
+    background: white;
+    position: relative;
+    .message-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .message-content {
+        font-size: 16px;
+        padding-left: 15px;
+        margin-bottom: 15px;
+    }
+    .create-time,
+    .contact-info {
+        float: right;
+        margin-right: 15px;
+        font-size: 12px;
+        font-style: italic;
+    }
 }
 
-.message-card {
-    height: calc(100% - 208px);
+.msg-content-wrapper {
+    height: calc(100% - 210px);
+    border-left: 1px solid #ccc;
 }
+
+// .msg-editor-container {}

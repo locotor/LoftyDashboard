@@ -1,29 +1,54 @@
 <nz-layout class="main-layout">
-    <nz-sider class="thread-wrapper" [nzWidth]="300" style="background:#fff">
-        <nz-tabset class="thread">
-            <nz-tab>
+    <nz-sider class="thread-wrapper" [nzWidth]="350">
+        <nz-tabset class="tab-host" [nzSize]="'small'" [nzTabBarExtraTemplate]="tabBarExtraContent">
+            <!-- 邮箱 -->
+            <nz-tab (nzSelect)="handleTabChange(1)">
                 <ng-template #nzTabHeading>
-                    <i class="anticon anticon-mail"></i> 邮箱留言
+                    <i class="anticon anticon-mail"></i><span>邮箱留言</span>
                 </ng-template>
                 <div class="scroller">
-                    <ul nz-menu>
-                        <li nz-menu-item class="clearfix" *ngFor="let message of emailList.messages">
-                            <span class="nav-text">{{message.User.account}}:{{message.Remark}}</span>
-                            <i class="anticon anticon-folder"></i>
-                        </li>
-                    </ul>
+                    <i *ngIf="emailList.loading" class="anticon anticon-loading anticon-spin"></i>
+                    <ng-container *ngIf="!emailList.loading">
+                        <ul nz-menu>
+                            <li nz-menu-item *ngFor="let message of emailList.messages" class="clearfix" [nzSelected]="message === currentMessage" (click)="handleMessageClicked(message)">
+                                <i class="anticon anticon-mail"></i>
+                                <span class="nav-text">{{message.User?message.User.account:"匿名游客"}}:{{message.Remark|slice:0:24}}</span>
+                            </li>
+                        </ul>
+                    </ng-container>
                 </div>
-                <nz-pagination [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>`,
+                <nz-pagination class="pagination" [(nzPageIndex)]="emailList.currentPage" [(nzPageSize)]="emailList.pageSize" [nzTotal]="emailList.totalAmount" nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getMessageList()" (nzPageSizeChange)="getMessageList()"></nz-pagination>
             </nz-tab>
-            <nz-tab>
+            <!-- 手机短信 -->
+            <nz-tab (nzSelect)="handleTabChange(2)">
                 <ng-template #nzTabHeading>
-                    <i class="anticon anticon-phone"></i> 手机留言
+                    <i class="anticon anticon-phone"></i><span>手机留言</span>
                 </ng-template>
-                <span>手机留言</span>
+                <div class="scroller">
+                    <i *ngIf="emailList.loading" class="anticon anticon-loading anticon-spin"></i>
+                    <ng-container *ngIf="!emailList.loading">
+                        <ul nz-menu>
+                            <li nz-menu-item *ngFor="let message of smsList.messages" class="clearfix" [nzSelected]="message === currentMessage" (click)="handleMessageClicked(message)">
+                                <i class="anticon anticon-folder"></i>
+                                <span class="nav-text">{{message.User?message.User.account:"匿名游客"}}:{{message.Remark|slice:0:24}}</span>
+                            </li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <nz-pagination class="pagination" [(nzPageIndex)]="smsList.currentPage" [(nzPageSize)]="smsList.pageSize" [nzTotal]="smsList.totalAmount" nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getMessageList()" (nzPageSizeChange)="getMessageList()"></nz-pagination>
             </nz-tab>
+            <ng-template #tabBarExtraContent>
+                <nz-select class="message-filter" [(ngModel)]="vm.status" (ngModelChange)="getMessageList()">
+                    <nz-option [nzLabel]="'全部'" [nzValue]="0"></nz-option>
+                    <nz-option [nzLabel]="'未读'" [nzValue]="1"></nz-option>
+                    <nz-option [nzLabel]="'未处理'" [nzValue]="2"></nz-option>
+                    <nz-option [nzLabel]="'已处理'" [nzValue]="3"></nz-option>
+                </nz-select>
+            </ng-template>
         </nz-tabset>
     </nz-sider>
-    <nz-content class="window-wrapper">
-        <message-window class="message-window" [currentMessage]="currentMessage"></message-window>
+    <nz-content class="window-container">
+        <message-window class="message-window" [currentMessage]="currentMessage" [currentMessage]="vm.isMessageScaning">
+        </message-window>
     </nz-content>
 </nz-layout>

@@ -1,19 +1,19 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { QuillEditorModule } from 'ngx-quill-editor';
-import { MdButtonModule } from "@angular/material";
+import { NgZorroAntdModule } from "ng-zorro-antd";
+import { QuillEditorModule } from "ngx-quill-editor";
 
-import { editorComponent } from './editor.component';
+import { EditorComponent } from "./editor.component";
 
 @NgModule({
     imports: [
         FormsModule,
-        MdButtonModule,
-        QuillEditorModule
+        QuillEditorModule, 
+        NgZorroAntdModule
     ],
-    exports: [editorComponent],
-    declarations: [editorComponent],
+    exports: [EditorComponent],
+    declarations: [EditorComponent],
     providers: [],
 })
 export class EditorModule { }

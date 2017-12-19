@@ -1,19 +1,21 @@
 <div class="window-wrapper">
-    <nz-card class="message-card">
-        <ng-template #title>
-            <!-- <h1>{{"用户:"+currentMessage.User.name}}</h1> -->
-            <h1>test</h1>
-            <!-- <h2>{{currentMessage.TargetAddress}}</h2> -->
-        </ng-template>
-        <ng-template #extra>
-            <a>More</a>
-        </ng-template>
-        <ng-template #body>
-            <!-- <p>{{currentMessage.Remark}}</p> -->
-            <p>content-test</p>
-        </ng-template>
-    </nz-card>
+    <div class="msg-content-wrapper">
+        <nz-card [nzLoading]="isContentLoading" style="height:100%">
+            <ng-template #title>
+                留言详情
+            </ng-template>
+            <ng-template #extra>
+                <a>More</a>
+            </ng-template>
+            <ng-template #body *ngIf="currentMessage">
+                <h1 class="message-title">{{currentMessage.User?currentMessage.User.account:"匿名游客"+"留言："}}</h1>
+                <p class="message-content">{{currentMessage.Remark}}</p>
+                <p class="create-time">{{"创建时间： " + currentMessage.CreateTime}}</p>
+                <p class="contact-info">{{"联系方式：" + currentMessage.TargetAddress}}</p>
+            </ng-template>
+        </nz-card>
+    </div>
     <div class="msg-editor-container">
-        <editor (onOutput)="onEnter($event)"></editor>
+        <editor [disabled]="isReadOnly" (onOutput)="onEnter($event)"></editor>
     </div>
 </div>

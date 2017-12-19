@@ -1,13 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { AppComponent } from "./app.component";
+import { ChatPageComponent } from "areas/chat/chat-page/chat-page.component";
+import { MessagePageComponent } from "areas/message/message-page/message-page.component";
 
 
 const appRoutes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'personal' },
-  { path: "chat", loadChildren: "../areas/chat/chat.module#ChatModule" },
-  { path: "message/:status", loadChildren: "../areas/message/message.module#MessageModule" }  ,
-  { path: "dashboard", loadChildren: "../areas/dashboard/dashboard.module#DashboardModule" }  
+  { path: "", pathMatch: "full", redirectTo: "chat" },
+  { path: "chat", component: ChatPageComponent },
+  { path: "message", component: MessagePageComponent },
+  // { path: "dashboard", loadChildren: "src/areas/dashboard/dashboard.module#DashboardModule" }
 ];
 
 @NgModule({

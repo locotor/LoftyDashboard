@@ -29,7 +29,7 @@ module.exports = function(env) {
     }), {
         devtool: custom.PROD_SOURCE_MAP,
         output: {
-            path: helpers.root('dist'),
+            path: helpers.root('dist/LoftyAdmin'),
             filename: '[name].[chunkhash].bundle.js',
             chunkFilename: '[name].[chunkhash].chunk.js'
         },

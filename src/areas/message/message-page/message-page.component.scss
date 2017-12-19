@@ -4,14 +4,39 @@
 
 .main-layout,
 .thread-wrapper,
-.window-wrapper,
-.thread {
+.tab-host {
     height: inherit;
 }
 
-.scroller {
-    overflow-y: auto;
-    height: 470px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
+.main-layout {
+    overflow: hidden;
+    border: 1px solid #ccc;
+}
+
+.window-container {
+    float: left;
+    height: inherit;
+}
+
+.thread-wrapper {
+    float: left;
+    position: relative;
+    background: white;
+    padding: 3px 0 3px 5px;
+    .scroller {
+        position: absolute;
+        overflow-y: auto;
+        width: 100%;
+        height: calc(100% - 100px);
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+    .pagination {
+        position: absolute;
+        bottom: 10px;
+    }
+    .message-filter {
+        width: 90px;
+        padding: 0 10px;
+    }
 }

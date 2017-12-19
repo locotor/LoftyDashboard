@@ -1,4 +1,44 @@
-<div class="chat-page-container container">
-    <chat-thread class="chat-thread"></chat-thread>
-    <chat-window class="chat-window"></chat-window>
-</div>
+<nz-layout class="main-layout">
+    <nz-sider class="thread-wrapper" [nzWidth]="350">
+        <nz-tabset class="tab-host" [nzSize]="'small'">
+            <nz-tab>
+                <ng-template #nzTabHeading>
+                    <i class="anticon anticon-mail"></i><span>聊天列表</span>
+                </ng-template>
+                <div class="scroller">
+                    <i *ngIf="chatList.loading" class="anticon anticon-loading anticon-spin"></i>
+                    <ng-container *ngIf="!chatList.loading">
+                        <ul nz-menu>
+                            <li nz-menu-item *ngFor="let chat of chatList.chats" class="clearfix" [nzSelected]="chat === currentChat" (click)="handleChatClicked(chat)">
+                                <i class="anticon anticon-mail"></i>
+                                <span class="nav-text">{{chat.User?chat.User.account:"匿名游客"}}:{{chat.Remark|slice:0:24}}</span>
+                            </li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <nz-pagination class="pagination" [(nzPageIndex)]="chatList.currentPage" [(nzPageSize)]="chatList.pageSize" [nzTotal]="chatList.totalAmount" nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getChatList()" (nzPageSizeChange)="getChatList()"></nz-pagination>
+            </nz-tab>
+        </nz-tabset>
+    </nz-sider>
+    <nz-content class="window-wrapper">
+        <div class="window-wrapper">
+            <nz-card class="message-window">
+                <ng-template #title>
+                    <!-- <h1>{{"用户:"+currentMessage.User.name}}</h1> -->
+                    <h1>test</h1>
+                    <!-- <h2>{{currentMessage.TargetAddress}}</h2> -->
+                </ng-template>
+                <ng-template #extra>
+                    <a>More</a>
+                </ng-template>
+                <ng-template #body>
+                    <!-- <p>{{currentMessage.Remark}}</p> -->
+                    <p>content-test</p>
+                </ng-template>
+            </nz-card>
+            <div class="msg-editor-container">
+                <editor (onOutput)="onEnter($event)"></editor>
+            </div>
+        </div>
+    </nz-content>
+</nz-layout>

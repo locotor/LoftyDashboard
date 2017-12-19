@@ -1,8 +1,8 @@
 "use strict";
 const helpers = require("./helpers");
 const ip = require('ip');
-exports.HOST = ip.address();
-exports.DEV_PORT = 3000;
+exports.HOST = "localhost";
+exports.DEV_PORT = 3002;
 exports.PROD_PORT = 8080;
 
 
