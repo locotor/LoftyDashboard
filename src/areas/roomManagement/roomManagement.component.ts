@@ -8,29 +8,36 @@ import { RoomManagementService } from "./roomManagement.service";
 export class RoomManagementComponent implements OnInit {
   constructor(private _roomService: RoomManagementService) {
   }
-  _current = 1;
-  _pageSize = 10;
-  _total = 1;
-  _dataSet = [];
-  _loading = true;
-  _filterGender = [
-    { name: "male", value: false },
-    { name: "female", value: false }
-  ];
+  vm = {
+    tableLoading:true
+  };
+  searchParam = {
+    filterType : [
+      { name: "民宿", value: "1" },
+      { name: "别墅", value: "2" },
+      { name: "酒店", value: "3" }
+    ]
+  };
+  roomTable = {
+    dataSet: [],
+    pageSize: 10,
+    pageIndex: 1,
+    total: 0,
+  };
 
   reset(): void {
-    this._filterGender.forEach(item => {
-      item.value = false;
-    });
+    // this.roomTable.filterType.forEach(item => {
+    //   item.value = false;
+    // });
     this.refreshData(true);
   }
 
 
   refreshData(reset: boolean = false): void {
     if (reset) {
-      this._current = 1;
+      this.roomTable.pageIndex = 1;
     }
-    this._loading = true;
+    this.vm.tableLoading = true;
     // const selectedGender = this._filterGender.filter(item => item.value).map(item => item.name);
     // this._roomService.getMessageList(this._current, this._pageSize, "name", this._sortValue, selectedGender).subscribe((data: any) => {
     //   this._loading = false;

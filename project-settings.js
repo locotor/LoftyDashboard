@@ -1,10 +1,10 @@
 const helpers = require('./config/helpers');
 const ip = require('ip');
-exports.PROJECT_NAME = 'lofty后台管理';
+exports.PROJECT_NAME = 'lofty-后台管理';
 exports.HOST = ip.address();
 exports.DEV_PORT = 3000;
 exports.PROD_PORT = 8060;
-exports.DEV_OUTPUT_DIR = "D:\\IIS\\Lofty\\dashboard";
+exports.DEV_OUTPUT_DIR = "G:\\IIS\\Lofty\\dashboard";
 exports.PROD_OUTPUT_DIR = "";
 
 

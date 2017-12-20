@@ -17,6 +17,7 @@ import { WebBaseService } from "commons/base/web-base.service";
 import { ChatModule } from "areas/chat/chat.module";
 import { MessageModule } from "areas/message/message.module";
 import { PersonalModule } from "areas/personal/personal.module";
+import { RoomManagementModule } from "areas/roomManagement/roomManagement.module";
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { PersonalModule } from "areas/personal/personal.module";
         // project Module
         ChatModule,
         MessageModule,
-        PersonalModule
+        PersonalModule,
+        RoomManagementModule
     ],
     declarations: [
         AppComponent

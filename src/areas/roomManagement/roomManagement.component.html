@@ -1,7 +1,7 @@
 <nz-layout class="main-layout">
     <nz-content>
-        <nz-table #nzTable [nzAjaxData]="_dataSet" nzShowSizeChanger [nzLoading]="_loading" [nzTotal]="_total" [(nzPageIndex)]="_current"
-            (nzPageIndexChange)="refreshData()" [(nzPageSize)]="_pageSize" (nzPageSizeChange)="refreshData(true)">
+        <nz-table #nzTable [nzAjaxData]="roomTable.dataSet" nzShowSizeChanger [nzLoading]="vm.tableLoading" [nzTotal]="roomTable.total" [(nzPageIndex)]="roomTable.pageIndex"
+            (nzPageIndexChange)="refreshData()" [(nzPageSize)]="roomTable.pageSize" (nzPageSizeChange)="refreshData(true)">
             <thead nz-thead>
                 <tr>
                     <th nz-th>
@@ -12,7 +12,7 @@
                         <nz-dropdown [nzTrigger]="'click'">
                             <i class="anticon anticon-filter" nz-dropdown></i>
                             <ul nz-menu>
-                                <li nz-menu-item *ngFor="let filter of _filterGender">
+                                <li nz-menu-item *ngFor="let filter of searchParam.filterType">
                                     <label nz-checkbox [(ngModel)]="filter.value">
                                         <span>{{filter.name}}</span>
                                     </label>
