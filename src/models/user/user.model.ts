@@ -11,7 +11,7 @@ export default class User {
         userId: string,
         account: string,
         type: number,
-        headImageUrl: string,
+        headImageUrl?: string,
         name?: string,
         email?: string,
         phoneNumber?: string,

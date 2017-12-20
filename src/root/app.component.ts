@@ -3,7 +3,10 @@ import {
   OnInit,
   ViewEncapsulation
 } from "@angular/core";
+import User from "models/user/user.model";
 import { Observable } from "rxjs/Observable";
+import { AppContextService } from "commons/utilities/app-context.service";
+
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -11,11 +14,18 @@ import { Observable } from "rxjs/Observable";
 })
 export class AppComponent implements OnInit {
   isCollapsed = true;
+  // tslint:disable-next-line:no-empty
+  constructor(private _context: AppContextService) { }
   ngOnInit (): void {
-    let adminDom: HTMLElement = document.getElementById("admin-id");
-    let admin: any;
-    if (adminDom) {
-      admin.id = adminDom.getAttribute("data-user-id");
-    }
+    let adminDom: JQuery<HTMLElement> = $("#admin-id");
+    let adminUser: User = new User(
+      adminDom.data("user-id"),
+      adminDom.data("user-account"),
+      adminDom.data("user-type"),
+      "",
+      adminDom.data("user-name"),
+      adminDom.data("user-email")
+    );
+    this._context.currentUser = adminUser;
   }
 }

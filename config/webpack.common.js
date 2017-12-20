@@ -1,6 +1,6 @@
 const helpers = require("./helpers");
 const webpack = require("webpack");
-const custom = require("./custom-settings");
+const custom = require("../project-settings");
 
 //plugins
 const CheckerPlugin = require("awesome-typescript-loader").CheckerPlugin;
@@ -15,7 +15,7 @@ const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const HMR = helpers.hasProcessFlag("hot");
 const AOT = process.env.BUILD_AOT || helpers.hasNpmFlag("aot");
 const METADATA = {
-    title: 'Lofty-dashboard',
+    title: custom.PROJECT_NAME,
     baseUrl: '/',
     isDevServer: helpers.isWebpackDevServer()
 };
@@ -97,7 +97,6 @@ module.exports = function(options) {
                     test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
                     use: 'file-loader'
                 },
-                ...custom.MY_CLIENT_RULES
             ]
         },
         plugins: [
@@ -107,17 +106,12 @@ module.exports = function(options) {
                 filename: '[name].[contenthash].css',
                 allChunks: true,
             }),
-            // new webpack.optimize.CommonsChunkPlugin({
-            //     name: 'polyfills',
-            //     chunks: ['polyfills']
-            // }),
             new CopyWebpackPlugin([
                 { from: 'src/assets', to: 'assets' },
-                ...custom.MY_COPY_FOLDERS
             ]),
             new HtmlWebpackPlugin({
                 title: METADATA.title,
-                filename: "../index.html",
+                filename: "../Views/Home/Dashboard.cshtml",
                 template: helpers.root("./index-tpl.html"),
                 chunksSortMode: "dependency",
                 metadata: METADATA,
@@ -139,7 +133,6 @@ module.exports = function(options) {
                 /angular(\\|\/)core(\\|\/)@angular/,
                 helpers.root('src'), {}
             ),
-            ...custom.MY_CLIENT_PLUGINS
         ],
         node: {
             global: true,

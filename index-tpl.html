@@ -1,3 +1,4 @@
+@using System.Web.Mvc.Html @using Lofty.Infrastructure.Model @{ Layout = null; }
 <!DOCTYPE html>
 <html>
 
@@ -8,7 +9,6 @@
     <title>
         <%= htmlWebpackPlugin.options.title %>
     </title>
-    <!-- <meta name="description" content="<%= htmlWebpackPlugin.options.title %>"> -->
     <base href="/">
     <% if (webpackConfig.htmlElements.headTags) { %>
         <%= webpackConfig.htmlElements.headTags %>
@@ -23,6 +23,12 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/scripts/jquery.signalR-2.2.2.min.js"></script>
     <script src="/signalr/hubs"></script>
+    @{
+    <!--缺头像和电话-->
+    var sessionModel = OnlineUserSessionModel.GetSessionModel(this.Session.SessionID);
+    <div id="admin-id" data-user-id="@sessionModel.UserId" data-user-account="@sessionModel.Account" data-user-type="@sessionModel.Type" data-user-name="@sessionModel.Name" data-user-email="@sessionModel.Email" style="display:none">
+    </div>
+    }
 </body>
 
 </html>

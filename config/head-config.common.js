@@ -14,14 +14,11 @@
  *
  */
 module.exports = {
-    link: [
-        { rel: 'stylesheet', href: '/assets/font-awesome/css/font-awesome.min.css' }
-    ],
+    link: [],
     meta: [
         { name: 'msapplication-TileColor', content: '#00bcd4' },
         { name: 'msapplication-TileImage', content: '/assets/icon/ms-icon-144x144.png', '=content': true },
         { name: 'theme-color', content: '#00bcd4' }
     ],
-    script: [
-    ]
+    script: []
 };

@@ -1,32 +1,32 @@
+const path = require("path");
 const helpers = require('./helpers');
 const webpack = require('webpack');
 const webpackMerge = require("webpack-merge");
 const commonConfig = require("./webpack.common");
-const custom = require("./custom-settings");
+const custom = require("../project-settings");
 
 const AutoDLLPlugin = require("autodll-webpack-plugin");
 
 //const
-const vendor = [
-    "@angular/animations",
-    "@angular/cdk",
-    "@angular/common",
-    "@angular/compiler",
-    "@angular/core",
-    "@angular/forms",
-    "@angular/http",
-    "@angular/material",
-    "@angular/platform-browser",
-    "@angular/platform-browser-dynamic",
-    "@angular/platform-server",
-    "@angular/router",
-    "angular-froala-wysiwyg",
-    "ie-shim",
-    "lodash-es",
-    "moment",
-    "rxjs",
-    ...custom.MY_VENDOR_DLLS
-]
+// const vendor = [
+//     "@angular/animations",
+//     "@angular/cdk",
+//     "@angular/common",
+//     "@angular/compiler",
+//     "@angular/core",
+//     "@angular/forms",
+//     "@angular/http",
+//     "@angular/material",
+//     "@angular/platform-browser",
+//     "@angular/platform-browser-dynamic",
+//     "@angular/platform-server",
+//     "@angular/router",
+//     "angular-froala-wysiwyg",
+//     "ie-shim",
+//     "lodash-es",
+//     "moment",
+//     "rxjs",
+// ]
 const ENV = process.env.NODE_ENV = process.env.ENV = 'development';
 const HMR = helpers.hasProcessFlag("hot");
 const AOT = process.env.BUILD_AOT || helpers.hasNpmFlag("aot");
@@ -40,6 +40,13 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
     HMR: HMR
 });
 
+var OUTPUT;
+if (custom.DEV_OUTPUT_DIR) {
+    OUTPUT = path.format({ dir: custom.DEV_OUTPUT_DIR })
+} else {
+    OUTPUT = helpers.root("dist");
+}
+
 if (SERVER) {
     console.log(`Starting dev server on: http://${custom.HOST}:${PORT}`);
 }
@@ -51,14 +58,10 @@ module.exports = function() {
     }), {
         devtool: custom.DEV_SOURCE_MAP,
         output: {
-            path: helpers.devRoot("dist"),
-            filename: "[name].js"
+            path: OUTPUT,
+            filename: "[name].[hash].js"
         },
-        module: {
-            rules: [
-                ...custom.MY_CLIENT_DEV_RULES
-            ]
-        },
+        module: {},
         plugins: [
             new webpack.DefinePlugin({
                 'ENV': JSON.stringify(METADATA.ENV),
@@ -68,21 +71,7 @@ module.exports = function() {
                     'NODE_ENV': JSON.stringify(METADATA.ENV),
                     'HMR': METADATA.HMR,
                 }
-            }),
-            new AutoDLLPlugin({
-                entry: {
-                    vendor: vendor
-                },
-                filename: "[name]_[hash].dll.js",
-                context: helpers.devRoot("dist"),
-                inject: true,
-                path: "../dist/dll",
-                debug: true,
-                plugins: [
-                    new webpack.optimize.UglifyJsPlugin()
-                ]
-            }),
-            ...custom.MY_CLIENT_DEV_PLUGINS
+            })
         ],
         devServer: {
             contentBase: AOT ? './compiled' : './src',

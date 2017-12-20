@@ -1,8 +1,6 @@
 var path = require('path');
 const EVENT = process.env.npm_lifecycle_event || '';
 var ROOT = path.resolve(__dirname, "..");
-var DevPath = path.format({ dir: "D:\\IIS\\Lofty" })
-
 
 function hasProcessFlag(flag) {
     return process.argv.join('').indexOf(flag) > -1;
@@ -17,11 +15,9 @@ function isWebpackDevServer() {
 }
 
 var root = path.join.bind(path, ROOT);
-var devRoot = path.join.bind(path, DevPath);
 
 
 exports.hasProcessFlag = hasProcessFlag;
 exports.hasNpmFlag = hasNpmFlag;
 exports.isWebpackDevServer = isWebpackDevServer;
 exports.root = root;
-exports.devRoot = devRoot;

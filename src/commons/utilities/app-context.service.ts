@@ -7,5 +7,5 @@ export class AppContextService {
     constructor() {
         // todo
     }
-    public currentUser: Observable<User>;
+    public currentUser: User;
 }
