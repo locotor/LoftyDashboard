@@ -10,9 +10,9 @@ export class RoomManagementService extends WebBaseService {
 
     // 获取房间列表
     public getMessageList (pageIndex: number, pageSize: number): Observable<object> {
-        let url: string = "/Room/SearchRoom",
+        let url: string = "/Room/GetRoomDataList",
             httpParam: object = {
-                pageInde: pageIndex,
+                pageIndex: pageIndex,
                 pageSize: pageSize,
             };
         return this.getData(url, httpParam);

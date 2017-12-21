@@ -1,43 +1,101 @@
 <nz-layout class="main-layout">
     <nz-content>
-        <nz-table #nzTable [nzAjaxData]="roomTable.dataSet" nzShowSizeChanger [nzLoading]="vm.tableLoading" [nzTotal]="roomTable.total" [(nzPageIndex)]="roomTable.pageIndex"
-            (nzPageIndexChange)="refreshData()" [(nzPageSize)]="roomTable.pageSize" (nzPageSizeChange)="refreshData(true)">
-            <thead nz-thead>
-                <tr>
-                    <th nz-th>
-                        <span>Name</span>
-                    </th>
-                    <th nz-th>
-                        <span>Gender</span>
-                        <nz-dropdown [nzTrigger]="'click'">
-                            <i class="anticon anticon-filter" nz-dropdown></i>
-                            <ul nz-menu>
-                                <li nz-menu-item *ngFor="let filter of searchParam.filterType">
-                                    <label nz-checkbox [(ngModel)]="filter.value">
-                                        <span>{{filter.name}}</span>
-                                    </label>
-                                </li>
-                            </ul>
-                            <div nz-table-filter>
-                                <span nz-table-filter-confirm (click)="refreshData(true)">OK</span>
-                                <span nz-table-filter-clear (click)="reset()">Reset</span>
-                            </div>
-                        </nz-dropdown>
-                    </th>
-                    <th nz-th>
-                        <span>Email</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody nz-tbody>
-                <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-                    <td nz-td>
-                        <a>{{data.name.first}} {{data.name.last}}</a>
-                    </td>
-                    <td nz-td>{{data.gender}}</td>
-                    <td nz-td>{{data.email}}</td>
-                </tr>
-            </tbody>
-        </nz-table>
+        <form nz-form
+            [nzLayout]="'inline'"
+            (ngSubmit)="reset()">
+            <div nz-form-item>
+                <div nz-form-label>
+                    <label for="Text"
+                        nz-form-item-required>房间名/地点:</label>
+                </div>
+                <div nz-form-control>
+                    <nz-input [(ngModel)]="filterForm.Text"
+                        [nzId]="'email'">
+                    </nz-input>
+                </div>
+            </div>
+            <div nz-form-item>
+                <div nz-form-control>
+                    <nz-select style="width:65px"
+                        [(ngModel)]="filterForm.RoomType">
+                        <nz-option *ngFor="let option of vm.roomType"
+                            [nzLabel]="option.name"
+                            [nzValue]="option.value">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <button nz-button
+                [nzType]="'primary'"
+                [nzSize]="'large'">搜索</button>
+        </form>
+        <div class="room-table-wrapper">
+            <nz-table #nzTable
+                nzShowSizeChanger
+                [nzAjaxData]="dataSet"
+                [nzTotal]="tablePagination.total"
+                [nzLoading]="vm.tableLoading"
+                [nzBordered]="true"
+                [nzShowSizeChanger]="false"
+                [nzIsPageIndexReset]="false"
+                [(nzPageIndex)]="tablePagination.pageIndex"
+                [(nzPageSize)]="tablePagination.pageSize"
+                (nzPageIndexChange)="refreshData()"
+                (nzPageSizeChange)="refreshData(true)">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>房间名</span>
+                        </th>
+                        <th nz-th>
+                            <span>经度坐标</span>
+                        </th>
+                        <th nz-th>
+                            <span>纬度坐标</span>
+                        </th>
+                        <th nz-th>
+                            <span>每晚价格</span>
+                        </th>
+                        <th nz-th>
+                            <span>面积</span>
+                        </th>
+                        <th nz-th>
+                            <span>床位</span>
+                        </th>
+                        <th nz-th>
+                            <span>所属区域</span>
+                        </th>
+                        <th nz-th>
+                            <span>是否特价</span>
+                        </th>
+                        <th nz-th>
+                            <span>特价</span>
+                        </th>
+                        <th nz-th>
+                            <span>成人数量</span>
+                        </th>
+                        <th nz-th>
+                            <span>儿童数量</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr
+                        *ngFor="let data of nzTable.data">
+                        <td nz-td>{{data.RoomName}}</td>
+                        <td nz-td>{{data.Longitude}}</td>
+                        <td nz-td>{{data.Latitude}}</td>
+                        <td nz-td>{{data.Price}}</td>
+                        <td nz-td>{{data.Area}}</td>
+                        <td nz-td>{{data.BedCount}}</td>
+                        <td nz-td>{{data.District}}</td>
+                        <td nz-td>{{data.IsBargainPrice}}</td>
+                        <td nz-td>{{data.BargainPrice}}</td>
+                        <td nz-td>{{data.AdultCount}}</td>
+                        <td nz-td>{{data.ChildCount}}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
     </nz-content>
 </nz-layout>
