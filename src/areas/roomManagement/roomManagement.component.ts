@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Room } from "models/room/room.model";
 import { RoomManagementService } from "./roomManagement.service";
 
@@ -9,8 +9,7 @@ import { RoomManagementService } from "./roomManagement.service";
 })
 export class RoomManagementComponent implements OnInit {
   constructor(
-    private _roomService: RoomManagementService,
-    private _formBuilder: FormBuilder) {
+    private _roomService: RoomManagementService) {
   }
 
   /*--- properties---*/
@@ -22,7 +21,10 @@ export class RoomManagementComponent implements OnInit {
       { name: "酒店", value: "3" }
     ]
   };
-  filterForm: any = {};
+  filterForm = {
+    Text: "",
+    RoomType: ""
+  };
   dataSet: Room[] = [];
   tablePagination = {
     pageSize: 10,
