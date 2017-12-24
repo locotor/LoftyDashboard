@@ -1,0 +1,24 @@
+.main-layout{
+    height: 100%;
+    .content-wrapper{
+        height: inherit;
+    }
+    .room-table-wrapper,
+    .romm-form-wrapper{
+        height: inherit;
+        padding: 20px;
+        background: white;
+        
+    }
+    .filter-form{
+        margin-bottom: 10px;
+    }
+    
+    .form-tabs-host{
+        height: 100%;
+        overflow: auto;
+    }
+    .form-footer{
+        border-top:1px solid #ccc 
+    }
+}
