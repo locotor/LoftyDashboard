@@ -7,7 +7,7 @@ import { RoomManagementComponent } from "areas/roomManagement/roomManagement.com
 
 
 const appRoutes: Routes = [
-  { path: "", pathMatch: "full", redirectTo: "chat" },
+  { path: "", pathMatch: "full", redirectTo: "room" },
   { path: "chat", component: ChatPageComponent },
   { path: "message", component: MessagePageComponent },
   { path: "room", component: RoomManagementComponent }

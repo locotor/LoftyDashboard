@@ -1,5 +1,6 @@
 export class Room {
     RoomId?: number;
+    ConfigString: string;
     Introduction?: string;
     PicUrl?: string;
     RoomName: string;
@@ -25,6 +26,7 @@ export class Room {
     DistrictDescription?: string;
     constructor() {
         return {
+            ConfigString: "",
             RoomName: "",
             Price: 0,
             // 1民宿2别墅3酒店

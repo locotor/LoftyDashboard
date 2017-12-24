@@ -1,24 +1,29 @@
-.main-layout{
+.main-layout {
     height: 100%;
-    .content-wrapper{
+    .content-wrapper {
         height: inherit;
     }
     .room-table-wrapper,
-    .romm-form-wrapper{
+    .romm-form-wrapper {
         height: inherit;
         padding: 20px;
         background: white;
-        
     }
-    .filter-form{
+    .filter-form {
         margin-bottom: 10px;
     }
-    
-    .form-tabs-host{
-        height: 100%;
+    .form-tabs-host {
+        height: calc(100% - 100px);
         overflow: auto;
+        .form-title {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .img-uploader {
+            margin: 10px 0;
+        }
     }
-    .form-footer{
-        border-top:1px solid #ccc 
+    .form-footer {
+        border-top: 1px solid #ccc
     }
 }

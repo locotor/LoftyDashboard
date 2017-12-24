@@ -16,7 +16,7 @@ export class RoomManagementService extends WebBaseService {
      * @param text 房间名或地点，支持“+”分割
      * @param RoomType 房间类型
      */
-    getRoomList (
+    getRoomList(
         pageIndex: number,
         pageSize: number,
         text?: String,
@@ -35,7 +35,7 @@ export class RoomManagementService extends WebBaseService {
      * 获取房间详情
      * @param id 房间ID
      */
-    getRoomDetail (id: Number): Observable<object> {
+    getRoomDetail(id: Number): Observable<object> {
         let url: string = "/Room/GetRoomDetailData",
             httpParam: object = {
                 id: id
@@ -43,13 +43,23 @@ export class RoomManagementService extends WebBaseService {
         return this.getData(url, httpParam);
     }
 
-    createRoom (room: Room): Observable<object> {
-        let url: string = "localhost:8888/Room/CreateRoom";
+    getRoomConfigs(): Observable<object> {
+        let url: string = "/Room/GetRoomConfigs";
+        return this.getData(url, {});
+    }
+
+    createRoom(room: Room): Observable<object> {
+        let url: string = "/Room/CreateRoom";
         return this.postData(url, room);
     }
 
-    updateRoom (room: Room): Observable<object> {
-        let url: string = "http://localhost:8888/Room/UpdateRoom";
+    updateRoom(room: Room): Observable<object> {
+        let url: string = "/Room/UpdateRoom";
         return this.postData(url, room);
+    }
+
+    deleteRoom(id: number): Observable<object> {
+        let url: string = "Room/DeleteRoom";
+        return this.postData(url, { id: id });
     }
 }

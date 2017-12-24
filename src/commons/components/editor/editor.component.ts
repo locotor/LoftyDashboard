@@ -11,14 +11,14 @@ import {
     template: `
     <div class="editor-group">
         <quill-editor
-            [(ngModel)]="this.editorContent"
+            [(ngModel)]="this.content"
             [options]="editorOptions"
             (blur)="onEditorBlured($event)"
             (focus)="onEditorFocused($event)"
             (ready)="onEditorCreated($event)"
             (change)="onContentChanged($event)">
         </quill-editor>
-        <div class="sent-msg-btn" *ngIf="this.isEmitOnChange">
+        <div class="sent-msg-btn" *ngIf="!this.isEmitOnChange">
             <button nz-button nzType="primary" [disabled]="isReadOnly" (click)="handleSubmit($event)">
                 <span>发送</span>
             </button>
@@ -35,7 +35,6 @@ export class EditorComponent {
     @Input() content: string;
     @Output() onOutput = new EventEmitter<string>();
     public editor;
-    public editorContent: string = this.content || "";
     public editorOptions = {
         theme: "snow",
         placeholder: this.placeholder,
@@ -57,14 +56,13 @@ export class EditorComponent {
         this.editor = quill;
     }
     onContentChanged({ quill, html, text }: any): void {
-        console.log("quill content is changed!", quill, html, text);
         if (this.isEmitOnChange) {
-            this.onOutput.emit(this.editorContent);
+            this.onOutput.emit(this.content);
         }
     }
     handleSubmit(event: MouseEvent): void {
-        this.onOutput.emit(this.editorContent);
-        this.editorContent = "";
+        this.onOutput.emit(this.content);
+        this.content = "";
         event.preventDefault();
     }
 }
