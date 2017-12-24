@@ -28,6 +28,22 @@ export class RoomManagementComponent implements OnInit {
       { name: "别墅", value: 2 },
       { name: "酒店", value: 3 }
     ],
+    districts: [
+      { name: "芭东", value: 1 },
+      { name: "苏林", value: 2 },
+      { name: "卡马拉", value: 3 },
+      { name: "卡图", value: 4 },
+      { name: "卡塔", value: 5 },
+      { name: "威七", value: 6 },
+      { name: "邦涛", value: 7 },
+      { name: "塔朗", value: 8 },
+      { name: "拉崴", value: 9 },
+      { name: "迈考", value: 10 },
+      { name: "拉古娜", value: 11 },
+      { name: "芭东码头酒店", value: 12 },
+      { name: "皇家王子公寓", value: 13 },
+      { name: "埃里克森宾馆", value: 14 },
+    ],
     configs: []
   };
   filterForm = {
@@ -141,8 +157,11 @@ export class RoomManagementComponent implements OnInit {
     });
   }
 
-  test(): void {
-    console.log(this.infoImgUploader.queue);
+  handleFileSelected(uploaderName: string): void {
+    let uploader: FileUploader = this[uploaderName];
+    if (uploader.queue.length > 1) {
+      uploader.queue[0].remove();
+    }
   }
 
   handleFormSubmit(): void {
@@ -154,6 +173,7 @@ export class RoomManagementComponent implements OnInit {
       }
     });
     data.ConfigString = configs.join(",");
+    data.District = this.vm.districts.find(district=>district.name === data.District).value.toString();
     if (this.vm.pattern === "add") {
       this._roomService.createRoom(data).subscribe(rspd => {
         if (rspd) {

@@ -220,7 +220,10 @@
                                                 <label for="District" nz-form-item-required>所属区域</label>
                                             </div>
                                             <div nz-form-control nz-col [nzSpan]="17">
-                                                <nz-input name="District" [(ngModel)]="this.roomForm.District" [nzSize]="'large'"></nz-input>
+                                                <nz-select name="District" [(ngModel)]="this.roomForm.District" [nzSize]="'large'">
+                                                    <nz-option *ngFor="let option of vm.districts" [nzLabel]="option.name" [nzValue]="option.name">
+                                                    </nz-option>
+                                                </nz-select>
                                             </div>
                                         </div>
                                     </div>
@@ -290,7 +293,7 @@
                                     <h2 class="form-title">房间简介</h2>
                                     <div class="img-uploader">
                                         <span>简介配图:</span>
-                                        <input type="file" ng2FileSelect [uploader]="infoImgUploader" (onFileSelected)="test()" />
+                                        <input type="file" ng2FileSelect [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader')" />
                                         <nz-table #nzTable>
                                             <thead nz-thead>
                                                 <tr>
@@ -343,7 +346,8 @@
                                     <h2 class="form-title">房间详情</h2>
                                     <div class="img-uploader">
                                         <span>详情配图:</span>
-                                        <input type="file" ng2FileSelect [uploader]="detailImgUploader" />
+                                        <input type="file" ng2FileSelect [uploader]="detailImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader')"
+                                        />
                                         <nz-table #nzTable>
                                             <thead nz-thead>
                                                 <tr>
