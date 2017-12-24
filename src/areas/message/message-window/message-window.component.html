@@ -16,6 +16,6 @@
         </nz-card>
     </div>
     <div class="msg-editor-container">
-        <editor [disabled]="isReadOnly" (onOutput)="onEnter($event)"></editor>
+        <editor [placeholder]="'说点什么吧'" (onOutput)="onEnter($event)"></editor>
     </div>
 </div>

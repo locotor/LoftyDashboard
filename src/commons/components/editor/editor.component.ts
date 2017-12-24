@@ -18,8 +18,8 @@ import {
             (ready)="onEditorCreated($event)"
             (change)="onContentChanged($event)">
         </quill-editor>
-        <div class="sent-msg-btn">
-            <button nz-button nzType="primary" [disabled]="disabled" (click)="handleSubmit($event)">
+        <div class="sent-msg-btn" *ngIf="this.isEmitOnChange">
+            <button nz-button nzType="primary" [disabled]="isReadOnly" (click)="handleSubmit($event)">
                 <span>发送</span>
             </button>
         </div>
@@ -29,34 +29,40 @@ import {
     encapsulation: ViewEncapsulation.None
 })
 export class EditorComponent {
-    @Input() disabled: boolean;
+    @Input() isReadOnly: boolean;
+    @Input() isEmitOnChange: boolean;
+    @Input() placeholder: string;
+    @Input() content: string;
     @Output() onOutput = new EventEmitter<string>();
     public editor;
-    public editorContent;
+    public editorContent: string = this.content || "";
     public editorOptions = {
         theme: "snow",
-        placeholder: "立即回复，别让客户久等",
+        placeholder: this.placeholder,
         modules: {
             toolbar: [
                 ["bold", "italic", "underline", "strike"],
                 [{ "list": "ordered" }, { "list": "bullet" }],
             ]
         },
-        readOnly: this.disabled
+        readOnly: this.isReadOnly
     };
-    onEditorBlured (quill: any): void {
+    onEditorBlured(quill: any): void {
         // console.log("editor blur!", quill);
     }
-    onEditorFocused (quill: any): void {
+    onEditorFocused(quill: any): void {
         // console.log("editor focus!", quill);
     }
-    onEditorCreated (quill: any): void {
+    onEditorCreated(quill: any): void {
         this.editor = quill;
     }
-    onContentChanged ({ quill, html, text }: any): void {
-        // console.log("quill content is changed!", quill, html, text);
+    onContentChanged({ quill, html, text }: any): void {
+        console.log("quill content is changed!", quill, html, text);
+        if (this.isEmitOnChange) {
+            this.onOutput.emit(this.editorContent);
+        }
     }
-    handleSubmit (event: MouseEvent): void {
+    handleSubmit(event: MouseEvent): void {
         this.onOutput.emit(this.editorContent);
         this.editorContent = "";
         event.preventDefault();

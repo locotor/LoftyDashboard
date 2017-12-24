@@ -37,7 +37,7 @@
                 </ng-template>
             </nz-card>
             <div class="msg-editor-container">
-                <editor (onOutput)="onEnter($event)"></editor>
+                <editor [placeholder]="'说点什么吧'" (onOutput)="onEnter($event)"></editor>
             </div>
         </div>
     </nz-content>

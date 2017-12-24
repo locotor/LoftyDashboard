@@ -8,8 +8,9 @@ import { EditorComponent } from "./editor.component";
 
 @NgModule({
     imports: [
+        CommonModule,
         FormsModule,
-        QuillEditorModule, 
+        QuillEditorModule,
         NgZorroAntdModule
     ],
     exports: [EditorComponent],
