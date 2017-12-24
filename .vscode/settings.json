@@ -2,5 +2,5 @@
 {
     "editor.minimap.enabled": false,
     "files.autoSave": "onWindowChange",
-    "html.format.wrapAttributes": "force",
+    "html.format.wrapAttributes": "auto",
 }
