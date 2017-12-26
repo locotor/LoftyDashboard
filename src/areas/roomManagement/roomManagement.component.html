@@ -105,7 +105,7 @@
             </nz-content>
         </nz-layout>
         <nz-layout *ngIf="vm.isFormVisible" class="romm-form-wrapper">
-            <nz-content style="height:inherit">
+            <nz-content class="form-content">
                 <div class="form-tabs-host">
                     <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" style="height:inherit">
                         <nz-tab>
@@ -220,8 +220,8 @@
                                                 <label for="District" nz-form-item-required>所属区域</label>
                                             </div>
                                             <div nz-form-control nz-col [nzSpan]="17">
-                                                <nz-select name="District" [(ngModel)]="this.roomForm.District" [nzSize]="'large'">
-                                                    <nz-option *ngFor="let option of vm.districts" [nzLabel]="option.name" [nzValue]="option.name">
+                                                <nz-select name="District" [(ngModel)]="this.roomForm.DistrictId" [nzSize]="'large'">
+                                                    <nz-option *ngFor="let option of vm.districts" [nzLabel]="option.DistrictName" [nzValue]="option.DistrictId">
                                                     </nz-option>
                                                 </nz-select>
                                             </div>
@@ -288,20 +288,19 @@
                             <ng-template #nzTabHeading>
                                 房间图文描述
                             </ng-template>
-                            <div nz-row [nzGutter]="40">
+                            <div nz-row [nzGutter]="40" class="form-layout-row">
+                                <!-- 房间简介 -->
                                 <div nz-col [nzSpan]="8" style="border-right:1px solid #ccc;height:inherit">
                                     <h2 class="form-title">房间简介</h2>
                                     <div class="img-uploader">
                                         <span>简介配图:</span>
-                                        <input type="file" ng2FileSelect [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader')" />
-                                        <nz-table #nzTable>
+                                        <input type="file" ng2FileSelect [uploader]="descriptionImgUploader" (onFileSelected)="handleFileSelected('descriptionImgUploader')" />
+                                        <!-- 图片上传列表 -->
+                                        <nz-table #nzTable [nzDataSource]="descriptionImgList">
                                             <thead nz-thead>
                                                 <tr>
                                                     <th nz-th>
                                                         <span>文件名</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>文件体积</span>
                                                     </th>
                                                     <th nz-th>
                                                         <span>状态</span>
@@ -312,24 +311,26 @@
                                                 </tr>
                                             </thead>
                                             <tbody nz-tbody>
-                                                <tr nz-tbody-tr *ngFor="let item of infoImgUploader.queue">
-                                                    <td nz-td>{{item?.file?.name}}</td>
-                                                    <td nz-td>{{ item?.file?.size/1024 | number:'.2' }} kB</td>
+                                                <tr nz-tbody-tr *ngFor="let item of descriptionImgList">
+                                                    <td nz-td>{{item?.name}}</td>
                                                     <td nz-td>
+                                                        <span *ngIf="!item.isUploaded">
+                                                            <i style="color: yellow" class="anticon anticon-exclamation-circle-o"></i>未上传
+                                                        </span>
                                                         <span *ngIf="item.isSuccess">
-                                                            <i style="color: green" class="anticon anticon-check-circle"></i>
+                                                            <i style="color: green" class="anticon anticon-check-circle"></i>已上传
                                                         </span>
                                                         <span *ngIf="item.isError">
-                                                            <i style="color: red" class="anticon anticon-close-circle"></i>
+                                                            <i style="color: red" class="anticon anticon-close-circle"></i>上传失败
                                                         </span>
                                                     </td>
                                                     <td nz-td>
                                                         <span>
-                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'infoImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                                                                 上传
                                                             </button>
                                                             <span nz-table-divider></span>
-                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="item.remove()">
+                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item)">
                                                                 移除
                                                             </button>
                                                         </span>
@@ -342,20 +343,19 @@
                                         <editor [isEmitOnChange]="true" [content]="this.roomForm.Description" (onOutput)="this.roomForm.Description=$event"></editor>
                                     </div>
                                 </div>
-                                <div nz-col [nzSpan]="8">
+                                <!-- 房间详情 -->
+                                <div nz-col [nzSpan]="8" style="border-right:1px solid #ccc;height:inherit">
                                     <h2 class="form-title">房间详情</h2>
                                     <div class="img-uploader">
                                         <span>详情配图:</span>
-                                        <input type="file" ng2FileSelect [uploader]="detailImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader')"
+                                        <input type="file" ng2FileSelect [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader')"
                                         />
-                                        <nz-table #nzTable>
+                                        <!-- 图片上传列表 -->
+                                        <nz-table #nzTable [nzDataSource]="infoImgUploader.queue">
                                             <thead nz-thead>
                                                 <tr>
                                                     <th nz-th>
                                                         <span>文件名</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>文件体积</span>
                                                     </th>
                                                     <th nz-th>
                                                         <span>状态</span>
@@ -366,24 +366,26 @@
                                                 </tr>
                                             </thead>
                                             <tbody nz-tbody>
-                                                <tr nz-tbody-tr *ngFor="let item of detailImgUploader.queue">
-                                                    <td nz-td>{{item?.file?.name}}</td>
-                                                    <td nz-td>{{ item?.file?.size/1024 | number:'.2' }} kB</td>
+                                                <tr nz-tbody-tr *ngFor="let item of infoImgList">
+                                                    <td nz-td>{{item?.name}}</td>
                                                     <td nz-td>
+                                                        <span *ngIf="!item.isUploaded">
+                                                            <i style="color: yellow" class="anticon anticon-exclamation-circle-o"></i>未上传
+                                                        </span>
                                                         <span *ngIf="item.isSuccess">
-                                                            <i style="color: green" class="anticon anticon-check-circle"></i>
+                                                            <i style="color: green" class="anticon anticon-check-circle"></i>已上传
                                                         </span>
                                                         <span *ngIf="item.isError">
-                                                            <i style="color: red" class="anticon anticon-close-circle"></i>
+                                                            <i style="color: red" class="anticon anticon-close-circle"></i>上传失败
                                                         </span>
                                                     </td>
                                                     <td nz-td>
                                                         <span>
-                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'infoImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                                                                 上传
                                                             </button>
                                                             <span nz-table-divider></span>
-                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="item.remove()">
+                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item)">
                                                                 移除
                                                             </button>
                                                         </span>
@@ -396,37 +398,39 @@
                                         <editor [isEmitOnChange]="true" [content]="this.roomForm.RoomInfoDetail" (onOutput)="this.roomForm.RoomInfoDetail=$event"></editor>
                                     </div>
                                 </div>
-                                <div nz-col [nzSpan]="8" style="border-right:1px solid #ccc;height:inherit ">
+                                <!-- banner图组 -->
+                                <div nz-col [nzSpan]="8">
                                     <h2 class="form-title">轮播图组</h2>
                                     <div class="img-uploader">
                                         <input type="file" ng2FileSelect [uploader]="bannerImgsUploader" multiple/>
-                                        <nz-table #nzTable>
-                                            <thead nz-thead>
-                                                <tr>
-                                                    <th nz-th>
-                                                        <span>文件名</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>文件体积</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>状态</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>操作</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
+                                        <nz-table #nzTable [nzScroll]="{y:220}" [nzDataSource]="bannerImgsUploader.queue">
+                                            <ng-template #nzFixedHeader>
+                                                <thead nz-thead>
+                                                    <tr>
+                                                        <th nz-th [nzWidth]="'125px'">
+                                                            <span>文件名</span>
+                                                        </th>
+                                                        <th nz-th [nzWidth]="'100px'">
+                                                            <span>状态</span>
+                                                        </th>
+                                                        <th nz-th>
+                                                            <span>操作</span>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                            </ng-template>
                                             <tbody nz-tbody>
                                                 <tr nz-tbody-tr *ngFor="let item of bannerImgsUploader.queue">
                                                     <td nz-td>{{item?.file?.name}}</td>
-                                                    <td nz-td>{{ item?.file?.size/1024 | number:'.2' }} kB</td>
                                                     <td nz-td>
+                                                        <span *ngIf="!item.isUploaded">
+                                                            <i style="color: yellow" class="anticon anticon-exclamation-circle-o"></i>未上传
+                                                        </span>
                                                         <span *ngIf="item.isSuccess">
-                                                            <i style="color: green" class="anticon anticon-check-circle"></i>
+                                                            <i style="color: green" class="anticon anticon-check-circle"></i>已上传
                                                         </span>
                                                         <span *ngIf="item.isError">
-                                                            <i style="color: red" class="anticon anticon-close-circle"></i>
+                                                            <i style="color: red" class="anticon anticon-close-circle"></i>上传失败
                                                         </span>
                                                     </td>
                                                     <td nz-td>

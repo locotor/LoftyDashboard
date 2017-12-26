@@ -46,12 +46,17 @@ export class RoomManagementService extends WebBaseService {
     /**
      * 获取房间配置项信息
      */
+    GetDistrictsAndRoomConfigs(): Observable<object> {
+        let url: string = "/Room/GetDistrictsAndRoomConfigs";
+        return this.getData(url, {});
+    }
+
     getRoomConfigs(): Observable<object> {
         let url: string = "/Room/GetRoomConfigs";
         return this.getData(url, {});
     }
 
-    getDistricts():Observable<object> {
+    getDistricts(): Observable<object> {
         let url: string = "/Room/GetDistricts";
         return this.getData(url, {});
     }

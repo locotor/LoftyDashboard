@@ -1,6 +1,7 @@
 export class Room {
     RoomId?: number;
     ConfigString: string;
+    ConfigIds: Array<number>;
     Introduction?: string;
     PicUrl?: string;
     RoomName: string;
@@ -13,7 +14,7 @@ export class Room {
     RoomCount: number;
     Area: number;
     BedCount: number;
-    District: string;
+    DistrictId: number;
     AdultCount: number;
     ChildCount: number;
     IsBargainPrice: boolean;
@@ -27,6 +28,7 @@ export class Room {
     constructor() {
         return {
             ConfigString: "",
+            ConfigIds: [],
             RoomName: "",
             Price: 0,
             // 1民宿2别墅3酒店
@@ -34,7 +36,7 @@ export class Room {
             RoomCount: 0,
             Area: 0,
             BedCount: 0,
-            District: "",
+            DistrictId: 0,
             AdultCount: 0,
             ChildCount: 0,
             IsBargainPrice: false

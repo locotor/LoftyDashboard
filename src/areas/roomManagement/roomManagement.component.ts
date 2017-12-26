@@ -6,6 +6,15 @@ import { RoomManagementService } from "./roomManagement.service";
 import { FileUploader, FileSelectDirective } from "ng2-file-upload";
 
 const URL: string = "/Public/UploadFile";
+class UploadFile {
+  name: string;
+  url: string;
+  isReady: boolean;
+  isUploading: boolean;
+  isUploaded: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+}
 
 @Component({
   templateUrl: "./roomManagement.component.html",
@@ -28,22 +37,7 @@ export class RoomManagementComponent implements OnInit {
       { name: "别墅", value: 2 },
       { name: "酒店", value: 3 }
     ],
-    districts: [
-      { name: "芭东", value: 1 },
-      { name: "苏林", value: 2 },
-      { name: "卡马拉", value: 3 },
-      { name: "卡图", value: 4 },
-      { name: "卡塔", value: 5 },
-      { name: "威七", value: 6 },
-      { name: "邦涛", value: 7 },
-      { name: "塔朗", value: 8 },
-      { name: "拉崴", value: 9 },
-      { name: "迈考", value: 10 },
-      { name: "拉古娜", value: 11 },
-      { name: "芭东码头酒店", value: 12 },
-      { name: "皇家王子公寓", value: 13 },
-      { name: "埃里克森宾馆", value: 14 },
-    ],
+    districts: [],
     configs: []
   };
   filterForm = {
@@ -57,9 +51,12 @@ export class RoomManagementComponent implements OnInit {
     pageIndex: 1,
     total: 0,
   };
+  descriptionImgUploader: FileUploader = new FileUploader({ url: URL });
+  descriptionImgList: UploadFile[] = [];
   infoImgUploader: FileUploader = new FileUploader({ url: URL });
-  detailImgUploader: FileUploader = new FileUploader({ url: URL });
+  infoImgList: UploadFile[] = [];
   bannerImgsUploader: FileUploader = new FileUploader({ url: URL });
+  bannerImgList: UploadFile[] = [];
 
   /**
    * 重置表单数据
@@ -93,7 +90,7 @@ export class RoomManagementComponent implements OnInit {
    * 打开房间新建列表
    */
   openAddDialog(): void {
-    if (this.vm.configs.length) { // 已经获取过配置对象列表
+    if (this.vm.configs.length && this.vm.districts.length) { // 已经获取过配置对象列表
       this.vm.configs.forEach((item: any) => {
         item.checked = false;
       });
@@ -101,14 +98,15 @@ export class RoomManagementComponent implements OnInit {
       this.vm.pattern = "add";
       this.roomForm = new Room();
     } else { // 尚未获取过配置对象列表
-      this._roomService.getRoomConfigs().subscribe(rspd => {
-        this.vm.configs = (<any[]>rspd).map(item => {
+      this._roomService.GetDistrictsAndRoomConfigs().subscribe((rspd: any) => {
+        this.vm.configs = rspd.RoomConfig.map(item => {
           return {
-            label: item.Description,
+            label: item.Remark,
             value: item.Id,
             checked: false
           };
         });
+        this.vm.districts = rspd.District;
         this.vm.isFormVisible = true;
         this.vm.pattern = "add";
         this.roomForm = new Room();
@@ -121,7 +119,7 @@ export class RoomManagementComponent implements OnInit {
    * @param data 房间对象
    */
   handleEditClick(data: Room): void {
-    if (this.vm.configs.length) { // 已经获取过配置对象列表
+    if (this.vm.configs.length && this.vm.districts.length) { // 已经获取过配置对象列表
       this.vm.configs.forEach((item: any) => {
         item.checked = data.ConfigString ? data.ConfigString.includes(item.value) : false;
       });
@@ -129,14 +127,15 @@ export class RoomManagementComponent implements OnInit {
       this.vm.pattern = "edit";
       this.roomForm = JSON.parse(JSON.stringify(data));
     } else { // 尚未获取过配置对象列表
-      this._roomService.getRoomConfigs().subscribe(rspd => {
-        this.vm.configs = (<any[]>rspd).map(item => {
+      this._roomService.GetDistrictsAndRoomConfigs().subscribe((rspd: any) => {
+        this.vm.configs = rspd.RoomConfig.map(item => {
           return {
-            label: item.Description,
+            label: item.Remark,
             value: item.Id,
-            checked: item.checked = data.ConfigString ? data.ConfigString.includes(item.Id) : false
+            checked: item.checked = data.ConfigString ? data.ConfigString.includes(item.value) : false
           };
         });
+        this.vm.districts = rspd.District;
         this.vm.isFormVisible = true;
         this.vm.pattern = "edit";
         this.roomForm = JSON.parse(JSON.stringify(data));
@@ -173,7 +172,6 @@ export class RoomManagementComponent implements OnInit {
       }
     });
     data.ConfigString = configs.join(",");
-    data.District = this.vm.districts.find(district=>district.name === data.District).value.toString();
     if (this.vm.pattern === "add") {
       this._roomService.createRoom(data).subscribe(rspd => {
         if (rspd) {
@@ -193,6 +191,14 @@ export class RoomManagementComponent implements OnInit {
         }
       });
     }
+  }
+
+  uploadImg(imgFile: UploadFile, loader: string): void {
+    let uploader: FileUploader = this[loader];
+  }
+
+  removeImg(imgFile: UploadFile): void {
+    // todo
   }
 
   ngOnInit(): void {

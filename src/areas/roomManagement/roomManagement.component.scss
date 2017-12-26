@@ -13,15 +13,23 @@
         margin-bottom: 10px;
     }
     .form-tabs-host {
-        height: calc(100% - 100px);
+        height: 100%;
         overflow: auto;
-        .form-title {
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ccc;
+        .form-layout-row {
+            position: absolute;
+            height: calc(100% - 48px);
+            .form-title {
+                padding-bottom: 10px;
+                border-bottom: 1px solid #ccc;
+            }
+            .img-uploader {
+                margin: 10px 0;
+            }
         }
-        .img-uploader {
-            margin: 10px 0;
-        }
+    }
+    .form-content {
+        position: relative;
+        height: calc(100% - 77px);
     }
     .form-footer {
         border-top: 1px solid #ccc
