@@ -161,7 +161,7 @@ export class RoomManagementComponent implements OnInit {
           return {
             label: item.Remark,
             value: item.Id,
-            checked: item.checked = data.ConfigString ? data.ConfigString.includes(item.value) : false
+            checked: data.ConfigString ? data.ConfigString.includes(item.value) : false
           };
         });
         this.vm.districts = rspd.District;
@@ -253,7 +253,6 @@ export class RoomManagementComponent implements OnInit {
     file.upload();
   }
 
-
   handleFileSelected(uploaderName: string): void {
     let uploader: FileUploader = this[uploaderName],
       imglist: UploadFile[];
@@ -304,7 +303,6 @@ export class RoomManagementComponent implements OnInit {
     }
 
   }
-
 
   removeImg(imgFile: UploadFile, type: string): void {
     let imglist: UploadFile[];

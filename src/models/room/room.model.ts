@@ -1,12 +1,11 @@
 export class Room {
     RoomId?: number;
-    ConfigString: string;
-    ConfigIds: Array<number>;
+    ConfigString: string; // 必填
     Introduction?: string;
     PicUrl?: string;
-    RoomName: string;
+    RoomName: string; // 必填
     Longitude?: number;
-    Latitude?: number;
+    Latitude?: number;                                  
     Address?: string;
     Price: number;
     // 1民宿2别墅3酒店
@@ -28,7 +27,6 @@ export class Room {
     constructor() {
         return {
             ConfigString: "",
-            ConfigIds: [],
             RoomName: "",
             Price: 0,
             // 1民宿2别墅3酒店
