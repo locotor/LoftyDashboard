@@ -104,6 +104,7 @@
                 </nz-table>
             </nz-content>
         </nz-layout>
+        <!-- 编辑界面 -->
         <nz-layout *ngIf="vm.isFormVisible" class="romm-form-wrapper">
             <nz-content class="form-content">
                 <div class="form-tabs-host">
@@ -312,7 +313,7 @@
                                             </thead>
                                             <tbody nz-tbody>
                                                 <tr nz-tbody-tr *ngFor="let item of descriptionImgList">
-                                                    <td nz-td>{{item?.name}}</td>
+                                                    <td nz-td>{{item.name}}</td>
                                                     <td nz-td>
                                                         <span *ngIf="!item.isUploaded">
                                                             <i style="color: yellow" class="anticon anticon-exclamation-circle-o"></i>未上传
@@ -326,11 +327,11 @@
                                                     </td>
                                                     <td nz-td>
                                                         <span>
-                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'infoImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'descriptionImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                                                                 上传
                                                             </button>
                                                             <span nz-table-divider></span>
-                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item)">
+                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'descriptionImg')">
                                                                 移除
                                                             </button>
                                                         </span>
@@ -351,7 +352,7 @@
                                         <input type="file" ng2FileSelect [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader')"
                                         />
                                         <!-- 图片上传列表 -->
-                                        <nz-table #nzTable [nzDataSource]="infoImgUploader.queue">
+                                        <nz-table #nzTable [nzDataSource]="infoImgList">
                                             <thead nz-thead>
                                                 <tr>
                                                     <th nz-th>
@@ -385,7 +386,7 @@
                                                                 上传
                                                             </button>
                                                             <span nz-table-divider></span>
-                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item)">
+                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'infoImg')">
                                                                 移除
                                                             </button>
                                                         </span>
@@ -403,7 +404,7 @@
                                     <h2 class="form-title">轮播图组</h2>
                                     <div class="img-uploader">
                                         <input type="file" ng2FileSelect [uploader]="bannerImgsUploader" multiple/>
-                                        <nz-table #nzTable [nzScroll]="{y:220}" [nzDataSource]="bannerImgsUploader.queue">
+                                        <nz-table #nzTable [nzScroll]="{y:220}" [nzDataSource]="bannerImgList">
                                             <ng-template #nzFixedHeader>
                                                 <thead nz-thead>
                                                     <tr>
@@ -420,8 +421,8 @@
                                                 </thead>
                                             </ng-template>
                                             <tbody nz-tbody>
-                                                <tr nz-tbody-tr *ngFor="let item of bannerImgsUploader.queue">
-                                                    <td nz-td>{{item?.file?.name}}</td>
+                                                <tr nz-tbody-tr *ngFor="let item of bannerImgList">
+                                                    <td nz-td>{{item.name}}</td>
                                                     <td nz-td>
                                                         <span *ngIf="!item.isUploaded">
                                                             <i style="color: yellow" class="anticon anticon-exclamation-circle-o"></i>未上传
@@ -435,11 +436,11 @@
                                                     </td>
                                                     <td nz-td>
                                                         <span>
-                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'bannerImgsUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                                                                 上传
                                                             </button>
                                                             <span nz-table-divider></span>
-                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="item.remove()">
+                                                            <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'bannerImg')">
                                                                 移除
                                                             </button>
                                                         </span>

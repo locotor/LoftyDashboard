@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NzMessageService } from "ng-zorro-antd";
 import { Room } from "models/room/room.model";
 import { RoomManagementService } from "./roomManagement.service";
-import { FileUploader, FileSelectDirective } from "ng2-file-upload";
+import { FileUploader, FileSelectDirective, FileItem } from "ng2-file-upload";
 
 const URL: string = "/Public/UploadFile";
 class UploadFile {
@@ -126,6 +126,35 @@ export class RoomManagementComponent implements OnInit {
       this.vm.isFormVisible = true;
       this.vm.pattern = "edit";
       this.roomForm = JSON.parse(JSON.stringify(data));
+      this.descriptionImgList = this.roomForm.DescriptionPic ? [{
+        name: this.roomForm.DescriptionPic.split("/").pop(),
+        url: this.roomForm.DescriptionPic,
+        isError: false,
+        isReady: true,
+        isSuccess: true,
+        isUploaded: true,
+        isUploading: false
+      }] : [];
+      this.infoImgList = this.roomForm.RoomInfoPic ? [{
+        name: this.roomForm.RoomInfoPic.split("/").pop(),
+        url: this.roomForm.DescriptionPic,
+        isError: false,
+        isReady: true,
+        isSuccess: true,
+        isUploaded: true,
+        isUploading: false
+      }] : [];
+      this.bannerImgList = this.roomForm.Photos ? this.roomForm.Photos.split(",").map(photo => {
+        return {
+          name: photo.split("/").pop(),
+          url: photo,
+          isError: false,
+          isReady: true,
+          isSuccess: true,
+          isUploaded: true,
+          isUploading: false
+        };
+      }) : [];
     } else { // 尚未获取过配置对象列表
       this._roomService.GetDistrictsAndRoomConfigs().subscribe((rspd: any) => {
         this.vm.configs = rspd.RoomConfig.map(item => {
@@ -139,6 +168,35 @@ export class RoomManagementComponent implements OnInit {
         this.vm.isFormVisible = true;
         this.vm.pattern = "edit";
         this.roomForm = JSON.parse(JSON.stringify(data));
+        this.descriptionImgList = this.roomForm.DescriptionPic ? [{
+          name: this.roomForm.DescriptionPic.split("/").pop(),
+          url: this.roomForm.DescriptionPic,
+          isError: false,
+          isReady: true,
+          isSuccess: true,
+          isUploaded: true,
+          isUploading: false
+        }] : [];
+        this.infoImgList = this.roomForm.RoomInfoPic ? [{
+          name: this.roomForm.RoomInfoPic.split("/").pop(),
+          url: this.roomForm.DescriptionPic,
+          isError: false,
+          isReady: true,
+          isSuccess: true,
+          isUploaded: true,
+          isUploading: false
+        }] : [];
+        this.bannerImgList = this.roomForm.Photos ? this.roomForm.Photos.split(",").map(photo => {
+          return {
+            name: photo.split("/").pop(),
+            url: photo,
+            isError: false,
+            isReady: true,
+            isSuccess: true,
+            isUploaded: true,
+            isUploading: false
+          };
+        }) : [];
       });
     }
   }
@@ -156,13 +214,6 @@ export class RoomManagementComponent implements OnInit {
     });
   }
 
-  handleFileSelected(uploaderName: string): void {
-    let uploader: FileUploader = this[uploaderName];
-    if (uploader.queue.length > 1) {
-      uploader.queue[0].remove();
-    }
-  }
-
   handleFormSubmit(): void {
     let data: Room = this.roomForm;
     let configs: string[] = [];
@@ -172,6 +223,9 @@ export class RoomManagementComponent implements OnInit {
       }
     });
     data.ConfigString = configs.join(",");
+    data.DescriptionPic = this.descriptionImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
+    data.RoomInfoPic = this.infoImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
+    data.Photos = this.bannerImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
     if (this.vm.pattern === "add") {
       this._roomService.createRoom(data).subscribe(rspd => {
         if (rspd) {
@@ -195,13 +249,109 @@ export class RoomManagementComponent implements OnInit {
 
   uploadImg(imgFile: UploadFile, loader: string): void {
     let uploader: FileUploader = this[loader];
+    let file: FileItem = uploader.queue.find(file => file.file.name === imgFile.name);
+    file.upload();
   }
 
-  removeImg(imgFile: UploadFile): void {
-    // todo
+
+  handleFileSelected(uploaderName: string): void {
+    let uploader: FileUploader = this[uploaderName],
+      imglist: UploadFile[];
+    switch (uploaderName) {
+      case "descriptionImgUploader":
+        if (uploader.queue.length > 1) {
+          uploader.queue[0].remove();
+        }
+        imglist = this.descriptionImgList;
+        imglist.splice(0, imglist.length);
+        imglist.push({
+          name: uploader.queue[0].file.name,
+          url: "",
+          isReady: false,
+          isUploading: false,
+          isSuccess: false,
+          isError: false,
+          isUploaded: false
+        });
+        break;
+      case "infoImgUploader":
+        if (uploader.queue.length > 1) {
+          uploader.queue[0].remove();
+        }
+        imglist = this.infoImgList;
+        imglist.splice(0, imglist.length);
+        imglist.push({
+          name: uploader.queue[0].file.name,
+          url: "",
+          isReady: false,
+          isUploading: false,
+          isSuccess: false,
+          isError: false,
+          isUploaded: false
+        });
+        break;
+      case "bannerImgsUploader":
+        let index: number = uploader.queue.length - 1;
+        imglist.push({
+          name: uploader.queue[index].file.name,
+          url: "",
+          isReady: false,
+          isUploading: false,
+          isSuccess: false,
+          isError: false,
+          isUploaded: false
+        });
+    }
+
+  }
+
+
+  removeImg(imgFile: UploadFile, type: string): void {
+    let imglist: UploadFile[];
+    switch (type) {
+      case "descriptionImg":
+        imglist = this.descriptionImgList;
+        break;
+      case "infoImg":
+        imglist = this.infoImgList;
+        break;
+      case "bannerImg":
+        imglist = this.bannerImgList;
+        break;
+    }
+    imglist.splice(imglist.findIndex(img => img.name === imgFile.name), 1);
+  }
+
+  handleFileUploaded(item: any, response: any, status: any, headers: any, type: string): void {
+    let imglist: UploadFile[];
+    switch (type) {
+      case "descriptionImg":
+        imglist = this.descriptionImgList;
+        break;
+      case "infoImg":
+        imglist = this.infoImgList;
+        break;
+      case "bannerImg":
+        imglist = this.bannerImgList;
+        break;
+    }
+    let img: UploadFile = imglist.find(img => img.name === item.file.name);
+    img.url = response;
+    img.isReady = true;
+    img.isSuccess = true;
+    img.isUploaded = true;
   }
 
   ngOnInit(): void {
     this.refreshData();
+    this.descriptionImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.handleFileUploaded(item, response, status, headers, "descriptionImg");
+    };
+    this.infoImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.handleFileUploaded(item, response, status, headers, "infoImg");
+    };
+    this.bannerImgsUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.handleFileUploaded(item, response, status, headers, "bannerImg");
+    };
   }
 }
