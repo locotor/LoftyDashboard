@@ -9,7 +9,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlElementsPlugin = require('./html-elements-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const {
+    TsConfigPathsPlugin
+} = require('awesome-typescript-loader');
 
 //const
 const HMR = helpers.hasProcessFlag("hot");
@@ -20,7 +22,7 @@ const METADATA = {
     isDevServer: helpers.isWebpackDevServer()
 };
 
-module.exports = function(options) {
+module.exports = function (options) {
     isProd = options.env === 'production';
     return {
         entry: {
@@ -59,7 +61,9 @@ module.exports = function(options) {
                 },
                 {
                     test: /\.html$/,
-                    use: [{ loader: "raw-loader" }],
+                    use: [{
+                        loader: "raw-loader"
+                    }],
                     exclude: [helpers.root('index-tpl.html')]
                 },
                 {
@@ -88,7 +92,10 @@ module.exports = function(options) {
                     }),
                     include: [helpers.root('src/commons/styles')]
                 },
-                { test: /\.json$/, loader: 'json-loader' },
+                {
+                    test: /\.json$/,
+                    loader: 'json-loader'
+                },
                 {
                     test: /\.(jpg|png|gif)$/,
                     use: 'file-loader'
@@ -101,14 +108,17 @@ module.exports = function(options) {
         },
         plugins: [
             new CheckerPlugin(),
-            new TsConfigPathsPlugin({ configFileName: helpers.root("./tsconfig.json") }),
+            new TsConfigPathsPlugin({
+                configFileName: helpers.root("./tsconfig.json")
+            }),
             new ExtractTextPlugin({
                 filename: '[name].[contenthash].css',
                 allChunks: true,
             }),
-            new CopyWebpackPlugin([
-                { from: 'src/assets', to: 'assets' },
-            ]),
+            new CopyWebpackPlugin([{
+                from: 'src/assets',
+                to: 'assets'
+            }, ]),
             new HtmlWebpackPlugin({
                 title: METADATA.title,
                 filename: "../Views/Home/Dashboard.cshtml",
@@ -116,7 +126,7 @@ module.exports = function(options) {
                 chunksSortMode: "dependency",
                 metadata: METADATA,
                 showErrors: true,
-                inject: 'body'
+                inject: true
             }),
             // new ScriptExtHtmlWebpackPlugin({
             //     sync: /polyfill|vendor/,
