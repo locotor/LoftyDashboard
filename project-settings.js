@@ -4,8 +4,8 @@ exports.PROJECT_NAME = 'lofty-dashboard';
 exports.HOST = ip.address();
 exports.DEV_PORT = 3000;
 exports.PROD_PORT = 8060;
-exports.DEV_OUTPUT_DIR = "D:\\IIS\\Lofty\\dashboard";
-exports.DLL_OUTPUT_DIR = "D:\\IIS\\Lofty\\dashboardDll";
+exports.DEV_OUTPUT_DIR = "G:\\IIS\\Lofty\\dashboard";
+exports.DLL_OUTPUT_DIR = "G:\\IIS\\Lofty\\dashboardDll";
 exports.PROD_OUTPUT_DIR = "";
 
 
