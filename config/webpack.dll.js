@@ -17,36 +17,43 @@ const vendors = [
     "@angular/platform-browser-dynamic",
     "@angular/platform-server",
     "@angular/router",
+    "ng-zorro-antd",
+    "ng2-file-upload",
+    "core-js",
+    "echarts",
+    "jquery",
     "ie-shim",
     "lodash-es",
     "moment",
+    "reflect-metadata",
     "rxjs",
+    "zone.js"
 ]
 
 var OUTPUT;
 if (custom.DEV_OUTPUT_DIR) {
     OUTPUT = path.format({
-        dir: custom.DEV_OUTPUT_DIR + "\\dashboardDll"
+        dir: custom.DLL_OUTPUT_DIR
     })
 } else {
     OUTPUT = helpers.root("dist/dll");
 }
 rimraf(OUTPUT, (error) => console.log(error));
 
-module.exports = {　　
-    entry: {　　　　
-        vendor: vendors　　
+module.exports = {
+    entry: {
+        vendor: vendors
     },
-    output: {　　　　
+    output: {
         path: OUTPUT,
         filename: "Dll.js",
-        library: "[name]_[hash]"　　
+        library: "[name]_[hash]"
     },
-    plugins: [　　　　
-        new webpack.DllPlugin({　　　　　　
+    plugins: [
+        new webpack.DllPlugin({
             path: path.join(OUTPUT, "manifest.json"),
             name: "[name]_[hash]",
-            context: __dirname　　　　
-        })　　
+            context: helpers.root()
+        })
     ]
 };

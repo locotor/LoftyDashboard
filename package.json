@@ -5,6 +5,7 @@
     "main": "index.js",
     "repository": "https://git.coding.net/locotor/Lofty.git",
     "scripts": {
+        "build:dll": "npm run webpack -- --config config/webpack.dll.js -p",
         "build:dev": "npm run webpack -- --config config/webpack.dev.js --progress --profile",
         "build:prod": "npm run clean:dist && npm run webpack -- --config config/webpack.prod.js  --optimize-minimize  --progress --profile --bail",
         "build": "npm run build:prod",
