@@ -5,7 +5,7 @@ export class Room {
     PicUrl?: string;
     RoomName: string; // 必填
     Longitude?: number;
-    Latitude?: number;                                  
+    Latitude?: number;
     Address?: string;
     Price: number;
     // 1民宿2别墅3酒店

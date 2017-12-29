@@ -1,6 +1,6 @@
 const helpers = require('./config/helpers');
 const ip = require('ip');
-exports.PROJECT_NAME = 'lofty-后台管理';
+exports.PROJECT_NAME = 'lofty-dashboard';
 exports.HOST = ip.address();
 exports.DEV_PORT = 3000;
 exports.PROD_PORT = 8060;

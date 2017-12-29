@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { NzMessageService } from "ng-zorro-antd";
 import { Room } from "models/room/room.model";
 import { RoomManagementService } from "./roomManagement.service";
@@ -22,6 +22,7 @@ class UploadFile {
 })
 export class RoomManagementComponent implements OnInit {
   constructor(
+    private fb: FormBuilder,
     private _roomService: RoomManagementService,
     private _message: NzMessageService) {
   }
@@ -44,7 +45,8 @@ export class RoomManagementComponent implements OnInit {
     text: "",
     roomType: ""
   };
-  roomForm: Room = new Room();
+  roomFormData: Room = new Room();
+  roomValidateForm: FormGroup;
   dataSet: Room[] = [];
   tablePagination = {
     pageSize: 10,
@@ -58,10 +60,30 @@ export class RoomManagementComponent implements OnInit {
   bannerImgsUploader: FileUploader = new FileUploader({ url: URL });
   bannerImgList: UploadFile[] = [];
 
+  ngOnInit (): void {
+    this.refreshData();
+    // 上传器事件绑定
+    this.descriptionImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.handleFileUploaded(item, response, status, headers, "descriptionImg");
+    };
+    this.infoImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.handleFileUploaded(item, response, status, headers, "infoImg");
+    };
+    this.bannerImgsUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.handleFileUploaded(item, response, status, headers, "bannerImg");
+    };
+    // 表单验证规则
+    this.roomValidateForm = new FormGroup({
+      roomName: new FormControl(null, [Validators.required]),
+      price: new FormControl(null, [Validators.required]),
+      roomCount: new FormControl(null, [Validators.required])
+    });
+  }
+
   /**
    * 重置表单数据
    */
-  reset(): void {
+  reset (): void {
     this.refreshData(true);
   }
 
@@ -69,7 +91,7 @@ export class RoomManagementComponent implements OnInit {
    * 刷新数据
    * @param reset 是否重置表单数据
    */
-  refreshData(reset: boolean = false): void {
+  refreshData (reset: boolean = false): void {
     if (reset) {
       this.tablePagination.pageIndex = 1;
     }
@@ -89,14 +111,14 @@ export class RoomManagementComponent implements OnInit {
   /**
    * 打开房间新建列表
    */
-  openAddDialog(): void {
+  openAddDialog (): void {
     if (this.vm.configs.length && this.vm.districts.length) { // 已经获取过配置对象列表
       this.vm.configs.forEach((item: any) => {
         item.checked = false;
       });
       this.vm.isFormVisible = true;
       this.vm.pattern = "add";
-      this.roomForm = new Room();
+      this.roomFormData = new Room();
     } else { // 尚未获取过配置对象列表
       this._roomService.GetDistrictsAndRoomConfigs().subscribe((rspd: any) => {
         this.vm.configs = rspd.RoomConfig.map(item => {
@@ -109,7 +131,7 @@ export class RoomManagementComponent implements OnInit {
         this.vm.districts = rspd.District;
         this.vm.isFormVisible = true;
         this.vm.pattern = "add";
-        this.roomForm = new Room();
+        this.roomFormData = new Room();
       });
     }
   }
@@ -118,33 +140,33 @@ export class RoomManagementComponent implements OnInit {
    * 打开房间编辑界面
    * @param data 房间对象
    */
-  handleEditClick(data: Room): void {
+  handleEditClick (data: Room): void {
     if (this.vm.configs.length && this.vm.districts.length) { // 已经获取过配置对象列表
       this.vm.configs.forEach((item: any) => {
         item.checked = data.ConfigString ? data.ConfigString.includes(item.value) : false;
       });
       this.vm.isFormVisible = true;
       this.vm.pattern = "edit";
-      this.roomForm = JSON.parse(JSON.stringify(data));
-      this.descriptionImgList = this.roomForm.DescriptionPic ? [{
-        name: this.roomForm.DescriptionPic.split("/").pop(),
-        url: this.roomForm.DescriptionPic,
+      this.roomFormData = JSON.parse(JSON.stringify(data));
+      this.descriptionImgList = this.roomFormData.DescriptionPic ? [{
+        name: this.roomFormData.DescriptionPic.split("/").pop(),
+        url: this.roomFormData.DescriptionPic,
         isError: false,
         isReady: true,
         isSuccess: true,
         isUploaded: true,
         isUploading: false
       }] : [];
-      this.infoImgList = this.roomForm.RoomInfoPic ? [{
-        name: this.roomForm.RoomInfoPic.split("/").pop(),
-        url: this.roomForm.DescriptionPic,
+      this.infoImgList = this.roomFormData.RoomInfoPic ? [{
+        name: this.roomFormData.RoomInfoPic.split("/").pop(),
+        url: this.roomFormData.DescriptionPic,
         isError: false,
         isReady: true,
         isSuccess: true,
         isUploaded: true,
         isUploading: false
       }] : [];
-      this.bannerImgList = this.roomForm.Photos ? this.roomForm.Photos.split(",").map(photo => {
+      this.bannerImgList = this.roomFormData.Photos ? this.roomFormData.Photos.split(",").map(photo => {
         return {
           name: photo.split("/").pop(),
           url: photo,
@@ -167,26 +189,26 @@ export class RoomManagementComponent implements OnInit {
         this.vm.districts = rspd.District;
         this.vm.isFormVisible = true;
         this.vm.pattern = "edit";
-        this.roomForm = JSON.parse(JSON.stringify(data));
-        this.descriptionImgList = this.roomForm.DescriptionPic ? [{
-          name: this.roomForm.DescriptionPic.split("/").pop(),
-          url: this.roomForm.DescriptionPic,
+        this.roomFormData = JSON.parse(JSON.stringify(data));
+        this.descriptionImgList = this.roomFormData.DescriptionPic ? [{
+          name: this.roomFormData.DescriptionPic.split("/").pop(),
+          url: this.roomFormData.DescriptionPic,
           isError: false,
           isReady: true,
           isSuccess: true,
           isUploaded: true,
           isUploading: false
         }] : [];
-        this.infoImgList = this.roomForm.RoomInfoPic ? [{
-          name: this.roomForm.RoomInfoPic.split("/").pop(),
-          url: this.roomForm.DescriptionPic,
+        this.infoImgList = this.roomFormData.RoomInfoPic ? [{
+          name: this.roomFormData.RoomInfoPic.split("/").pop(),
+          url: this.roomFormData.DescriptionPic,
           isError: false,
           isReady: true,
           isSuccess: true,
           isUploaded: true,
           isUploading: false
         }] : [];
-        this.bannerImgList = this.roomForm.Photos ? this.roomForm.Photos.split(",").map(photo => {
+        this.bannerImgList = this.roomFormData.Photos ? this.roomFormData.Photos.split(",").map(photo => {
           return {
             name: photo.split("/").pop(),
             url: photo,
@@ -205,7 +227,7 @@ export class RoomManagementComponent implements OnInit {
    * 删除房间信息
    * @param data 房间对象
    */
-  handleDelteClick(data: Room): void {
+  handleDelteClick (data: Room): void {
     this._roomService.deleteRoom(data.RoomId).subscribe(rspd => {
       if (rspd) {
         this._message.create("success", "删除房间信息成功");
@@ -214,8 +236,8 @@ export class RoomManagementComponent implements OnInit {
     });
   }
 
-  handleFormSubmit(): void {
-    let data: Room = this.roomForm;
+  handleFormSubmit (): void {
+    let data: Room = this.roomFormData;
     let configs: string[] = [];
     this.vm.configs.forEach(item => {
       if (item.checked) {
@@ -230,7 +252,7 @@ export class RoomManagementComponent implements OnInit {
       this._roomService.createRoom(data).subscribe(rspd => {
         if (rspd) {
           this.vm.isFormVisible = false;
-          this.roomForm = null;
+          this.roomFormData = null;
           this._message.create("success", "新增房间信息成功！");
           this.refreshData();
         }
@@ -239,7 +261,7 @@ export class RoomManagementComponent implements OnInit {
       this._roomService.updateRoom(data).subscribe((rspd: any) => {
         if (rspd) {
           this.vm.isFormVisible = false;
-          this.roomForm = null;
+          this.roomFormData = null;
           this._message.create("success", "修改房间信息成功！");
           this.refreshData();
         }
@@ -247,13 +269,13 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  uploadImg(imgFile: UploadFile, loader: string): void {
+  uploadImg (imgFile: UploadFile, loader: string): void {
     let uploader: FileUploader = this[loader];
     let file: FileItem = uploader.queue.find(file => file.file.name === imgFile.name);
     file.upload();
   }
 
-  handleFileSelected(uploaderName: string): void {
+  handleFileSelected (uploaderName: string): void {
     let uploader: FileUploader = this[uploaderName],
       imglist: UploadFile[];
     switch (uploaderName) {
@@ -304,7 +326,7 @@ export class RoomManagementComponent implements OnInit {
 
   }
 
-  removeImg(imgFile: UploadFile, type: string): void {
+  removeImg (imgFile: UploadFile, type: string): void {
     let imglist: UploadFile[];
     switch (type) {
       case "descriptionImg":
@@ -320,7 +342,7 @@ export class RoomManagementComponent implements OnInit {
     imglist.splice(imglist.findIndex(img => img.name === imgFile.name), 1);
   }
 
-  handleFileUploaded(item: any, response: any, status: any, headers: any, type: string): void {
+  handleFileUploaded (item: any, response: any, status: any, headers: any, type: string): void {
     let imglist: UploadFile[];
     switch (type) {
       case "descriptionImg":
@@ -340,16 +362,4 @@ export class RoomManagementComponent implements OnInit {
     img.isUploaded = true;
   }
 
-  ngOnInit(): void {
-    this.refreshData();
-    this.descriptionImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.handleFileUploaded(item, response, status, headers, "descriptionImg");
-    };
-    this.infoImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.handleFileUploaded(item, response, status, headers, "infoImg");
-    };
-    this.bannerImgsUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.handleFileUploaded(item, response, status, headers, "bannerImg");
-    };
-  }
 }
