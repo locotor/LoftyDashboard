@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { NzMessageService } from "ng-zorro-antd";
 import { Room } from "models/room/room.model";
 import { RoomManagementService } from "./roomManagement.service";
@@ -22,6 +23,7 @@ class UploadFile {
 })
 export class RoomManagementComponent implements OnInit {
   constructor(
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     private _roomService: RoomManagementService,
     private _message: NzMessageService) {
@@ -31,7 +33,7 @@ export class RoomManagementComponent implements OnInit {
   vm = {
     tableLoading: true,
     isFormVisible: false,
-    isDialogConfirmLoading: false,
+    isSubmitLoading: false,
     pattern: "add",
     roomTypes: [
       { name: "民宿", value: 1 },
@@ -45,7 +47,10 @@ export class RoomManagementComponent implements OnInit {
     text: "",
     roomType: ""
   };
-  roomFormData: Room = new Room();
+  roomArticleData: {
+    Description: string,
+    RoomInfoDetail: string
+  };
   roomValidateForm: FormGroup;
   dataSet: Room[] = [];
   tablePagination = {
@@ -91,7 +96,20 @@ export class RoomManagementComponent implements OnInit {
       Introduction: new FormControl(null),
       Address: new FormControl(null)
     });
+    // 获取配置项和地址
+    this.route.data.subscribe(resolveData => {
+      this.vm.configs = resolveData.configsAndDistricts.RoomConfig.map(item => {
+        return {
+          label: item.Remark,
+          value: item.Id,
+          checked: false
+        };
+      });
+      this.vm.districts = resolveData.configsAndDistricts.District;
+    });
   }
+
+  /*--- functions---*/
 
   /**
    * 重置表单数据
@@ -125,149 +143,87 @@ export class RoomManagementComponent implements OnInit {
    * 打开房间新建列表
    */
   openAddDialog(): void {
-    if (this.vm.configs.length && this.vm.districts.length) { // 已经获取过配置对象列表
-      this.vm.configs.forEach((item: any) => {
-        item.checked = false;
-      });
-      this.vm.isFormVisible = true;
-      this.vm.pattern = "add";
-      this.roomValidateForm.reset();
-    } else { // 尚未获取过配置对象列表
-      this._roomService.GetDistrictsAndRoomConfigs().subscribe((rspd: any) => {
-        this.vm.configs = rspd.RoomConfig.map(item => {
-          return {
-            label: item.Remark,
-            value: item.Id,
-            checked: false
-          };
-        });
-        this.vm.districts = rspd.District;
-        this.vm.isFormVisible = true;
-        this.vm.pattern = "add";
-        this.roomValidateForm.reset();
-      });
-    }
+    this.vm.pattern = "add";
+    this.roomValidateForm.reset();
+    this.roomArticleData = {
+      Description: "",
+      RoomInfoDetail: ""
+    };
+    this.vm.configs.forEach((item: any) => {
+      item.checked = false;
+    });
+    this.descriptionImgList = [];
+    this.infoImgList = [];
+    this.bannerImgList = [];
+    this.vm.isFormVisible = true;
   }
 
   /**
    * 打开房间编辑界面
-   * @param data 房间对象
+   * @param currentRoom 房间对象
    */
-  handleEditClick(data: Room): void {
-    if (this.vm.configs.length && this.vm.districts.length) { // 已经获取过配置对象列表
-      this.vm.configs.forEach((item: any) => {
-        item.checked = data.ConfigString ? data.ConfigString.includes(item.value) : false;
-      });
-      this.vm.isFormVisible = true;
-      this.vm.pattern = "edit";
-      this.roomValidateForm.setValue({
-        RoomName: data.RoomName,
-        Price: data.Price,
-        RoomCount: data.RoomCount,
-        Longitude: data.Longitude,
-        Latitude: data.Latitude,
-        Address: data.Address,
-        BedCount: data.BedCount,
-        AdultCount: data.AdultCount,
-        ChildCount: data.ChildCount,
-        Area: data.Area,
-        DistrictId: data.DistrictId,
-        RoomTypeValue: data.RoomTypeValue,
-        IsBargainPrice: data.IsBargainPrice,
-        BargainPrice: data.BargainPrice,
-        Introduction: data.Introduction,
-        Configs: this.vm.configs
-      });
-      this.descriptionImgList = this.roomFormData.DescriptionPic ? [{
-        name: this.roomFormData.DescriptionPic.split("/").pop(),
-        url: this.roomFormData.DescriptionPic,
-        isError: false,
-        isReady: true,
-        isSuccess: true,
-        isUploaded: true,
-        isUploading: false
-      }] : [];
-      this.infoImgList = this.roomFormData.RoomInfoPic ? [{
-        name: this.roomFormData.RoomInfoPic.split("/").pop(),
-        url: this.roomFormData.DescriptionPic,
-        isError: false,
-        isReady: true,
-        isSuccess: true,
-        isUploaded: true,
-        isUploading: false
-      }] : [];
-      this.bannerImgList = this.roomFormData.Photos ? this.roomFormData.Photos.split(",").map(photo => {
-        return {
-          name: photo.split("/").pop(),
-          url: photo,
-          isError: false,
-          isReady: true,
-          isSuccess: true,
-          isUploaded: true,
-          isUploading: false
-        };
-      }) : [];
-    } else { // 尚未获取过配置对象列表
-      this._roomService.GetDistrictsAndRoomConfigs().subscribe((rspd: any) => {
-        this.vm.configs = rspd.RoomConfig.map(item => {
-          return {
-            label: item.Remark,
-            value: item.Id,
-            checked: data.ConfigString ? data.ConfigString.includes(item.value) : false
-          };
-        });
-        this.vm.districts = rspd.District;
-        this.vm.isFormVisible = true;
-        this.vm.pattern = "edit";
-        this.roomValidateForm.setValue({
-          RoomName: data.RoomName,
-          Price: data.Price,
-          RoomCount: data.RoomCount,
-          Longitude: data.Longitude,
-          Latitude: data.Latitude,
-          Address: data.Address,
-          BedCount: data.BedCount,
-          AdultCount: data.AdultCount,
-          ChildCount: data.ChildCount,
-          Area: data.Area,
-          DistrictId: data.DistrictId,
-          RoomTypeValue: data.RoomTypeValue,
-          IsBargainPrice: data.IsBargainPrice,
-          BargainPrice: data.BargainPrice,
-          Introduction: data.Introduction,
-          Configs: this.vm.configs
-        });
-        this.descriptionImgList = this.roomFormData.DescriptionPic ? [{
-          name: this.roomFormData.DescriptionPic.split("/").pop(),
-          url: this.roomFormData.DescriptionPic,
-          isError: false,
-          isReady: true,
-          isSuccess: true,
-          isUploaded: true,
-          isUploading: false
-        }] : [];
-        this.infoImgList = this.roomFormData.RoomInfoPic ? [{
-          name: this.roomFormData.RoomInfoPic.split("/").pop(),
-          url: this.roomFormData.DescriptionPic,
-          isError: false,
-          isReady: true,
-          isSuccess: true,
-          isUploaded: true,
-          isUploading: false
-        }] : [];
-        this.bannerImgList = this.roomFormData.Photos ? this.roomFormData.Photos.split(",").map(photo => {
-          return {
-            name: photo.split("/").pop(),
-            url: photo,
-            isError: false,
-            isReady: true,
-            isSuccess: true,
-            isUploaded: true,
-            isUploading: false
-          };
-        }) : [];
-      });
+  handleEditClick(currentRoom: Room): void {
+    this.vm.configs.forEach((item: any) => {
+      item.checked = currentRoom.ConfigString ? currentRoom.ConfigString.includes(item.value) : false;
+    });
+    this.vm.isFormVisible = true;
+    this.vm.pattern = "edit";
+    this.roomValidateForm.setValue({
+      RoomName: currentRoom.RoomName,
+      Price: currentRoom.Price,
+      RoomCount: currentRoom.RoomCount,
+      Longitude: currentRoom.Longitude,
+      Latitude: currentRoom.Latitude,
+      Address: currentRoom.Address,
+      BedCount: currentRoom.BedCount,
+      AdultCount: currentRoom.AdultCount,
+      ChildCount: currentRoom.ChildCount,
+      Area: currentRoom.Area,
+      DistrictId: currentRoom.DistrictId,
+      RoomTypeValue: currentRoom.RoomTypeValue,
+      IsBargainPrice: currentRoom.IsBargainPrice,
+      BargainPrice: currentRoom.BargainPrice,
+      Introduction: currentRoom.Introduction,
+      Configs: this.vm.configs
+    });
+    for (let cName in this.roomValidateForm.controls) {
+      if (this.roomValidateForm.controls.hasOwnProperty(cName)) {
+        this.roomValidateForm.controls[cName].markAsDirty();
+      }
     }
+    this.descriptionImgList = currentRoom.DescriptionPic ? [{
+      name: currentRoom.DescriptionPic.split("/").pop(),
+      url: currentRoom.DescriptionPic,
+      isError: false,
+      isReady: true,
+      isSuccess: true,
+      isUploaded: true,
+      isUploading: false
+    }] : [];
+    this.roomArticleData = {
+      Description: currentRoom.Description,
+      RoomInfoDetail: currentRoom.RoomInfoDetail
+    },
+      this.infoImgList = currentRoom.RoomInfoPic ? [{
+        name: currentRoom.RoomInfoPic.split("/").pop(),
+        url: currentRoom.DescriptionPic,
+        isError: false,
+        isReady: true,
+        isSuccess: true,
+        isUploaded: true,
+        isUploading: false
+      }] : [];
+    this.bannerImgList = currentRoom.Photos ? currentRoom.Photos.split(",").map(photo => {
+      return {
+        name: photo.split("/").pop(),
+        url: photo,
+        isError: false,
+        isReady: true,
+        isSuccess: true,
+        isUploaded: true,
+        isUploading: false
+      };
+    }) : [];
   }
 
   /**
@@ -283,9 +239,12 @@ export class RoomManagementComponent implements OnInit {
     });
   }
 
+  // 处理表单提交
   handleFormSubmit(): void {
-    let data: Room = this.roomFormData;
+    let data: any = {};
     let configs: string[] = [];
+    // 组装数据
+    Object.assign(data, this.roomValidateForm.value);
     this.vm.configs.forEach(item => {
       if (item.checked) {
         configs.push(item.value);
@@ -293,36 +252,40 @@ export class RoomManagementComponent implements OnInit {
     });
     data.ConfigString = configs.join(",");
     data.DescriptionPic = this.descriptionImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
+    data.Description = this.roomArticleData.Description;
     data.RoomInfoPic = this.infoImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
+    data.RoomInfoDetail = this.roomArticleData.RoomInfoDetail;
     data.Photos = this.bannerImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
+    delete data.Configs;
+    // 提交
     if (this.vm.pattern === "add") {
+      this.vm.isSubmitLoading = true;
       this._roomService.createRoom(data).subscribe(rspd => {
+        this.vm.isFormVisible = false;
+        this.vm.isSubmitLoading = false;
         if (rspd) {
-          this.vm.isFormVisible = false;
-          this.roomFormData = null;
           this._message.create("success", "新增房间信息成功！");
           this.refreshData();
+        } else {
+          this._message.create("error", "新增房间信息失败！请联系开发人员");
         }
       });
     } else if (this.vm.pattern === "edit") {
+      this.vm.isSubmitLoading = true;
       this._roomService.updateRoom(data).subscribe((rspd: any) => {
+        this.vm.isFormVisible = false;
+        this.vm.isSubmitLoading = false;
         if (rspd) {
-          this.vm.isFormVisible = false;
-          this.roomFormData = null;
           this._message.create("success", "修改房间信息成功！");
           this.refreshData();
+        } else {
+          this._message.create("error", "修改房间信息失败！请联系开发人员");
         }
       });
     }
   }
 
-  uploadImg(imgFile: UploadFile, loader: string): void {
-    let uploader: FileUploader = this[loader];
-    let file: FileItem = uploader.queue.find(file => file.file.name === imgFile.name);
-    file.upload();
-  }
-
-  handleFileSelected(uploaderName: string): void {
+  handleFileSelected(uploaderName: string, input: any): void {
     let uploader: FileUploader = this[uploaderName],
       imglist: UploadFile[];
     switch (uploaderName) {
@@ -331,7 +294,6 @@ export class RoomManagementComponent implements OnInit {
           uploader.queue[0].remove();
         }
         imglist = this.descriptionImgList;
-        imglist.splice(0, imglist.length);
         imglist.push({
           name: uploader.queue[0].file.name,
           url: "",
@@ -341,13 +303,15 @@ export class RoomManagementComponent implements OnInit {
           isError: false,
           isUploaded: false
         });
+        if (imglist.length > 1) {
+          imglist.splice(0, imglist.length - 1);
+        }
         break;
       case "infoImgUploader":
         if (uploader.queue.length > 1) {
           uploader.queue[0].remove();
         }
         imglist = this.infoImgList;
-        imglist.splice(0, imglist.length);
         imglist.push({
           name: uploader.queue[0].file.name,
           url: "",
@@ -357,6 +321,9 @@ export class RoomManagementComponent implements OnInit {
           isError: false,
           isUploaded: false
         });
+        if (imglist.length > 1) {
+          imglist.splice(0, imglist.length - 1);
+        }
         break;
       case "bannerImgsUploader":
         let index: number = uploader.queue.length - 1;
@@ -370,23 +337,37 @@ export class RoomManagementComponent implements OnInit {
           isUploaded: false
         });
     }
+    input.value = "";
+  }
 
+  uploadImg(imgFile: UploadFile, loader: string): void {
+    let uploader: FileUploader = this[loader];
+    let file: FileItem = uploader.queue.find(file => file.file.name === imgFile.name);
+    file.upload();
   }
 
   removeImg(imgFile: UploadFile, type: string): void {
     let imglist: UploadFile[];
+    let uploader: FileUploader;
     switch (type) {
       case "descriptionImg":
         imglist = this.descriptionImgList;
+        uploader = this.descriptionImgUploader;
         break;
       case "infoImg":
         imglist = this.infoImgList;
+        uploader = this.infoImgUploader;
         break;
       case "bannerImg":
         imglist = this.bannerImgList;
+        uploader = this.bannerImgsUploader;
         break;
     }
     imglist.splice(imglist.findIndex(img => img.name === imgFile.name), 1);
+    let file: FileItem = uploader.queue.find(item => item.file.name === imgFile.name);
+    if (file) {
+      file.remove();
+    }
   }
 
   handleFileUploaded(item: any, response: any, status: any, headers: any, type: string): void {
