@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { NzMessageService } from "ng-zorro-antd";
@@ -25,6 +26,7 @@ export class RoomManagementComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private sanitizer: DomSanitizer,
     private _roomService: RoomManagementService,
     private _message: NzMessageService) {
   }
@@ -33,7 +35,9 @@ export class RoomManagementComponent implements OnInit {
   vm = {
     tableLoading: true,
     isFormVisible: false,
+    isPreviewVisible: false,
     isSubmitLoading: false,
+    previewImgUrl: null,
     pattern: "add",
     roomTypes: [
       { name: "民宿", value: 1 },
@@ -52,13 +56,15 @@ export class RoomManagementComponent implements OnInit {
     RoomInfoDetail: string
   };
   roomValidateForm: FormGroup;
-  currentRoomId:number;
+  currentRoomId: number;
   dataSet: Room[] = [];
   tablePagination = {
     pageSize: 10,
     pageIndex: 1,
     total: 0,
   };
+  titleImgUploader: FileUploader = new FileUploader({ url: URL });
+  titleImgList: UploadFile[] = [];
   descriptionImgUploader: FileUploader = new FileUploader({ url: URL });
   descriptionImgList: UploadFile[] = [];
   infoImgUploader: FileUploader = new FileUploader({ url: URL });
@@ -69,6 +75,9 @@ export class RoomManagementComponent implements OnInit {
   ngOnInit(): void {
     this.refreshData();
     // 上传器事件绑定
+    this.bannerImgsUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.handleFileUploaded(item, response, status, headers, "titleImg");
+    };
     this.descriptionImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       this.handleFileUploaded(item, response, status, headers, "descriptionImg");
     };
@@ -193,6 +202,20 @@ export class RoomManagementComponent implements OnInit {
         this.roomValidateForm.controls[cName].markAsDirty();
       }
     }
+    this.roomArticleData = {
+      Description: currentRoom.Description,
+      RoomInfoDetail: currentRoom.RoomInfoDetail
+    };
+
+    this.titleImgList = currentRoom.PicUrl ? [{
+      name: currentRoom.PicUrl.split("/").pop(),
+      url: currentRoom.PicUrl,
+      isError: false,
+      isReady: true,
+      isSuccess: true,
+      isUploaded: true,
+      isUploading: false
+    }] : [];
     this.descriptionImgList = currentRoom.DescriptionPic ? [{
       name: currentRoom.DescriptionPic.split("/").pop(),
       url: currentRoom.DescriptionPic,
@@ -202,19 +225,15 @@ export class RoomManagementComponent implements OnInit {
       isUploaded: true,
       isUploading: false
     }] : [];
-    this.roomArticleData = {
-      Description: currentRoom.Description,
-      RoomInfoDetail: currentRoom.RoomInfoDetail
-    },
-      this.infoImgList = currentRoom.RoomInfoPic ? [{
-        name: currentRoom.RoomInfoPic.split("/").pop(),
-        url: currentRoom.DescriptionPic,
-        isError: false,
-        isReady: true,
-        isSuccess: true,
-        isUploaded: true,
-        isUploading: false
-      }] : [];
+    this.infoImgList = currentRoom.RoomInfoPic ? [{
+      name: currentRoom.RoomInfoPic.split("/").pop(),
+      url: currentRoom.DescriptionPic,
+      isError: false,
+      isReady: true,
+      isSuccess: true,
+      isUploaded: true,
+      isUploading: false
+    }] : [];
     this.bannerImgList = currentRoom.Photos ? currentRoom.Photos.split(",").map(photo => {
       return {
         name: photo.split("/").pop(),
@@ -254,6 +273,7 @@ export class RoomManagementComponent implements OnInit {
       }
     });
     data.ConfigString = configs.join(",");
+    data.PicUrl = this.titleImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
     data.DescriptionPic = this.descriptionImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
     data.Description = this.roomArticleData.Description;
     data.RoomInfoPic = this.infoImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
@@ -292,6 +312,24 @@ export class RoomManagementComponent implements OnInit {
     let uploader: FileUploader = this[uploaderName],
       imglist: UploadFile[];
     switch (uploaderName) {
+      case "titleImgUploader":
+        if (uploader.queue.length > 1) {
+          uploader.queue[0].remove();
+        }
+        imglist = this.titleImgList;
+        imglist.push({
+          name: uploader.queue[0].file.name,
+          url: "",
+          isReady: false,
+          isUploading: false,
+          isSuccess: false,
+          isError: false,
+          isUploaded: false
+        });
+        if (imglist.length > 1) {
+          imglist.splice(0, imglist.length - 1);
+        }
+        break;
       case "descriptionImgUploader":
         if (uploader.queue.length > 1) {
           uploader.queue[0].remove();
@@ -353,6 +391,10 @@ export class RoomManagementComponent implements OnInit {
     let imglist: UploadFile[];
     let uploader: FileUploader;
     switch (type) {
+      case "titleImg":
+        imglist = this.titleImgList;
+        uploader = this.titleImgUploader;
+        break;
       case "descriptionImg":
         imglist = this.descriptionImgList;
         uploader = this.descriptionImgUploader;
@@ -377,6 +419,9 @@ export class RoomManagementComponent implements OnInit {
     let imglist: UploadFile[];
     switch (type) {
       case "descriptionImg":
+        imglist = this.titleImgList;
+        break;
+      case "descriptionImg":
         imglist = this.descriptionImgList;
         break;
       case "infoImg":
@@ -391,6 +436,12 @@ export class RoomManagementComponent implements OnInit {
     img.isReady = true;
     img.isSuccess = true;
     img.isUploaded = true;
+  }
+
+  // 查看图片
+  showModal(item: UploadFile): void {
+    this.vm.previewImgUrl = this.sanitizer.bypassSecurityTrustUrl(item.url);
+    this.vm.isPreviewVisible = true;
   }
 
   getFormControl(name: string): AbstractControl {

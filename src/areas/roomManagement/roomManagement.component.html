@@ -301,9 +301,9 @@
                                 房间图文描述
                             </ng-template>
                             <div nz-row [nzGutter]="40" class="form-layout-row">
-                                <!-- 房间简介 -->
+                                <!-- 房产简介 -->
                                 <div nz-col [nzSpan]="8" style="border-right:1px solid #ccc;height:inherit;">
-                                    <h2 class="form-title">房间简介</h2>
+                                    <h2 class="form-title">房产简介</h2>
                                     <div class="img-uploader">
                                         <span>简介配图:</span>
                                         <input type="file" ng2FileSelect #descriptionFileInput [uploader]="descriptionImgUploader" (onFileSelected)="handleFileSelected('descriptionImgUploader',descriptionFileInput)" />
@@ -337,15 +337,13 @@
                                                         </span>
                                                     </td>
                                                     <td nz-td>
-                                                        <span>
-                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'descriptionImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                                上传
-                                                            </button>
-                                                            <span nz-table-divider></span>
-                                                        <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'descriptionImg')">
-                                                                移除
-                                                            </button>
-                                                        </span>
+                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'descriptionImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            上传
+                                                        </button>
+                                                        <span nz-table-divider></span>
+                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
+                                                        <span nz-table-divider></span>
+                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'descriptionImg')">移除</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -355,9 +353,9 @@
                                         <editor [isEmitOnChange]="true" [content]="this.roomArticleData.Description" (onOutput)="this.roomArticleData.Description=$event"></editor>
                                     </div>
                                 </div>
-                                <!-- 房间详情 -->
+                                <!-- 房产详情 -->
                                 <div nz-col [nzSpan]="8" style="border-right:1px solid #ccc;height:inherit">
-                                    <h2 class="form-title">房间详情</h2>
+                                    <h2 class="form-title">房产详情</h2>
                                     <div class="img-uploader">
                                         <span>详情配图:</span>
                                         <input type="file" ng2FileSelect #infoFileInput [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader',infoFileInput)" />
@@ -391,15 +389,13 @@
                                                         </span>
                                                     </td>
                                                     <td nz-td>
-                                                        <span>
-                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'infoImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                                上传
-                                                            </button>
-                                                            <span nz-table-divider></span>
-                                                        <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'infoImg')">
-                                                                移除
-                                                            </button>
-                                                        </span>
+                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'infoImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            上传
+                                                        </button>
+                                                        <span nz-table-divider></span>
+                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
+                                                        <span nz-table-divider></span>
+                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'infoImg')">移除</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -407,6 +403,51 @@
                                     </div>
                                     <div class="msg-editor-container">
                                         <editor [isEmitOnChange]="true" [content]="this.roomArticleData.RoomInfoDetail" (onOutput)="this.roomArticleData.RoomInfoDetail=$event"></editor>
+                                    </div>
+                                    <!-- 房产封面 -->
+                                    <h2 class="form-title" style="margin-top:15px">房产封面</h2>
+                                    <div class="img-uploader">
+                                        <span>房产封面:</span>
+                                        <input type="file" ng2FileSelect #titleFileInput [uploader]="titleImgUploader" (onFileSelected)="handleFileSelected('titleImgUploader',titleFileInput)" />
+                                        <!-- 图片上传列表 -->
+                                        <nz-table #nzTable [nzDataSource]="titleImgList" [nzIsPagination]="false">
+                                            <thead nz-thead>
+                                                <tr>
+                                                    <th nz-th>
+                                                        <span>文件名</span>
+                                                    </th>
+                                                    <th nz-th>
+                                                        <span>状态</span>
+                                                    </th>
+                                                    <th nz-th>
+                                                        <span>操作</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody nz-tbody>
+                                                <tr nz-tbody-tr *ngFor="let item of titleImgList">
+                                                    <td nz-td>{{item?.name}}</td>
+                                                    <td nz-td>
+                                                        <span *ngIf="!item.isUploaded">
+                                                            <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
+                                                        </span>
+                                                        <span *ngIf="item.isSuccess">
+                                                            <i style="color: green" class="anticon anticon-check-circle"></i>已上传
+                                                        </span>
+                                                        <span *ngIf="item.isError">
+                                                            <i style="color: red" class="anticon anticon-close-circle"></i>上传失败
+                                                        </span>
+                                                    </td>
+                                                    <td nz-td>
+                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'titleImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">上传</button>
+                                                        <span nz-table-divider></span>
+                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
+                                                        <span nz-table-divider></span>
+                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'titleImg')">移除</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </nz-table>
                                     </div>
                                 </div>
                                 <!-- banner图组 -->
@@ -445,15 +486,13 @@
                                                         </span>
                                                     </td>
                                                     <td nz-td>
-                                                        <span>
-                                                            <button nz-button href="#" [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'bannerImgsUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                                上传
-                                                            </button>
-                                                            <span nz-table-divider></span>
-                                                        <button nz-button href="#" [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'bannerImg')">
-                                                                移除
-                                                            </button>
-                                                        </span>
+                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'bannerImgsUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            上传
+                                                        </button>
+                                                        <span nz-table-divider></span>
+                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
+                                                        <span nz-table-divider></span>
+                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'bannerImg')">移除</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -473,4 +512,12 @@
             </nz-footer>
         </nz-layout>
     </nz-content>
+    <nz-modal [nzVisible]="vm.isPreviewVisible" [nzTitle]="'图片详情'" [nzClosable]="false" [nzContent]="modalContent" [nzFooter]="modalFooter">
+        <ng-template #modalContent>
+            <img [src]="this.vm.previewImgUrl" style="width: 100%" />
+        </ng-template>
+        <ng-template #modalFooter>
+            <button nz-button [nzType]="'primary'" (click)="vm.isPreviewVisible=false">关 闭</button>
+        </ng-template>
+    </nz-modal>
 </nz-layout>

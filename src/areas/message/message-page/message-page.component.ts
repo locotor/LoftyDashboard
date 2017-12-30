@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import User from "models/user/user.model";
-import Message from "models/message/message.model";
 import { MessageService } from "../message.service";
+import Message from "models/message/message.model";
 
 @Component({
   selector: "message-page",
@@ -39,11 +38,11 @@ export class MessagePageComponent implements OnInit {
   public currentMessage: Message;
 
   /*---事件handler---*/
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.getMessageList();
   }
 
-  public getMessageList (): void {
+  public getMessageList(): void {
     let pageSize: number,
       pageIndex: number;
     if (this.vm.type === 1) {
@@ -71,7 +70,7 @@ export class MessagePageComponent implements OnInit {
       );
   }
 
-  public handleTabChange (type: number): void {
+  public handleTabChange(type: number): void {
     if (this.vm.type === type) {
       return;
     }
@@ -79,7 +78,7 @@ export class MessagePageComponent implements OnInit {
     this.getMessageList();
   }
 
-  public handleMessageClicked (message: Message): void {
+  public handleMessageClicked(message: Message): void {
     if (message.MessageStatus > 1) {
       this.currentMessage = message;
       return;

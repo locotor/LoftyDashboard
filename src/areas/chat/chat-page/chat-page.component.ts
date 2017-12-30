@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { AppContextService } from "commons/utilities/app-context.service";
 import { ChatService } from "../chat.service";
+import { NzMessageService } from "ng-zorro-antd";
 
 
 @Component({
@@ -20,32 +21,31 @@ export class ChatPageComponent implements OnInit {
 
   constructor(
     private _appContext: AppContextService,
-    private _apiService: ChatService
+    private _apiService: ChatService,
+    private _messageService: NzMessageService
   ) { }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     // todo
   }
 
-  onEnter (content: string): void {
-    // if (content) {
-    //     this.sendMessage(content);
-    // } else {
-    //     this.snackBar.open("输入内容不能为空","关闭", {
-    //         duration: 1000,
-    //     });
-    // }
+  onEnter(content: string): void {
+    if (content) {
+      this.sendMessage(content);
+    } else {
+      this._messageService.create("warning", "输入内容不能为空!");
+    }
   }
 
-  public getChatList (): void {
+  public getChatList(): void {
     // todo
   }
 
-  public handleChatClicked (chat: any): void {
+  public handleChatClicked(chat: any): void {
     // todo
   }
 
-  sendMessage (content: string): void {
+  sendMessage(content: string): void {
     // const m: Chat = this.draftChat;
     // m.text = content;
     // m.author = this.currentUser;
@@ -55,7 +55,7 @@ export class ChatPageComponent implements OnInit {
     // this.draftChat = new Chat();
   }
 
-  private scrollToBottom (): void {
+  private scrollToBottom(): void {
     // const scrollPane: any = this.el.nativeElement.querySelector(".msg-container");
     // scrollPane.scrollTop = scrollPane.scrollHeight;
   }

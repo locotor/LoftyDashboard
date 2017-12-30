@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input } from "@angular/core";
 import { MessageService } from "../message.service";
 import { NzMessageService } from "ng-zorro-antd";
-import Message from "../../../models/message/message.model";
+import Message from "models/message/message.model";
 
 @Component({
   selector: "message-window",
