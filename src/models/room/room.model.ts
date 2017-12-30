@@ -24,20 +24,4 @@ export class Room {
     RoomInfoPic?: string;
     Photos?: string;
     DistrictDescription?: string;
-    constructor() {
-        return {
-            ConfigString: "",
-            RoomName: "",
-            Price: 0,
-            // 1民宿2别墅3酒店
-            RoomTypeValue: 1,
-            RoomCount: 0,
-            Area: 0,
-            BedCount: 0,
-            DistrictId: 0,
-            AdultCount: 0,
-            ChildCount: 0,
-            IsBargainPrice: false
-        };
-    }
 }
