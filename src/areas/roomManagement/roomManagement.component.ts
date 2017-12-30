@@ -52,6 +52,7 @@ export class RoomManagementComponent implements OnInit {
     RoomInfoDetail: string
   };
   roomValidateForm: FormGroup;
+  currentRoomId:number;
   dataSet: Room[] = [];
   tablePagination = {
     pageSize: 10,
@@ -163,6 +164,7 @@ export class RoomManagementComponent implements OnInit {
    * @param currentRoom 房间对象
    */
   handleEditClick(currentRoom: Room): void {
+    this.currentRoomId = currentRoom.RoomId;
     this.vm.configs.forEach((item: any) => {
       item.checked = currentRoom.ConfigString ? currentRoom.ConfigString.includes(item.value) : false;
     });
@@ -245,6 +247,7 @@ export class RoomManagementComponent implements OnInit {
     let configs: string[] = [];
     // 组装数据
     Object.assign(data, this.roomValidateForm.value);
+    data.RoomId = this.currentRoomId;
     this.vm.configs.forEach(item => {
       if (item.checked) {
         configs.push(item.value);
