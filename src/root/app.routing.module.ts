@@ -4,7 +4,9 @@ import { AppComponent } from "./app.component";
 import { ChatPageComponent } from "areas/chat/chat-page/chat-page.component";
 import { MessagePageComponent } from "areas/message/message-page/message-page.component";
 import { RoomManagementComponent } from "areas/roomManagement/roomManagement.component";
+import { OrderManagementComponent } from "areas/orderManagement/orderManagement.component";
 import { RoomManagementResolver } from "areas/roomManagement/roomManagement.resolver.service";
+import { OrderManagementResolver } from "areas/orderManagement/orderManagement.resolver.service";
 
 
 const appRoutes: Routes = [
@@ -17,6 +19,13 @@ const appRoutes: Routes = [
     resolve: {
       configsAndDistricts: RoomManagementResolver
     }
+  },
+  {
+    path: "order",
+    component: OrderManagementComponent,
+    resolve: {
+      rooms: OrderManagementResolver
+    }
   }
 ];
 
@@ -28,7 +37,8 @@ const appRoutes: Routes = [
     RouterModule
   ],
   providers: [
-    RoomManagementResolver
+    RoomManagementResolver,
+    OrderManagementResolver
   ]
 })
 export class AppRoutingModule { }

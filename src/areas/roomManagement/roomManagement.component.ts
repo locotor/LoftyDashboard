@@ -3,9 +3,9 @@ import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { NzMessageService } from "ng-zorro-antd";
-import { Room } from "models/room/room.model";
 import { RoomManagementService } from "./roomManagement.service";
 import { FileUploader, FileSelectDirective, FileItem } from "ng2-file-upload";
+import { Room } from "models/room/room.model";
 
 const URL: string = "/Public/UploadFile";
 class UploadFile {
@@ -122,7 +122,7 @@ export class RoomManagementComponent implements OnInit {
   /*--- functions---*/
 
   /**
-   * 重置表单数据
+   * 重新获取表格数据
    */
   reset(): void {
     this.refreshData(true);
@@ -130,7 +130,7 @@ export class RoomManagementComponent implements OnInit {
 
   /**
    * 刷新数据
-   * @param reset 是否重置表单数据
+   * @param reset 是否重置表格数据
    */
   refreshData(reset: boolean = false): void {
     if (reset) {
@@ -150,7 +150,7 @@ export class RoomManagementComponent implements OnInit {
   }
 
   /**
-   * 打开房间新建列表
+   * 打开房产新建列表
    */
   openAddDialog(): void {
     this.vm.pattern = "add";
@@ -169,8 +169,8 @@ export class RoomManagementComponent implements OnInit {
   }
 
   /**
-   * 打开房间编辑界面
-   * @param currentRoom 房间对象
+   * 打开房产编辑界面
+   * @param currentRoom 房产对象
    */
   handleEditClick(currentRoom: Room): void {
     this.currentRoomId = currentRoom.RoomId;
@@ -248,13 +248,13 @@ export class RoomManagementComponent implements OnInit {
   }
 
   /**
-   * 删除房间信息
-   * @param data 房间对象
+   * 删除房产信息
+   * @param data 房产对象
    */
   handleDelteClick(data: Room): void {
     this._roomService.deleteRoom(data.RoomId).subscribe(rspd => {
       if (rspd) {
-        this._message.create("success", "删除房间信息成功");
+        this._message.create("success", "删除房产信息成功");
         this.refreshData();
       }
     });
@@ -287,10 +287,10 @@ export class RoomManagementComponent implements OnInit {
         this.vm.isFormVisible = false;
         this.vm.isSubmitLoading = false;
         if (rspd) {
-          this._message.create("success", "新增房间信息成功！");
+          this._message.create("success", "新增房产信息成功！");
           this.refreshData();
         } else {
-          this._message.create("error", "新增房间信息失败！请联系开发人员");
+          this._message.create("error", "新增房产信息失败！请联系开发人员");
         }
       });
     } else if (this.vm.pattern === "edit") {
@@ -299,10 +299,10 @@ export class RoomManagementComponent implements OnInit {
         this.vm.isFormVisible = false;
         this.vm.isSubmitLoading = false;
         if (rspd) {
-          this._message.create("success", "修改房间信息成功！");
+          this._message.create("success", "修改房产信息成功！");
           this.refreshData();
         } else {
-          this._message.create("error", "修改房间信息失败！请联系开发人员");
+          this._message.create("error", "修改房产信息失败！请联系开发人员");
         }
       });
     }

@@ -2,7 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { AppContextService } from "commons/utilities/app-context.service";
 import { ChatService } from "../chat.service";
 import { NzMessageService } from "ng-zorro-antd";
-
+import { ChatUser } from "models/user/chat.user.model";
+import { ChatMessage } from "models/chat/chat.message.model";
 
 @Component({
   selector: "chat-page",
@@ -11,13 +12,14 @@ import { NzMessageService } from "ng-zorro-antd";
 })
 export class ChatPageComponent implements OnInit {
   public chatList = {
-    chats: Array<any>(),
+    targets: Array<ChatUser>(),
     loading: false,
     pageSize: 10,
     totalAmount: 0,
     currentPage: 1
   };
-  public currentChat: any;
+  public currentTarget: ChatUser;
+  public currentConversation: ChatMessage[];
 
   constructor(
     private _appContext: AppContextService,
@@ -37,7 +39,7 @@ export class ChatPageComponent implements OnInit {
     }
   }
 
-  public getChatList(): void {
+  public getTagetList(): void {
     // todo
   }
 
@@ -46,13 +48,7 @@ export class ChatPageComponent implements OnInit {
   }
 
   sendMessage(content: string): void {
-    // const m: Chat = this.draftChat;
-    // m.text = content;
-    // m.author = this.currentUser;
-    // m.thread = this.currentThread;
-    // m.isRead = true;
-    // this.chatService.addChat(m);
-    // this.draftChat = new Chat();
+    this._apiService.sendChat(content, this.currentTarget.UserId);
   }
 
   private scrollToBottom(): void {

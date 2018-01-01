@@ -6,7 +6,6 @@ import { NgZorroAntdModule } from "ng-zorro-antd";
 
 import { PipesModule } from "commons/pipes/pipes.module";
 import { EditorModule } from "commons/components/editor/editor.module";
-import { ModelsModule } from "models/models.module";
 
 import { ChatService } from "./chat.service";
 import { ChatPageComponent } from "./chat-page/chat-page.component";
@@ -26,7 +25,6 @@ const chatRoutes: Routes = [
         PipesModule,
         EditorModule,
         NgZorroAntdModule,
-        ModelsModule,
         RouterModule.forChild(chatRoutes),
     ],
     declarations: [

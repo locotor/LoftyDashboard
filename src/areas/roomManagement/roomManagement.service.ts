@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs/observable";
-import { WebBaseService } from "../../commons/base/web-base.service";
+import { WebBaseService } from "commons/base/web-base.service";
 import { Room } from "models/room/room.model";
 
 @Injectable()

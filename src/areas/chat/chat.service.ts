@@ -1,14 +1,18 @@
 import { Injectable, OnInit } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs/observable";
+import { Subject } from "rxjs/Subject";
 import { WebBaseService } from "commons/base/web-base.service";
 import { AppContextService } from "commons/utilities/app-context.service";
-import Message from "models/message/message.model";
+import { ChatMessage } from "models/chat/chat.message.model";
 
 
 @Injectable()
 export class ChatService extends WebBaseService implements OnInit {
     private _singlrService: any;
+    private _receiveChatMessageSource = new Subject<ChatMessage>();
+    public receiveChatMessageSource = this._receiveChatMessageSource.asObservable();
+
     constructor(protected http: HttpClient,
         private _appContext: AppContextService, ) {
         super(http);
@@ -19,7 +23,17 @@ export class ChatService extends WebBaseService implements OnInit {
             console.log(JSON.parse(detail).MessageBody);
             // 收到消息后需要保存
             // this.SaveChatMessage()
+            this._receiveChatMessageSource.next(detail);
         };
+    }
+    // 保存聊天记录(收到消息后需要保存)：
+    public SaveChatMessage(sender: number, msg: string, targetId: number): Observable<Object> {
+        let url: string = "Message/SaveChatMessage";
+        return this.getData(url, {
+            sender: sender,
+            msg: msg,
+            targetId: targetId
+        });
     }
 
     // 获取历史聊天人员
@@ -28,16 +42,6 @@ export class ChatService extends WebBaseService implements OnInit {
         return this.getData(url, {
             pageInde: pageInde,
             pageSize: pageSize
-        });
-    }
-
-    // 保存聊天记录(收到消息后需要保存)：
-    public SaveChatMessage(sender: number, msg: string, targetId: number): Observable<Object> {
-        let url: string = "Account/SaveChatMessage";
-        return this.getData(url, {
-            sender: sender,
-            msg: msg,
-            targetId: targetId
         });
     }
 

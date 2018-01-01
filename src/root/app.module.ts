@@ -18,6 +18,7 @@ import { ChatModule } from "areas/chat/chat.module";
 import { MessageModule } from "areas/message/message.module";
 import { PersonalModule } from "areas/personal/personal.module";
 import { RoomManagementModule } from "areas/roomManagement/roomManagement.module";
+import { OrderManagementModule } from "areas/orderManagement/orderManagement.module";
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import { RoomManagementModule } from "areas/roomManagement/roomManagement.module
         ChatModule,
         MessageModule,
         PersonalModule,
-        RoomManagementModule
+        RoomManagementModule,
+        OrderManagementModule
     ],
     declarations: [
         AppComponent
