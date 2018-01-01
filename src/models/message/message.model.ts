@@ -10,4 +10,8 @@ export default class Message {
     public ReadTime?: string;
     public ProcessTime?: string;
     public CreateTime?: string;
+
+    // 回复
+    public Reply?: string;
+    public ReplyTime?: string;
 }
