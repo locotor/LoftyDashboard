@@ -72,7 +72,7 @@ export class RoomManagementComponent implements OnInit {
   bannerImgsUploader: FileUploader = new FileUploader({ url: URL });
   bannerImgList: UploadFile[] = [];
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.refreshData();
     // 上传器事件绑定
     this.bannerImgsUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -124,7 +124,7 @@ export class RoomManagementComponent implements OnInit {
   /**
    * 重新获取表格数据
    */
-  reset(): void {
+  reset (): void {
     this.refreshData(true);
   }
 
@@ -132,7 +132,7 @@ export class RoomManagementComponent implements OnInit {
    * 刷新数据
    * @param reset 是否重置表格数据
    */
-  refreshData(reset: boolean = false): void {
+  refreshData (reset: boolean = false): void {
     if (reset) {
       this.tablePagination.pageIndex = 1;
     }
@@ -152,7 +152,7 @@ export class RoomManagementComponent implements OnInit {
   /**
    * 打开房产新建列表
    */
-  openAddDialog(): void {
+  openAddDialog (): void {
     this.vm.pattern = "add";
     this.roomValidateForm.reset();
     this.roomArticleData = {
@@ -162,6 +162,7 @@ export class RoomManagementComponent implements OnInit {
     this.vm.configs.forEach((item: any) => {
       item.checked = false;
     });
+    this.getFormControl("Configs").setValue(this.vm.configs);
     this.descriptionImgList = [];
     this.infoImgList = [];
     this.bannerImgList = [];
@@ -172,7 +173,7 @@ export class RoomManagementComponent implements OnInit {
    * 打开房产编辑界面
    * @param currentRoom 房产对象
    */
-  handleEditClick(currentRoom: Room): void {
+  handleEditClick (currentRoom: Room): void {
     this.currentRoomId = currentRoom.RoomId;
     this.vm.configs.forEach((item: any) => {
       item.checked = currentRoom.ConfigString ? currentRoom.ConfigString.includes(item.value) : false;
@@ -251,7 +252,7 @@ export class RoomManagementComponent implements OnInit {
    * 删除房产信息
    * @param data 房产对象
    */
-  handleDelteClick(data: Room): void {
+  handleDelteClick (data: Room): void {
     this._roomService.deleteRoom(data.RoomId).subscribe(rspd => {
       if (rspd) {
         this._message.create("success", "删除房产信息成功");
@@ -261,7 +262,7 @@ export class RoomManagementComponent implements OnInit {
   }
 
   // 处理表单提交
-  handleFormSubmit(): void {
+  handleFormSubmit (): void {
     let data: any = {};
     let configs: string[] = [];
     // 组装数据
@@ -308,7 +309,7 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  handleFileSelected(uploaderName: string, input: any): void {
+  handleFileSelected (uploaderName: string, input: any): void {
     let uploader: FileUploader = this[uploaderName],
       imglist: UploadFile[];
     switch (uploaderName) {
@@ -381,13 +382,13 @@ export class RoomManagementComponent implements OnInit {
     input.value = "";
   }
 
-  uploadImg(imgFile: UploadFile, loader: string): void {
+  uploadImg (imgFile: UploadFile, loader: string): void {
     let uploader: FileUploader = this[loader];
     let file: FileItem = uploader.queue.find(file => file.file.name === imgFile.name);
     file.upload();
   }
 
-  removeImg(imgFile: UploadFile, type: string): void {
+  removeImg (imgFile: UploadFile, type: string): void {
     let imglist: UploadFile[];
     let uploader: FileUploader;
     switch (type) {
@@ -415,7 +416,7 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  handleFileUploaded(item: any, response: any, status: any, headers: any, type: string): void {
+  handleFileUploaded (item: any, response: any, status: any, headers: any, type: string): void {
     let imglist: UploadFile[];
     switch (type) {
       case "descriptionImg":
@@ -439,12 +440,12 @@ export class RoomManagementComponent implements OnInit {
   }
 
   // 查看图片
-  showModal(item: UploadFile): void {
+  showModal (item: UploadFile): void {
     this.vm.previewImgUrl = this.sanitizer.bypassSecurityTrustUrl(item.url);
     this.vm.isPreviewVisible = true;
   }
 
-  getFormControl(name: string): AbstractControl {
+  getFormControl (name: string): AbstractControl {
     return this.roomValidateForm.controls[name];
   }
 
