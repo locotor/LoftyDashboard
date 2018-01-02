@@ -1,8 +1,10 @@
+const path = require("path");
 const helpers = require('./helpers');
+const rimraf = require("rimraf");
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.common.js');
-const custom = require("./custom-settings");
+const custom = require("../project-settings");
 
 const OptimizeJsPlugin = require('optimize-js-plugin');
 
@@ -19,6 +21,16 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
     HMR: HMR
 });
 
+var OUTPUT;
+if (custom.PROD_OUTPUT_DIR) {
+    OUTPUT = path.format({
+        dir: custom.PROD_OUTPUT_DIR
+    })
+} else {
+    OUTPUT = helpers.root("dist");
+}
+rimraf(OUTPUT, (error) => console.log(error));
+
 if (SERVER) {
     console.log(`Starting dev server on: http://${custom.HOST}:${PORT}`);
 }
@@ -27,16 +39,10 @@ module.exports = function(env) {
     return webpackMerge(commonConfig({
         env: ENV
     }), {
-        devtool: custom.PROD_SOURCE_MAP,
         output: {
-            path: helpers.root('dist/LoftyAdmin'),
+            path: OUTPUT,
             filename: '[name].[chunkhash].bundle.js',
             chunkFilename: '[name].[chunkhash].chunk.js'
-        },
-        module: {
-            rules: [
-                ...custom.MY_CLIENT_PROD_RULES
-            ]
         },
         plugins: [
             new OptimizeJsPlugin({
@@ -53,7 +59,6 @@ module.exports = function(env) {
             }),
             new webpack.HashedModuleIdsPlugin(),
             new webpack.NoEmitOnErrorsPlugin(),
-            ...custom.MY_CLIENT_PROD_PLUGINS
         ],
         devServer: {
             contentBase: AOT ? './compiled' : './src',

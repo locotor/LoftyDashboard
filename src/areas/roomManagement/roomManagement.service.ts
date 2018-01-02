@@ -72,7 +72,7 @@ export class RoomManagementService extends WebBaseService {
     }
 
     deleteRoom(id: number): Observable<object> {
-        let url: string = "Room/DeleteRoom";
+        let url: string = "/Room/DeleteRoom";
         return this.postData(url, { id: id });
     }
 }
