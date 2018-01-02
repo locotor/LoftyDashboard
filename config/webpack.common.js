@@ -22,7 +22,7 @@ const METADATA = {
     isDevServer: helpers.isWebpackDevServer()
 };
 
-module.exports = function (options) {
+module.exports = function(options) {
     isProd = options.env === 'production';
     return {
         entry: {
@@ -126,7 +126,8 @@ module.exports = function (options) {
                 chunksSortMode: "dependency",
                 metadata: METADATA,
                 showErrors: true,
-                inject: true
+                inject: true,
+                options: METADATA
             }),
             // new ScriptExtHtmlWebpackPlugin({
             //     sync: /polyfill|vendor/,

@@ -13,7 +13,9 @@
     <% if (webpackConfig.htmlElements.headTags) { %>
         <%= webpackConfig.htmlElements.headTags %>
             <% } %>
-                <script type="text/javascript" src="../../dashboardDll/Dll.js"></script>
+                <% if (htmlWebpackPlugin.options.metadata.isDevServer) { %>
+                    <script type="text/javascript" src="../../dashboardDll/Dll.js"></script>
+                    <% } %>
 </head>
 
 <body>
