@@ -47,12 +47,12 @@ module.exports = {
     output: {
         path: OUTPUT,
         filename: "Dll.js",
-        library: "[name]_[hash]"
+        library: "[name]_[chunkhash]"
     },
     plugins: [
         new webpack.DllPlugin({
             path: path.join(OUTPUT, "manifest.json"),
-            name: "[name]_[hash]",
+            name: "[name]_[chunkhash]",
             context: helpers.root()
         })
     ]
