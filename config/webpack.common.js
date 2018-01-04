@@ -19,10 +19,11 @@ const AOT = process.env.BUILD_AOT || helpers.hasNpmFlag("aot");
 const METADATA = {
     title: custom.PROJECT_NAME,
     baseUrl: '/',
+    isDevPattern: helpers.hasProcessFlag("dev"),
     isDevServer: helpers.isWebpackDevServer()
 };
 
-module.exports = function(options) {
+module.exports = function (options) {
     isProd = options.env === 'production';
     return {
         entry: {
@@ -38,72 +39,72 @@ module.exports = function(options) {
         },
         module: {
             rules: [{
-                    test: /\.js$/,
-                    loader: 'source-map-loader',
-                    exclude: [custom.EXCLUDE_SOURCE_MAPS]
+                test: /\.js$/,
+                loader: 'source-map-loader',
+                exclude: [custom.EXCLUDE_SOURCE_MAPS]
+            },
+            {
+                test: /\.ts$/,
+                use: [{
+                    loader: "awesome-typescript-loader",
+                    options: {
+                        configFileName: helpers.root("./tsconfig.json")
+                    }
                 },
                 {
-                    test: /\.ts$/,
-                    use: [{
-                            loader: "awesome-typescript-loader",
-                            options: {
-                                configFileName: helpers.root("./tsconfig.json")
-                            }
-                        },
-                        {
-                            loader: 'angular-router-loader',
-                        },
-                        {
-                            loader: 'angular2-template-loader'
-                        }
-                    ],
-                    exclude: [/\.(spec|e2e)\.ts$/]
+                    loader: 'angular-router-loader',
                 },
                 {
-                    test: /\.html$/,
-                    use: [{
-                        loader: "raw-loader"
-                    }],
-                    exclude: [helpers.root('index-tpl.html')]
-                },
-                {
-                    test: /\.css$/,
-                    use: ['to-string-loader', 'css-loader'],
-                    exclude: [helpers.root('src/commons/styles')]
-                },
-                {
-                    test: /\.css$/,
-                    loader: ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        use: 'css-loader'
-                    }),
-                    include: [helpers.root('src/commons/styles')]
-                },
-                {
-                    test: /\.scss$/,
-                    use: ['to-string-loader', 'css-loader', 'sass-loader'],
-                    exclude: [helpers.root('src/commons/styles')]
-                },
-                {
-                    test: /\.scss$/,
-                    loader: ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        use: ['css-loader', 'sass-loader']
-                    }),
-                    include: [helpers.root('src/commons/styles')]
-                },
-                {
-                    test: /\.json$/,
-                    loader: 'json-loader'
-                },
-                {
-                    test: /\.(jpg|png|gif)$/,
-                    use: 'file-loader'
-                },
-                {
-                    test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
-                    use: 'file-loader'
-                },
+                    loader: 'angular2-template-loader'
+                }
+                ],
+                exclude: [/\.(spec|e2e)\.ts$/]
+            },
+            {
+                test: /\.html$/,
+                use: [{
+                    loader: "raw-loader"
+                }],
+                exclude: [helpers.root('index-tpl.html')]
+            },
+            {
+                test: /\.css$/,
+                use: ['to-string-loader', 'css-loader'],
+                exclude: [helpers.root('src/commons/styles')]
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                }),
+                include: [helpers.root('src/commons/styles')]
+            },
+            {
+                test: /\.scss$/,
+                use: ['to-string-loader', 'css-loader', 'sass-loader'],
+                exclude: [helpers.root('src/commons/styles')]
+            },
+            {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                }),
+                include: [helpers.root('src/commons/styles')]
+            },
+            {
+                test: /\.json$/,
+                loader: 'json-loader'
+            },
+            {
+                test: /\.(jpg|png|gif)$/,
+                use: 'file-loader'
+            },
+            {
+                test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
+                use: 'file-loader'
+            },
             ]
         },
         plugins: [
@@ -118,7 +119,7 @@ module.exports = function(options) {
             new CopyWebpackPlugin([{
                 from: 'src/assets',
                 to: 'assets'
-            }, ]),
+            },]),
             new HtmlWebpackPlugin({
                 title: METADATA.title,
                 filename: "../Views/Home/Dashboard.cshtml",

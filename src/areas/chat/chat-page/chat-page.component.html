@@ -9,14 +9,14 @@
                     <i *ngIf="chatList.loading" class="anticon anticon-loading anticon-spin"></i>
                     <ng-container *ngIf="!chatList.loading">
                         <ul nz-menu>
-                            <li nz-menu-item *ngFor="let chat of chatList.chats" class="clearfix" [nzSelected]="chat === currentChat" (click)="handleChatClicked(chat)">
+                            <li nz-menu-item *ngFor="let target of chatList.targets" class="clearfix" [nzSelected]="target === currentTarget" (click)="handleTargetClicked(target)">
                                 <i class="anticon anticon-mail"></i>
-                                <span class="nav-text">{{chat.User?chat.User.account:"匿名游客"}}:{{chat.Remark|slice:0:24}}</span>
+                                <span class="nav-text">{{target.UserId!=='-1'?target.UserAccount:"匿名游客"}}</span>
                             </li>
                         </ul>
                     </ng-container>
                 </div>
-                <nz-pagination class="pagination" [(nzPageIndex)]="chatList.currentPage" [(nzPageSize)]="chatList.pageSize" [nzTotal]="chatList.totalAmount" nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getChatList()" (nzPageSizeChange)="getChatList()"></nz-pagination>
+                <nz-pagination class="pagination" [(nzPageIndex)]="chatList.currentPage" [(nzPageSize)]="chatList.pageSize" [nzTotal]="chatList.totalAmount" nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getTagetList()" (nzPageSizeChange)="getTagetList()"></nz-pagination>
             </nz-tab>
         </nz-tabset>
     </nz-sider>

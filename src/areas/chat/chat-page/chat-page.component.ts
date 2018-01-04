@@ -27,11 +27,11 @@ export class ChatPageComponent implements OnInit {
     private _messageService: NzMessageService
   ) { }
 
-  ngOnInit(): void {
-    // todo
+  ngOnInit (): void {
+    this.getTagetList();
   }
 
-  onEnter(content: string): void {
+  onEnter (content: string): void {
     if (content) {
       this.sendMessage(content);
     } else {
@@ -39,19 +39,25 @@ export class ChatPageComponent implements OnInit {
     }
   }
 
-  public getTagetList(): void {
-    // todo
+  getTagetList (): void {
+    this._apiService.GetLastChatUsers(this.chatList.currentPage, this.chatList.pageSize).subscribe(
+      (rspd: any) => {
+        this.chatList.targets = rspd.Data;
+        this.chatList.totalAmount = rspd.Total;
+      },
+      error => console.error("error: ", error)
+    );
   }
 
-  public handleChatClicked(chat: any): void {
-    // todo
+  handleTargetClicked (target: ChatUser): void {
+    this.currentTarget = target;
   }
 
-  sendMessage(content: string): void {
+  sendMessage (content: string): void {
     this._apiService.sendChat(content, this.currentTarget.UserId);
   }
 
-  private scrollToBottom(): void {
+  private scrollToBottom (): void {
     // const scrollPane: any = this.el.nativeElement.querySelector(".msg-container");
     // scrollPane.scrollTop = scrollPane.scrollHeight;
   }

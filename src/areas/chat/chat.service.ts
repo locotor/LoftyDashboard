@@ -28,7 +28,7 @@ export class ChatService extends WebBaseService implements OnInit {
     }
     // 保存聊天记录(收到消息后需要保存)：
     public SaveChatMessage(sender: number, msg: string, targetId: number): Observable<Object> {
-        let url: string = "Message/SaveChatMessage";
+        let url: string = "/Message/SaveChatMessage";
         return this.getData(url, {
             sender: sender,
             msg: msg,
@@ -37,20 +37,20 @@ export class ChatService extends WebBaseService implements OnInit {
     }
 
     // 获取历史聊天人员
-    public GetLastChatUsers(pageInde: number, pageSize: number): Observable<Object> {
-        let url: string = "Account/GetLastChatUsers";
+    public GetLastChatUsers(pageIndex: number, pageSize: number): Observable<Object> {
+        let url: string = "/Account/GetLastChatUsers";
         return this.getData(url, {
-            pageInde: pageInde,
+            pageIndex: pageIndex,
             pageSize: pageSize
         });
     }
 
     // 获取单个聊天详情
-    public getChatDetail(targetId: number, pageInde: number, pageSize: number): Observable<Object> {
-        let url: string = "Account/GetChatMessage";
+    public getChatDetail(targetId: number, pageIndex: number, pageSize: number): Observable<Object> {
+        let url: string = "/Account/GetChatMessage";
         return this.getData(url, {
             targetId: targetId,
-            pageInde: pageInde,
+            pageIndex: pageIndex,
             pageSize: pageSize
         });
     }
