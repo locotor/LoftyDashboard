@@ -162,8 +162,6 @@ export class OrderManagementComponent implements OnInit {
         if (rspd) {
           this._message.create("success", "新增订单成功！");
           this.refreshData();
-        } else {
-          this._message.create("error", "新增订单失败！请联系开发人员");
         }
       });
     } else if (this.vm.pattern === "edit") {
@@ -174,8 +172,6 @@ export class OrderManagementComponent implements OnInit {
         if (rspd) {
           this._message.create("success", "修改订单成功！");
           this.refreshData();
-        } else {
-          this._message.create("error", "修改订单失败！请联系开发人员");
         }
       });
     }

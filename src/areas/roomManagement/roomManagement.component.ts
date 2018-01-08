@@ -285,8 +285,6 @@ export class RoomManagementComponent implements OnInit {
         if (rspd) {
           this._message.create("success", "新增房产信息成功！");
           this.refreshData();
-        } else {
-          this._message.create("error", "新增房产信息失败！请联系开发人员");
         }
       });
     } else if (this.vm.pattern === "edit") {
@@ -297,8 +295,6 @@ export class RoomManagementComponent implements OnInit {
         if (rspd) {
           this._message.create("success", "修改房产信息成功！");
           this.refreshData();
-        } else {
-          this._message.create("error", "修改房产信息失败！请联系开发人员");
         }
       });
     }
