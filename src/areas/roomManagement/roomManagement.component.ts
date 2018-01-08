@@ -159,7 +159,7 @@ export class RoomManagementComponent implements OnInit {
       Description: "",
       RoomInfoDetail: ""
     };
-    this.getFormControl("Configs").setValue(this.vm.configs);
+    this.getFormControl("Configs").setValue([]);
     this.getFormControl("IsBargainPrice").setValue(false);
     this.descriptionImgList = [];
     this.infoImgList = [];
@@ -414,6 +414,7 @@ export class RoomManagementComponent implements OnInit {
 
   handleFileUploaded(item: any, response: any, status: any, headers: any, type: string): void {
     let imglist: UploadFile[];
+    let url:string = JSON.parse(response).Data;
     switch (type) {
       case "titleImg":
         imglist = this.titleImgList;
@@ -430,7 +431,7 @@ export class RoomManagementComponent implements OnInit {
     }
     let img: UploadFile = imglist.find(img => img.name === item.file.name);
     if (img) {
-      img.url = this.trim(response, "\"");
+      img.url = this.trim(url, "\"");
       img.isReady = true;
       img.isSuccess = true;
       img.isUploaded = true;

@@ -21,8 +21,8 @@
         </nz-tabset>
     </nz-sider>
     <nz-content class="window-wrapper">
-        <div class="window-wrapper">
-            <nz-card class="message-window">
+        <div class="chat-content-wrapper">
+            <nz-card class="chat-window">
                 <ng-template #title>
                     <!-- <h1>{{"用户:"+currentMessage.User.name}}</h1> -->
                     <h1>test</h1>
@@ -32,8 +32,9 @@
                     <a>More</a>
                 </ng-template>
                 <ng-template #body>
-                    <!-- <p>{{currentMessage.Remark}}</p> -->
-                    <p>content-test</p>
+                    <div class="chat-msgs">
+
+                    </div>
                 </ng-template>
             </nz-card>
             <div class="msg-editor-container">
