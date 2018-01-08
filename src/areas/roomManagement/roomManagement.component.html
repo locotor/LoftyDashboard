@@ -2,7 +2,7 @@
     <nz-content class="content-wrapper">
         <nz-layout *ngIf="!vm.isFormVisible" class="room-table-wrapper">
             <nz-header style="background: #fff;">
-                <form nz-form class="filter-form" [nzLayout]="'inline'" (ngSubmit)="reset()">
+                <form nz-form class="filter-form" [nzLayout]="'inline'">
                     <div nz-form-item>
                         <div nz-form-label>
                             <label for="text">房间名/地点</label>
@@ -23,14 +23,16 @@
                             </nz-select>
                         </div>
                     </div>
-                    <button nz-button [nzType]="'primary'" (click)="reset()">
-                        <i class="anticon anticon-search"></i>
-                        <span>搜索</span>
-                    </button>
-                    <button nz-button [nzType]="'primary'" (click)="openAddDialog()">
-                        <i class="anticon anticon-file-add"></i>
-                        <span>新增房间</span>
-                    </button>
+                    <div nz-form-item>
+                        <button nz-button type="button" [nzType]="'primary'" (click)="reset()">
+                            <i class="anticon anticon-search"></i>
+                            <span>搜索</span>
+                        </button>
+                        <button nz-button type="button" [nzType]="'primary'" (click)="openAddDialog()">
+                            <i class="anticon anticon-file-add"></i>
+                            <span>新增房间</span>
+                        </button>
+                    </div>
                 </form>
             </nz-header>
             <nz-content>
@@ -131,7 +133,7 @@
                                                 <label for="Price">每晚价格</label>
                                             </div>
                                             <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="Price" [nzSize]="'large'"></nz-input>
+                                                <nz-input-number style="width:100%" formControlName="Price" [nzSize]="'large'"></nz-input-number>
                                                 <div nz-form-explain *ngIf="getFormControl('Price').dirty&&getFormControl('Price').hasError('required')">请输入每晚价格!</div>
                                             </div>
                                         </div>
@@ -142,7 +144,7 @@
                                                 <label for="RoomCount">房间数量</label>
                                             </div>
                                             <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="RoomCount" [nzSize]="'large'"></nz-input>
+                                                <nz-input-number style="width:100%" formControlName="RoomCount" [nzSize]="'large'"></nz-input-number>
                                                 <div nz-form-explain *ngIf="getFormControl('RoomCount').dirty&&getFormControl('RoomCount').hasError('required')">请输入房间数量!</div>
                                             </div>
                                         </div>
@@ -185,7 +187,7 @@
                                                 <label for="BedCount">床位数量</label>
                                             </div>
                                             <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="BedCount" [nzSize]="'large'"></nz-input>
+                                                <nz-input-number style="width:100%" formControlName="BedCount" [nzSize]="'large'"></nz-input-number>
                                                 <div nz-form-explain *ngIf="getFormControl('BedCount').dirty&&getFormControl('BedCount').hasError('required')">请输入房产床位数量!</div>
                                             </div>
                                         </div>
@@ -196,7 +198,7 @@
                                                 <label for="AdultCount">成人数量</label>
                                             </div>
                                             <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="AdultCount" [nzSize]="'large'"></nz-input>
+                                                <nz-input-number style="width:100%" formControlName="AdultCount" [nzSize]="'large'"></nz-input-number>
                                                 <div nz-form-explain *ngIf="getFormControl('AdultCount').dirty&&getFormControl('AdultCount').hasError('required')">请输入可容纳成人数量!</div>
                                             </div>
                                         </div>
@@ -207,7 +209,7 @@
                                                 <label for="ChildCount">儿童数量</label>
                                             </div>
                                             <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="ChildCount" [nzSize]="'large'"></nz-input>
+                                                <nz-input-number style="width:100%" formControlName="ChildCount" [nzSize]="'large'"></nz-input-number>
                                                 <div nz-form-explain *ngIf="getFormControl('ChildCount').dirty&&getFormControl('ChildCount').hasError('required')">请输入可容纳儿童数量!</div>
                                             </div>
                                         </div>
@@ -218,7 +220,7 @@
                                                 <label for="Area">房产面积</label>
                                             </div>
                                             <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="Area" [nzSize]="'large'"></nz-input>
+                                                <nz-input-number style="width:100%" formControlName="Area" [nzSize]="'large'"></nz-input-number>
                                                 <div nz-form-explain *ngIf="getFormControl('Area').dirty&&getFormControl('Area').hasError('required')">请输入房产面积!</div>
                                             </div>
                                         </div>
@@ -268,7 +270,7 @@
                                                 <label for="BargainPrice">特价价格</label>
                                             </div>
                                             <div nz-form-control nz-col [nzSpan]="17">
-                                                <nz-input formControlName="BargainPrice" [nzSize]="'large'"></nz-input>
+                                                <nz-input-number style="width:100%" formControlName="BargainPrice" [nzSize]="'large'"></nz-input-number>
                                             </div>
                                         </div>
                                     </div>
@@ -288,7 +290,10 @@
                                                 <label for="Configs">房间配置</label>
                                             </div>
                                             <div nz-form-control nz-col [nzSpan]="17">
-                                                <nz-checkbox-group formControlName="Configs"></nz-checkbox-group>
+                                                <!-- <nz-checkbox-group formControlName="Configs"></nz-checkbox-group> -->
+                                                <nz-select formControlName="Configs" [nzSize]="'large'" [nzPlaceHolder]="'请选择房间配置项'" [nzMode]="'multiple'">
+                                                    <nz-option *ngFor=" let o of this.vm.configs" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+                                                </nz-select>
                                                 <div nz-form-explain *ngIf="getFormControl('Configs').dirty&&getFormControl('Configs').hasError('required')">请选择房间配置!</div>
                                             </div>
                                         </div>
@@ -454,7 +459,7 @@
                                 <div nz-col [nzSpan]="8">
                                     <h2 class="form-title">轮播图组</h2>
                                     <div class="img-uploader">
-                                        <input type="file" ng2FileSelect [uploader]="bannerImgsUploader" multiple />
+                                        <input type="file" #bannerFileInput ng2FileSelect [uploader]="bannerImgsUploader" multiple (onFileSelected)="handleFileSelected('bannerImgsUploader',bannerFileInput)" />
                                         <nz-table #nzTable [nzScroll]="{y:440}" [nzDataSource]="bannerImgList" [nzIsPagination]="false">
                                             <ng-template #nzFixedHeader>
                                                 <thead nz-thead>

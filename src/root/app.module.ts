@@ -19,6 +19,8 @@ import { MessageModule } from "areas/message/message.module";
 import { PersonalModule } from "areas/personal/personal.module";
 import { RoomManagementModule } from "areas/roomManagement/roomManagement.module";
 import { OrderManagementModule } from "areas/orderManagement/orderManagement.module";
+import { RefundManagementModule } from "areas/refundManagement/refundManagement.module";
+
 
 @NgModule({
     imports: [
@@ -33,7 +35,8 @@ import { OrderManagementModule } from "areas/orderManagement/orderManagement.mod
         MessageModule,
         PersonalModule,
         RoomManagementModule,
-        OrderManagementModule
+        OrderManagementModule,
+        RefundManagementModule
     ],
     declarations: [
         AppComponent

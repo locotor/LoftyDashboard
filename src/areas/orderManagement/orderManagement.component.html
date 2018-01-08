@@ -2,7 +2,7 @@
     <nz-content class="content-wrapper">
         <nz-layout class="room-table-wrapper">
             <nz-header style="background: #fff;">
-                <form nz-form class="filter-form" [nzLayout]="'inline'" (ngSubmit)="this.reset()">
+                <form nz-form class="filter-form" [nzLayout]="'inline'">
                     <div nz-form-item>
                         <div nz-form-label>
                             <label for="orderId">订单号</label>
@@ -22,14 +22,16 @@
                             </nz-select>
                         </div>
                     </div>
-                    <button nz-button [nzType]="'primary'" (click)="reset()">
-                      <i class="anticon anticon-search"></i>
-                      <span>搜索</span>
-                  </button>
-                    <button nz-button [nzType]="'primary'" (click)="openAddDialog()">
-                      <i class="anticon anticon-file-add"></i>
-                      <span>新增订单</span>
-                  </button>
+                    <div nz-form-item>
+                        <button nz-button type="button" [nzType]="'primary'" (click)="reset()">
+                            <i class="anticon anticon-search"></i>
+                            <span>搜索</span>
+                        </button>
+                        <button nz-button type="button" [nzType]="'primary'" (click)="openAddDialog()">
+                            <i class="anticon anticon-file-add"></i>
+                            <span>新增订单</span>
+                        </button>
+                    </div>
                 </form>
             </nz-header>
             <nz-content>

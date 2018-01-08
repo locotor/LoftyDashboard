@@ -2,6 +2,7 @@ import { Injectable, OnInit } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs/observable";
 import { Subject } from "rxjs/Subject";
+import { NzNotificationService } from "ng-zorro-antd";
 import { WebBaseService } from "commons/base/web-base.service";
 import { AppContextService } from "commons/utilities/app-context.service";
 import { ChatMessage } from "models/chat/chat.message.model";
@@ -13,9 +14,11 @@ export class ChatService extends WebBaseService implements OnInit {
     private _receiveChatMessageSource = new Subject<ChatMessage>();
     public receiveChatMessageSource = this._receiveChatMessageSource.asObservable();
 
-    constructor(protected http: HttpClient,
-        private _appContext: AppContextService, ) {
-        super(http);
+    constructor(
+        protected http: HttpClient,
+        private _appContext: AppContextService,
+        protected notification: NzNotificationService) {
+        super(http, notification);
     }
 
     ngOnInit(): void {
