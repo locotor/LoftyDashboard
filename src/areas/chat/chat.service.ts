@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs/observable";
-import { Subject } from "rxjs/Subject";
 import { NzNotificationService } from "ng-zorro-antd";
 import { WebBaseService } from "commons/base/web-base.service";
 import { AppContextService } from "commons/utilities/app-context.service";
@@ -10,10 +9,6 @@ import { ChatMessage } from "models/chat/chat.message.model";
 
 @Injectable()
 export class ChatService extends WebBaseService implements OnInit {
-    private _singlrService: any;
-    private _receiveChatMessageSource = new Subject<ChatMessage>();
-    public receiveChatMessageSource = this._receiveChatMessageSource.asObservable();
-
     constructor(
         protected http: HttpClient,
         private _appContext: AppContextService,
@@ -22,12 +17,7 @@ export class ChatService extends WebBaseService implements OnInit {
     }
 
     ngOnInit(): void {
-        this._appContext.singlrService.client.ReceiveChatMessage = (detail: any) => {
-            console.log(JSON.parse(detail).MessageBody);
-            // 收到消息后需要保存
-            // this.SaveChatMessage()
-            this._receiveChatMessageSource.next(detail);
-        };
+        // todo
     }
     // 保存聊天记录(收到消息后需要保存)：
     public SaveChatMessage(sender: number, msg: string, targetId: number): Observable<Object> {
@@ -60,6 +50,6 @@ export class ChatService extends WebBaseService implements OnInit {
 
     // 发送聊天内容
     public sendChat(msg: string, userId: string): void {
-        this._singlrService.server.sendMessage(msg, userId, "");
+        this._appContext.singlrService.sendMessage(msg, userId, "");
     }
 }
