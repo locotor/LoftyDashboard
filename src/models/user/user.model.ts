@@ -1,5 +1,5 @@
 export default class User {
-    public userId: string;
+    public userId: number;
     public account: string;
     public type: number;
     public name?: string;
@@ -8,7 +8,7 @@ export default class User {
     public phoneNumber?: string;
 
     constructor(
-        userId: string,
+        userId: number,
         account: string,
         type: number,
         headImageUrl?: string,

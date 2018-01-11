@@ -16,11 +16,11 @@ export class ChatService extends WebBaseService implements OnInit {
         super(http, notification);
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         // todo
     }
     // 保存聊天记录(收到消息后需要保存)：
-    public SaveChatMessage(sender: number, msg: string, targetId: number): Observable<Object> {
+    public SaveChatMessage (sender: number, msg: string, targetId: number): Observable<Object> {
         let url: string = "/Message/SaveChatMessage";
         return this.getData(url, {
             sender: sender,
@@ -30,7 +30,7 @@ export class ChatService extends WebBaseService implements OnInit {
     }
 
     // 获取历史聊天人员
-    public GetLastChatUsers(pageIndex: number, pageSize: number): Observable<Object> {
+    public GetLastChatUsers (pageIndex: number, pageSize: number): Observable<Object> {
         let url: string = "/Account/GetLastChatUsers";
         return this.getData(url, {
             pageIndex: pageIndex,
@@ -39,7 +39,7 @@ export class ChatService extends WebBaseService implements OnInit {
     }
 
     // 获取单个聊天详情
-    public getChatDetail(targetId: number, pageIndex: number, pageSize: number): Observable<Object> {
+    public getChatDetail (targetId: number, pageIndex: number, pageSize: number): Observable<Object> {
         let url: string = "/Account/GetChatMessage";
         return this.getData(url, {
             targetId: targetId,
@@ -49,7 +49,13 @@ export class ChatService extends WebBaseService implements OnInit {
     }
 
     // 发送聊天内容
-    public sendChat(msg: string, userId: string): void {
-        this._appContext.singlrService.sendMessage(msg, userId, "");
+    public sendChat (msg: string, userId: number): void {
+        this.SaveChatMessage(
+            this._appContext.currentUser.userId,
+            msg,
+            userId
+        ).subscribe((rspd: any) => {
+            this._appContext.singlrService.sendMessage(msg, userId, "");
+        });
     }
 }

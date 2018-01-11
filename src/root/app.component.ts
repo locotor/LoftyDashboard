@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   ngOnInit (): void {
     let adminDom: JQuery<HTMLElement> = $("#admin-id");
     let adminUser: User = new User(
-      adminDom.data("user-id"),
+      Number.parseInt(adminDom.data("user-id")),
       adminDom.data("user-account"),
       adminDom.data("user-type"),
       "",

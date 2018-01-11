@@ -24,6 +24,7 @@
 
 .msg-content-wrapper {
     height: calc(100% - 210px);
+    overflow: auto;
     border-left: 1px solid #ccc;
 }
 

@@ -29,6 +29,11 @@ export class ChatPageComponent implements OnInit {
 
   ngOnInit (): void {
     this.getTagetList();
+    this._appContext.chatAnnounced$.subscribe(
+      (newChatMessage:ChatMessage) => {
+        this.getTagetList();
+      }
+    );
   }
 
   onEnter (content: string): void {

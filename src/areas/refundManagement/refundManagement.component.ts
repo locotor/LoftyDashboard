@@ -5,7 +5,7 @@ import { ActivatedRoute } from "@angular/router";
 import { NzMessageService } from "ng-zorro-antd";
 import { RefundManagementService } from "./refundManagement.service";
 import { Order } from "models/order/order.model";
-import { Refund } from 'models/order/refund.model';
+import { Refund } from "models/order/refund.model";
 
 const URL: string = "/Public/UploadFile";
 class UploadFile {

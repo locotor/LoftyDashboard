@@ -1,5 +1,5 @@
 export class ChatUser {
-    public UserId: string;
+    public UserId: number;
     public UserAccount: string;
     public NotReadCount: number;
     public HeadImageUrl?: string;

@@ -1,3 +1,4 @@
+import { RoomPriceConfig } from "./roomPriceConfig.model";
 export class Room {
     RoomId?: number;
     ConfigString: string; // 必填
@@ -24,4 +25,5 @@ export class Room {
     RoomInfoPic?: string;
     Photos?: string;
     DistrictDescription?: string;
+    PriceConfigs?: RoomPriceConfig[];
 }

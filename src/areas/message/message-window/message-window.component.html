@@ -18,7 +18,7 @@
     <div *ngIf="currentMessage?.MessageStatus<3" class="msg-editor-container">
         <editor [placeholder]="'说点什么吧'" (onOutput)="onEnter($event)"></editor>
     </div>
-    <div *ngIf="currentMessage?.MessageStatus==3" class="msg-content-wrapper">
+    <div *ngIf="currentMessage?.MessageStatus==3" class="msg-content-wrapper" style="height:208px">
         <nz-card [nzLoading]="isContentLoading" style="height:100%">
             <ng-template #title>
                 回复详情
@@ -26,7 +26,7 @@
             <ng-template #extra>
             </ng-template>
             <ng-template #body *ngIf="currentMessage">
-                <p class="message-content">{{currentMessage.Reply}}</p>
+                <p class="message-content" [innerHTML]="safeReplyHtml"></p>
                 <p class="create-time">{{"回复时间： " + currentMessage.ReplyTime}}</p>
             </ng-template>
         </nz-card>
