@@ -1,6 +1,6 @@
 export class RoomPriceConfig {
-    priceDateStart: Date;
-    priceDateEnd: Date;
-    pricePercent: number;
-    extraPrice: number;
+    PriceDateStart: Date;
+    PriceDateEnd: Date;
+    PricePercent: number;
+    ExtraPrice: number;
 }

@@ -341,7 +341,7 @@
                                             </thead>
                                             <tbody nz-tbody>
                                                 <tr nz-tbody-tr *ngFor="let item of descriptionImgList">
-                                                    <td nz-td>{{item.name}}</td>
+                                                    <td nz-td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
                                                     <td nz-td>
                                                         <span *ngIf="!item.isUploaded">
                                                             <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
@@ -394,7 +394,7 @@
                                             </thead>
                                             <tbody nz-tbody>
                                                 <tr nz-tbody-tr *ngFor="let item of infoImgList">
-                                                    <td nz-td>{{item?.name}}</td>
+                                                    <td nz-td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
                                                     <td nz-td>
                                                         <span *ngIf="!item.isUploaded">
                                                             <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
@@ -445,7 +445,7 @@
                                             </thead>
                                             <tbody nz-tbody>
                                                 <tr nz-tbody-tr *ngFor="let item of titleImgList">
-                                                    <td nz-td>{{item?.name}}</td>
+                                                    <td nz-td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
                                                     <td nz-td>
                                                         <span *ngIf="!item.isUploaded">
                                                             <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
@@ -493,7 +493,7 @@
                                             </ng-template>
                                             <tbody nz-tbody>
                                                 <tr nz-tbody-tr *ngFor="let item of bannerImgList">
-                                                    <td nz-td>{{item.name}}</td>
+                                                    <td nz-td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
                                                     <td nz-td>
                                                         <span *ngIf="!item.isUploaded">
                                                             <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
@@ -554,10 +554,10 @@
                                         </ng-template>
                                         <tbody nz-tbody>
                                             <tr nz-tbody-tr *ngFor="let config of priceConfigs">
-                                                <td nz-td>{{config.priceDateStart|date:'yyyy-mm-dd'}}</td>
-                                                <td nz-td>{{config.priceDateEnd|date:'yyyy-mm-dd'}}</td>
-                                                <td nz-td>{{config.pricePercent+"%"}}</td>
-                                                <td nz-td>{{config.extraPrice}}</td>
+                                                <td nz-td>{{config.PriceDateStart|date:'yyyy-mm-dd'}}</td>
+                                                <td nz-td>{{config.PriceDateEnd|date:'yyyy-mm-dd'}}</td>
+                                                <td nz-td>{{config.PricePercent+"%"}}</td>
+                                                <td nz-td>{{config.ExtraPrice}}</td>
                                                 <td nz-td>
                                                     <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="vm.isPriceCalenderFormVisible=true;this.priceConfigForm=config">编辑</button>
                                                     <span nz-table-divider></span>
@@ -586,7 +586,7 @@
     <!-- 预览图片 -->
     <nz-modal [nzVisible]="vm.isPreviewVisible" [nzTitle]="'图片详情'" [nzClosable]="false" [nzContent]="modalContent" [nzFooter]="modalFooter">
         <ng-template #modalContent>
-            <img [src]="this.vm.previewImgUrl" style="width: 100%" />
+            <div [innerHtml]="this.vm.previewImgHtml" style="width: 100%"></div>
         </ng-template>
         <ng-template #modalFooter>
             <button nz-button [nzType]="'primary'" (click)="vm.isPreviewVisible=false">关 闭</button>
@@ -601,9 +601,9 @@
                         <label for="StartTime" nz-form-item-required>开始时间</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                        <nz-datepicker name="priceDateStart" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.priceDateStart" #priceDateStart="ngModel"
+                        <nz-datepicker name="PriceDateStart" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.PriceDateStart" #PriceDateStart="ngModel"
                             [nzDisabledDate]="disabledStartDate" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
-                        <div nz-form-explain *ngIf="priceDateStart.dirty&&priceDateStart.hasError('required')">请输入价格配置开始时间!</div>
+                        <div nz-form-explain *ngIf="PriceDateStart.dirty&&PriceDateStart.hasError('required')">请输入价格配置开始时间!</div>
                     </div>
                 </div>
                 <div nz-form-item nz-row>
@@ -611,9 +611,9 @@
                         <label for="EndTime" nz-form-item-required>结束时间</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                        <nz-datepicker name="priceDateEnd" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.priceDateEnd" #priceDateEnd="ngModel"
+                        <nz-datepicker name="PriceDateEnd" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.PriceDateEnd" #PriceDateEnd="ngModel"
                             [nzDisabledDate]="disabledStartDate" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
-                        <div nz-form-explain *ngIf="priceDateEnd.dirty&&priceDateEnd.hasError('required')">请输入价格配置结束时间!</div>
+                        <div nz-form-explain *ngIf="PriceDateEnd.dirty&&PriceDateEnd.hasError('required')">请输入价格配置结束时间!</div>
                     </div>
                 </div>
                 <div nz-form-item nz-row>
@@ -621,17 +621,17 @@
                         <label for="PricePercent" nz-form-item-required>百分比</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                        <nz-input-number name="PricePercent" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.pricePercent" #pricePercent="ngModel"
-                            [nzMin]="1" [nzMax]="100" [nzStep]="1" [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
-                        <div nz-form-explain *ngIf="pricePercent.dirty&&pricePercent.hasError('required')">请输入调整百分比!</div>
+                        <nz-input-number name="PricePercent" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.PricePercent" #PricePercent="ngModel"
+                            [nzMin]="1" [nzStep]="10" [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
+                        <div nz-form-explain *ngIf="PricePercent.dirty&&PricePercent.hasError('required')">请输入调整百分比!</div>
                     </div>
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="5">
-                        <label for="extraPrice">额外调整</label>
+                        <label for="ExtraPrice">额外调整</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="17">
-                        <nz-input-number name="extraPrice" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.extraPrice"></nz-input-number>
+                        <nz-input-number name="ExtraPrice" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.ExtraPrice"></nz-input-number>
                     </div>
                 </div>
                 <div nz-form-item nz-row>

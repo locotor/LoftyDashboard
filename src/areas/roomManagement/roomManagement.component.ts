@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { DomSanitizer, SafeUrl, SafeHtml } from "@angular/platform-browser";
 import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { NzMessageService } from "ng-zorro-antd";
@@ -40,6 +40,7 @@ export class RoomManagementComponent implements OnInit {
     isPriceCalenderFormVisible: false,
     isSubmitLoading: false,
     previewImgUrl: null,
+    previewImgHtml:null,
     pattern: "add",
     roomTypes: [
       { name: "民宿", value: 1 },
@@ -66,10 +67,10 @@ export class RoomManagementComponent implements OnInit {
       RoomInfoDetail: ""
     };
   priceConfigForm: RoomPriceConfig = {
-    priceDateStart: null,
-    priceDateEnd: null,
-    pricePercent: 1,
-    extraPrice: 0
+    PriceDateStart: null,
+    PriceDateEnd: null,
+    PricePercent: 1,
+    ExtraPrice: 0
   };
   priceConfigs: RoomPriceConfig[] = [];
   titleImgUploader: FileUploader = new FileUploader({ url: URL });
@@ -453,6 +454,7 @@ export class RoomManagementComponent implements OnInit {
   // 查看图片
   showModal (item: UploadFile): void {
     this.vm.previewImgUrl = this.sanitizer.bypassSecurityTrustUrl(item.url);
+    this.vm.previewImgHtml = this.sanitizer.bypassSecurityTrustHtml(`<img src=${item.url} style="width: 100%" />`);
     this.vm.isPreviewVisible = true;
   }
 
@@ -464,7 +466,7 @@ export class RoomManagementComponent implements OnInit {
   parserPercent = value => value.replace("%", "");
 
   disabledStartDate = (startValue: Date): boolean => {
-    let endDate: Date = this.priceConfigForm.priceDateEnd;
+    let endDate: Date = this.priceConfigForm.PriceDateEnd;
     if (!endDate || !startValue) {
       return false;
     }
@@ -472,7 +474,7 @@ export class RoomManagementComponent implements OnInit {
   }
 
   disabledEndDate = (endValue: Date): boolean => {
-    let startDate: Date = this.priceConfigForm.priceDateStart;
+    let startDate: Date = this.priceConfigForm.PriceDateStart;
     if (!startDate || !endValue) {
       return false;
     }
@@ -484,10 +486,10 @@ export class RoomManagementComponent implements OnInit {
       this.priceConfigs.push(this.priceConfigForm);
     }
     this.priceConfigForm = {
-      priceDateStart: null,
-      priceDateEnd: null,
-      pricePercent: 1,
-      extraPrice: 0
+      PriceDateStart: null,
+      PriceDateEnd: null,
+      PricePercent: 1,
+      ExtraPrice: 0
     };
     this.vm.isPriceCalenderFormVisible = false;
   }
