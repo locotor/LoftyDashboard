@@ -8,7 +8,7 @@ export class Room {
     Longitude?: number;
     Latitude?: number;
     Address?: string;
-    Price: number;
+    BasePrice: number;
     // 1民宿2别墅3酒店
     RoomTypeValue: number;
     RoomCount: number;

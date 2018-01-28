@@ -40,7 +40,7 @@ export class RoomManagementComponent implements OnInit {
     isPriceCalenderFormVisible: false,
     isSubmitLoading: false,
     previewImgUrl: null,
-    previewImgHtml:null,
+    previewImgHtml: null,
     pattern: "add",
     roomTypes: [
       { name: "民宿", value: 1 },
@@ -68,18 +68,21 @@ export class RoomManagementComponent implements OnInit {
     };
   priceConfigForm: RoomPriceConfig = {
     PriceDateStart: null,
+    PriceDateStartString: "",
     PriceDateEnd: null,
+    PriceDateEndString: "",
     PricePercent: 1,
     ExtraPrice: 0
   };
   priceConfigs: RoomPriceConfig[] = [];
   titleImgUploader: FileUploader = new FileUploader({ url: URL });
-  titleImgList: UploadFile[] = [];
   descriptionImgUploader: FileUploader = new FileUploader({ url: URL });
-  descriptionImgList: UploadFile[] = [];
   infoImgUploader: FileUploader = new FileUploader({ url: URL });
-  infoImgList: UploadFile[] = [];
   bannerImgsUploader: FileUploader = new FileUploader({ url: URL });
+  // 图片列表
+  titleImgList: UploadFile[] = [];
+  descriptionImgList: UploadFile[] = [];
+  infoImgList: UploadFile[] = [];
   bannerImgList: UploadFile[] = [];
 
   // 表格数据项
@@ -91,7 +94,7 @@ export class RoomManagementComponent implements OnInit {
     total: 0,
   };
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.refreshData();
     // 上传器事件绑定
     this.bannerImgsUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -109,7 +112,7 @@ export class RoomManagementComponent implements OnInit {
     // 表单验证规则
     this.roomValidateForm = new FormGroup({
       RoomName: new FormControl("", [Validators.required]),
-      Price: new FormControl("", [Validators.required]),
+      BasePrice: new FormControl("", [Validators.required]),
       RoomCount: new FormControl("", [Validators.required]),
       DistrictId: new FormControl(1, [Validators.required]),
       Configs: new FormControl([], [Validators.required]),
@@ -143,7 +146,7 @@ export class RoomManagementComponent implements OnInit {
   /**
    * 重新获取表格数据
    */
-  reset (): void {
+  reset(): void {
     this.refreshData(true);
   }
 
@@ -151,7 +154,7 @@ export class RoomManagementComponent implements OnInit {
    * 刷新数据
    * @param reset 是否重置表格数据
    */
-  refreshData (reset: boolean = false): void {
+  refreshData(reset: boolean = false): void {
     if (reset) {
       this.tablePagination.pageIndex = 1;
     }
@@ -171,12 +174,13 @@ export class RoomManagementComponent implements OnInit {
   /**
    * 打开房产新建列表
    */
-  openAddDialog (): void {
+  openAddDialog(): void {
     this.vm.pattern = "add";
     this.roomValidateForm.reset();
     this.getFormControl("Configs").setValue([]);
     this.getFormControl("IsBargainPrice").setValue(false);
     this.priceConfigs = [];
+    this.titleImgList= [];
     this.descriptionImgList = [];
     this.infoImgList = [];
     this.bannerImgList = [];
@@ -187,7 +191,7 @@ export class RoomManagementComponent implements OnInit {
    * 打开房产编辑界面
    * @param currentRoom 房产对象
    */
-  handleEditClick (currentRoom: Room): void {
+  handleEditClick(currentRoom: Room): void {
     this.currentRoomId = currentRoom.RoomId;
     let selectedConfigIds: string[] = [];
     this.vm.configs.forEach((item: any) => {
@@ -199,7 +203,7 @@ export class RoomManagementComponent implements OnInit {
     this.vm.pattern = "edit";
     this.roomValidateForm.setValue({
       RoomName: currentRoom.RoomName,
-      Price: currentRoom.Price,
+      BasePrice: currentRoom.BasePrice,
       RoomCount: currentRoom.RoomCount,
       Longitude: currentRoom.Longitude,
       Latitude: currentRoom.Latitude,
@@ -245,7 +249,7 @@ export class RoomManagementComponent implements OnInit {
     }] : [];
     this.infoImgList = currentRoom.RoomInfoPic ? [{
       name: currentRoom.RoomInfoPic.split("/").pop(),
-      url: currentRoom.DescriptionPic,
+      url: currentRoom.RoomInfoPic,
       isError: false,
       isReady: true,
       isSuccess: true,
@@ -269,7 +273,7 @@ export class RoomManagementComponent implements OnInit {
    * 删除房产信息
    * @param data 房产对象
    */
-  handleDelteClick (data: Room): void {
+  handleDelteClick(data: Room): void {
     this._roomService.deleteRoom(data.RoomId).subscribe(rspd => {
       if (rspd) {
         this._message.create("success", "删除房产信息成功");
@@ -279,7 +283,7 @@ export class RoomManagementComponent implements OnInit {
   }
 
   // 处理表单提交
-  handleFormSubmit (): void {
+  handleFormSubmit(): void {
     let data: any = {};
     // 组装数据
     Object.assign(data, this.roomValidateForm.value);
@@ -317,7 +321,7 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  handleFileSelected (uploaderName: string, input: any): void {
+  handleFileSelected(uploaderName: string, input: any): void {
     let uploader: FileUploader = this[uploaderName],
       imglist: UploadFile[];
     switch (uploaderName) {
@@ -391,13 +395,13 @@ export class RoomManagementComponent implements OnInit {
     input.value = "";
   }
 
-  uploadImg (imgFile: UploadFile, loader: string): void {
+  uploadImg(imgFile: UploadFile, loader: string): void {
     let uploader: FileUploader = this[loader];
     let file: FileItem = uploader.queue.find(file => file.file.name === imgFile.name);
     file.upload();
   }
 
-  removeImg (imgFile: UploadFile, type: string): void {
+  removeImg(imgFile: UploadFile, type: string): void {
     let imglist: UploadFile[];
     let uploader: FileUploader;
     switch (type) {
@@ -425,7 +429,7 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  handleFileUploaded (item: any, response: any, status: any, headers: any, type: string): void {
+  handleFileUploaded(item: any, response: any, status: any, headers: any, type: string): void {
     let imglist: UploadFile[];
     let url: string = JSON.parse(response).Data;
     switch (type) {
@@ -452,13 +456,13 @@ export class RoomManagementComponent implements OnInit {
   }
 
   // 查看图片
-  showModal (item: UploadFile): void {
+  showModal(item: UploadFile): void {
     this.vm.previewImgUrl = this.sanitizer.bypassSecurityTrustUrl(item.url);
     this.vm.previewImgHtml = this.sanitizer.bypassSecurityTrustHtml(`<img src=${item.url} style="width: 100%" />`);
     this.vm.isPreviewVisible = true;
   }
 
-  getFormControl (name: string): AbstractControl {
+  getFormControl(name: string): AbstractControl {
     return this.roomValidateForm.controls[name];
   }
 
@@ -481,24 +485,38 @@ export class RoomManagementComponent implements OnInit {
     return endValue.getTime() <= startDate.getTime();
   }
 
-  handleAddPriceCalender (): void {
+  handleAddPriceCalender(): void {
     if (this.priceConfigs.indexOf(this.priceConfigForm) < 0) {
+      this.priceConfigForm.PriceDateStartString = this.formatDate(this.priceConfigForm.PriceDateStart);
+      this.priceConfigForm.PriceDateEndString = this.formatDate(this.priceConfigForm.PriceDateEnd);
       this.priceConfigs.push(this.priceConfigForm);
     }
     this.priceConfigForm = {
       PriceDateStart: null,
+      PriceDateStartString: "",
       PriceDateEnd: null,
+      PriceDateEndString: "",
       PricePercent: 1,
       ExtraPrice: 0
     };
     this.vm.isPriceCalenderFormVisible = false;
   }
 
-  trim (origin: string, char: string): string {
+  trim(origin: string, char: string): string {
     if (char) {
       return origin.replace(new RegExp(`^\\${char}+|\\${char}+$`, "g"), "");
     }
     return origin.replace(/^\s+|\s+$/g, "");
+  }
+
+  private formatDate(date: Date): string {
+    let Y: number = date.getFullYear(),
+      M: number = date.getMonth() + 1,
+      d: number = date.getDay();
+    let yearString:string = Y.toString().slice(2);
+    let monthString: string = M >= 10 ? "M" : "0" + M;
+    let dayString: string = d >= 10 ? "d" : "0" + d;
+    return `${yearString}-${monthString}-${dayString}`;
   }
 }
 
