@@ -1,7 +1,7 @@
 export default function uuid (): string {
     let i: number,
         random: number,
-        result: string;
+        result: string = "";
 
     for (i = 0; i < 32; i++) {
         // tslint:disable-next-line:no-bitwise

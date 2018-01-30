@@ -36,8 +36,9 @@
                 </form>
             </nz-header>
             <nz-content>
-                <nz-table #nzTable nzShowSizeChanger [nzAjaxData]="dataSet" [nzTotal]="tablePagination.total" [nzLoading]="vm.tableLoading" [nzBordered]="true" [nzShowSizeChanger]="false" [nzIsPageIndexReset]="false" [(nzPageIndex)]="tablePagination.pageIndex" [(nzPageSize)]="tablePagination.pageSize"
-                    (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData(true)">
+                <nz-table #nzTable nzShowSizeChanger [nzAjaxData]="dataSet" [nzTotal]="tablePagination.total" [nzLoading]="vm.tableLoading"
+                    [nzBordered]="true" [nzShowSizeChanger]="false" [nzIsPageIndexReset]="false" [(nzPageIndex)]="tablePagination.pageIndex"
+                    [(nzPageSize)]="tablePagination.pageSize" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData(true)">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
@@ -95,9 +96,9 @@
                                 <span>
                                     <a (click)="handleEditClick(data)">编辑</a>
                                     <span nz-table-divider></span>
-                                <nz-popconfirm [nzTitle]="'确定要删除这个房间吗？'" (nzOnConfirm)="handleDelteClick(data)">
-                                    <a nz-popconfirm>删除</a>
-                                </nz-popconfirm>
+                                    <nz-popconfirm [nzTitle]="'确定要删除这个房间吗？'" (nzOnConfirm)="handleDelteClick(data)">
+                                        <a nz-popconfirm>删除</a>
+                                    </nz-popconfirm>
                                 </span>
                             </td>
                         </tr>
@@ -321,7 +322,8 @@
                                     <h2 class="form-title">房产简介</h2>
                                     <div class="img-uploader">
                                         <span>简介配图:</span>
-                                        <input type="file" ng2FileSelect #descriptionFileInput [uploader]="descriptionImgUploader" (onFileSelected)="handleFileSelected('descriptionImgUploader',descriptionFileInput)" />
+                                        <input type="file" ng2FileSelect #descriptionFileInput [uploader]="descriptionImgUploader" (onFileSelected)="handleFileSelected('descriptionImgUploader',descriptionFileInput)"
+                                        />
                                         <!-- 图片上传列表 -->
                                         <nz-table #nzTable [nzDataSource]="descriptionImgList" [nzIsPagination]="false">
                                             <thead nz-thead>
@@ -352,8 +354,8 @@
                                                         </span>
                                                     </td>
                                                     <td nz-td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'descriptionImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                            上传
+                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'descriptionImgUploader')" [nzLoading]="item.isUploading" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            {{item.isUploading?"上传中":"上传"}}
                                                         </button>
                                                         <span nz-table-divider></span>
                                                         <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
@@ -373,7 +375,8 @@
                                     <h2 class="form-title">房产详情</h2>
                                     <div class="img-uploader">
                                         <span>详情配图:</span>
-                                        <input type="file" ng2FileSelect #infoFileInput [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader',infoFileInput)" />
+                                        <input type="file" ng2FileSelect #infoFileInput [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader',infoFileInput)"
+                                        />
                                         <!-- 图片上传列表 -->
                                         <nz-table #nzTable [nzDataSource]="infoImgList" [nzIsPagination]="false">
                                             <thead nz-thead>
@@ -404,8 +407,8 @@
                                                         </span>
                                                     </td>
                                                     <td nz-td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'infoImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                            上传
+                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'infoImgUploader')" [nzLoading]="item.isUploading" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            {{item.isUploading?"上传中":"上传"}}
                                                         </button>
                                                         <span nz-table-divider></span>
                                                         <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
@@ -423,7 +426,8 @@
                                     <h2 class="form-title" style="margin-top:15px">房产封面</h2>
                                     <div class="img-uploader">
                                         <span>房产封面:</span>
-                                        <input type="file" ng2FileSelect #titleFileInput [uploader]="titleImgUploader" (onFileSelected)="handleFileSelected('titleImgUploader',titleFileInput)" />
+                                        <input type="file" ng2FileSelect #titleFileInput [uploader]="titleImgUploader" (onFileSelected)="handleFileSelected('titleImgUploader',titleFileInput)"
+                                        />
                                         <!-- 图片上传列表 -->
                                         <nz-table #nzTable [nzDataSource]="titleImgList" [nzIsPagination]="false">
                                             <thead nz-thead>
@@ -454,7 +458,9 @@
                                                         </span>
                                                     </td>
                                                     <td nz-td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'titleImgUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">上传</button>
+                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'titleImgUploader')" [nzLoading]="item.isUploading" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            {{item.isUploading?"上传中":"上传"}}
+                                                        </button>
                                                         <span nz-table-divider></span>
                                                         <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
                                                         <span nz-table-divider></span>
@@ -469,7 +475,8 @@
                                 <div nz-col [nzSpan]="8">
                                     <h2 class="form-title">轮播图组</h2>
                                     <div class="img-uploader">
-                                        <input type="file" #bannerFileInput ng2FileSelect [uploader]="bannerImgsUploader" multiple (onFileSelected)="handleFileSelected('bannerImgsUploader',bannerFileInput)" />
+                                        <input type="file" #bannerFileInput ng2FileSelect [uploader]="bannerImgsUploader" multiple (onFileSelected)="handleFileSelected('bannerImgsUploader',bannerFileInput)"
+                                        />
                                         <nz-table #nzTable [nzScroll]="{y:440}" [nzDataSource]="bannerImgList" [nzIsPagination]="false">
                                             <ng-template #nzFixedHeader>
                                                 <thead nz-thead>
@@ -501,8 +508,8 @@
                                                         </span>
                                                     </td>
                                                     <td nz-td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'bannerImgsUploader')" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                            上传
+                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'bannerImgsUploader')" [nzLoading]="item.isUploading" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                            {{item.isUploading?"上传中":"上传"}}
                                                         </button>
                                                         <span nz-table-divider></span>
                                                         <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
@@ -521,11 +528,11 @@
                                 房间价格配置
                             </ng-template>
                             <div style="margin-bottom: 16px;">
-                                <button type="button" nz-button [nzType]="'primary'" (click)="vm.isPriceCalenderFormVisible=true">新增</button>
+                                <button type="button" nz-button [nzType]="'primary'" (click)="vm.isPriceCalenderFormVisible=true;">新增</button>
                             </div>
                             <div nz-row>
                                 <div nz-col [nzSpan]="12">
-                                    <nz-table #nzTable [nzScroll]="{y:540}" [nzDataSource]="priceConfigs" [nzIsPagination]="false">
+                                    <nz-table #nzTable [nzScroll]="{y:500}" [nzDataSource]="priceConfigs" [nzBordered]="true" [nzIsPagination]="false">
                                         <ng-template #nzFixedHeader>
                                             <thead nz-thead>
                                                 <tr>
@@ -535,13 +542,13 @@
                                                     <th nz-th [nzWidth]="'150px'">
                                                         <span>结束时间</span>
                                                     </th>
-                                                    <th nz-th [nzWidth]="'150px'">
+                                                    <th nz-th [nzWidth]="'80px'">
                                                         <span>百分比</span>
                                                     </th>
-                                                    <th nz-th [nzWidth]="'150px'">
+                                                    <th nz-th [nzWidth]="'80px'">
                                                         <span>额外价格</span>
                                                     </th>
-                                                    <th nz-th>
+                                                    <th nz-th [nzWidth]="'150px'">
                                                         <span>操作</span>
                                                     </th>
                                                 </tr>
@@ -549,19 +556,18 @@
                                         </ng-template>
                                         <tbody nz-tbody>
                                             <tr nz-tbody-tr *ngFor="let config of priceConfigs">
-                                                <td nz-td>{{config.PriceDateStartString}}</td>
-                                                <td nz-td>{{config.PriceDateEndString}}</td>
+                                                <td nz-td>{{"20"+config.PriceDateStartString}}</td>
+                                                <td nz-td>{{"20"+config.PriceDateEndString}}</td>
                                                 <td nz-td>{{config.PricePercent+"%"}}</td>
                                                 <td nz-td>{{config.ExtraPrice}}</td>
                                                 <td nz-td>
-                                                    <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="vm.isPriceCalenderFormVisible=true;this.priceConfigForm=config">编辑</button>
+                                                    <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="openEditPriceConfigForm(config)">编辑</button>
                                                     <span nz-table-divider></span>
                                                     <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="priceConfigs.splice(priceConfigs.indexOf(config),1)">移除</button>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </nz-table>
-
                                 </div>
                             </div>
                         </nz-tab>
@@ -570,7 +576,7 @@
             </nz-content>
             <nz-footer class="form-footer">
                 <span style="float:right">
-                    <button nz-button type="button" [nzType]="'danger'" (click)="vm.isFormVisible=false">取消</button>
+                    <button nz-button type="button" [nzType]="'danger'" (click)="vm.isFormVisible=false;vm.isSubmitLoading=false">取消</button>
                     <button nz-button type="button" [nzType]="'primary'" [nzLoading]="vm.isSubmitLoading" [disabled]="this.roomValidateForm.invalid"
                         (click)="handleFormSubmit()">保存</button>
                 </span>
@@ -590,32 +596,35 @@
     <!-- 价格日历编辑/新增 -->
     <nz-modal [nzVisible]="vm.isPriceCalenderFormVisible" [nzTitle]="'新增价格日历'" [nzContent]="priceCalenderFormContent" [nzFooter]="priceCalenderFormFooter">
         <ng-template #priceCalenderFormContent>
-            <form nz-form #priceConfigFormRef="ngForm">
+            <form nz-form [formGroup]="priceConfigForm">
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="5">
                         <label for="StartTime" nz-form-item-required>开始时间</label>
                     </div>
-                    <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                        <nz-datepicker name="PriceDateStart" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.PriceDateStart" #PriceDateStart="ngModel" [nzDisabledDate]="disabledStartDate" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
-                        <div nz-form-explain *ngIf="PriceDateStart.dirty&&PriceDateStart.hasError('required')">请输入价格配置开始时间!</div>
+                    <div nz-form-control nz-col [nzSpan]="17">
+                        <nz-datepicker style="width:100%" [nzSize]="'large'" formControlName="PriceDateStart" [nzAllowClear]="true" [nzDisabledDate]="disabledStartDate"
+                            [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
+                        <div nz-form-explain *ngIf="getPriceFormControl('PriceDateStart').dirty&&getPriceFormControl('PriceDateStart').hasError('required')">请输入价格配置开始时间!</div>
                     </div>
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="5">
                         <label for="EndTime" nz-form-item-required>结束时间</label>
                     </div>
-                    <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                        <nz-datepicker name="PriceDateEnd" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.PriceDateEnd" #PriceDateEnd="ngModel" [nzDisabledDate]="disabledStartDate" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
-                        <div nz-form-explain *ngIf="PriceDateEnd.dirty&&PriceDateEnd.hasError('required')">请输入价格配置结束时间!</div>
+                    <div nz-form-control nz-col [nzSpan]="17">
+                        <nz-datepicker style="width:100%" [nzSize]="'large'" formControlName="PriceDateEnd" [nzAllowClear]="true" [nzDisabledDate]="disabledEndDate"
+                            [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
+                        <div nz-form-explain *ngIf="getPriceFormControl('PriceDateEnd').dirty&&getPriceFormControl('PriceDateEnd').hasError('required')">请输入价格配置结束时间!</div>
                     </div>
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="5">
                         <label for="PricePercent" nz-form-item-required>百分比</label>
                     </div>
-                    <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                        <nz-input-number name="PricePercent" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.PricePercent" #PricePercent="ngModel" [nzMin]="1" [nzStep]="10" [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
-                        <div nz-form-explain *ngIf="PricePercent.dirty&&PricePercent.hasError('required')">请输入调整百分比!</div>
+                    <div nz-form-control nz-col [nzSpan]="17">
+                        <nz-input-number style="width:100%" [nzSize]="'large'" formControlName="PricePercent" [nzMin]="0" [nzStep]="10" [nzFormatter]="formatterPercent"
+                            [nzParser]="parserPercent"></nz-input-number>
+                        <div nz-form-explain *ngIf="getPriceFormControl('PricePercent').dirty&&getPriceFormControl('PricePercent').hasError('min')">调整百分比不能为0!</div>
                     </div>
                 </div>
                 <div nz-form-item nz-row>
@@ -623,13 +632,14 @@
                         <label for="ExtraPrice">额外调整</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="17">
-                        <nz-input-number name="ExtraPrice" style="width:100%" [nzSize]="'large'" [(ngModel)]="priceConfigForm.ExtraPrice"></nz-input-number>
+                        <nz-input-number style="width:100%" [nzSize]="'large'" formControlName="ExtraPrice"></nz-input-number>
                     </div>
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-form-control nz-col [nzSpan]="10" [nzOffset]="5">
                         <button type="button" nz-button [nzType]="'default'" [nzSize]="'large'" (click)="vm.isPriceCalenderFormVisible=false;">取消</button>
-                        <button type="button" nz-button [nzType]="'primary'" [disabled]="priceConfigFormRef.invalid" [nzSize]="'large'" (click)="handleAddPriceCalender();" [nzLoading]="vm.isSubmitLoading">保存</button>
+                        <button type="button" nz-button [nzType]="'primary'" [disabled]="priceConfigForm.invalid" [nzSize]="'large'" (click)="handleAddPriceCalender();"
+                            [nzLoading]="vm.isSubmitLoading">保存</button>
                     </div>
                 </div>
             </form>

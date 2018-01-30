@@ -7,6 +7,8 @@ import { RoomManagementService } from "./roomManagement.service";
 import { FileUploader, FileSelectDirective, FileItem } from "ng2-file-upload";
 import { Room } from "models/room/room.model";
 import { RoomPriceConfig } from "models/room/roomPriceConfig.model";
+import { NgForm } from "@angular/forms";
+import uuid from "commons/utilities/uuid";
 
 const URL: string = "/Public/UploadFile";
 class UploadFile {
@@ -33,6 +35,12 @@ export class RoomManagementComponent implements OnInit {
   }
 
   /*--- properties---*/
+  // 图片上传器
+  titleImgUploader: FileUploader = new FileUploader({ url: URL });
+  descriptionImgUploader: FileUploader = new FileUploader({ url: URL });
+  infoImgUploader: FileUploader = new FileUploader({ url: URL });
+  bannerImgsUploader: FileUploader = new FileUploader({ url: URL });
+
   vm = {
     tableLoading: true,
     isFormVisible: false,
@@ -51,6 +59,15 @@ export class RoomManagementComponent implements OnInit {
     configs: []
   };
 
+  // 表格数据项
+  currentRoomId: number;
+  dataSet: Room[] = [];
+  tablePagination = {
+    pageSize: 10,
+    pageIndex: 1,
+    total: 0,
+  };
+
   // 搜索表单
   filterForm = {
     text: "",
@@ -66,35 +83,16 @@ export class RoomManagementComponent implements OnInit {
       Description: "",
       RoomInfoDetail: ""
     };
-  priceConfigForm: RoomPriceConfig = {
-    PriceDateStart: null,
-    PriceDateStartString: "",
-    PriceDateEnd: null,
-    PriceDateEndString: "",
-    PricePercent: 1,
-    ExtraPrice: 0
-  };
+  priceConfigForm: FormGroup;
   priceConfigs: RoomPriceConfig[] = [];
-  titleImgUploader: FileUploader = new FileUploader({ url: URL });
-  descriptionImgUploader: FileUploader = new FileUploader({ url: URL });
-  infoImgUploader: FileUploader = new FileUploader({ url: URL });
-  bannerImgsUploader: FileUploader = new FileUploader({ url: URL });
   // 图片列表
   titleImgList: UploadFile[] = [];
   descriptionImgList: UploadFile[] = [];
   infoImgList: UploadFile[] = [];
   bannerImgList: UploadFile[] = [];
 
-  // 表格数据项
-  currentRoomId: number;
-  dataSet: Room[] = [];
-  tablePagination = {
-    pageSize: 10,
-    pageIndex: 1,
-    total: 0,
-  };
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.refreshData();
     // 上传器事件绑定
     this.bannerImgsUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -112,7 +110,7 @@ export class RoomManagementComponent implements OnInit {
     // 表单验证规则
     this.roomValidateForm = new FormGroup({
       RoomName: new FormControl("", [Validators.required]),
-      BasePrice: new FormControl("", [Validators.required]),
+      BasePrice: new FormControl(0, [Validators.required]),
       RoomCount: new FormControl("", [Validators.required]),
       DistrictId: new FormControl(1, [Validators.required]),
       Configs: new FormControl([], [Validators.required]),
@@ -127,6 +125,13 @@ export class RoomManagementComponent implements OnInit {
       BargainPrice: new FormControl(null),
       Introduction: new FormControl(null),
       Address: new FormControl(null)
+    });
+    this.priceConfigForm = new FormGroup({
+      UID: new FormControl(""),
+      PriceDateStart: new FormControl(null, [Validators.required]),
+      PriceDateEnd: new FormControl(null, [Validators.required]),
+      PricePercent: new FormControl(0, [Validators.min(1)]),
+      ExtraPrice: new FormControl(0),
     });
     // 获取配置项和地址
     this.route.data.subscribe(resolveData => {
@@ -146,7 +151,7 @@ export class RoomManagementComponent implements OnInit {
   /**
    * 重新获取表格数据
    */
-  reset(): void {
+  reset (): void {
     this.refreshData(true);
   }
 
@@ -154,7 +159,7 @@ export class RoomManagementComponent implements OnInit {
    * 刷新数据
    * @param reset 是否重置表格数据
    */
-  refreshData(reset: boolean = false): void {
+  refreshData (reset: boolean = false): void {
     if (reset) {
       this.tablePagination.pageIndex = 1;
     }
@@ -174,13 +179,13 @@ export class RoomManagementComponent implements OnInit {
   /**
    * 打开房产新建列表
    */
-  openAddDialog(): void {
+  openAddDialog (): void {
     this.vm.pattern = "add";
     this.roomValidateForm.reset();
     this.getFormControl("Configs").setValue([]);
     this.getFormControl("IsBargainPrice").setValue(false);
     this.priceConfigs = [];
-    this.titleImgList= [];
+    this.titleImgList = [];
     this.descriptionImgList = [];
     this.infoImgList = [];
     this.bannerImgList = [];
@@ -191,7 +196,7 @@ export class RoomManagementComponent implements OnInit {
    * 打开房产编辑界面
    * @param currentRoom 房产对象
    */
-  handleEditClick(currentRoom: Room): void {
+  handleEditClick (currentRoom: Room): void {
     this.currentRoomId = currentRoom.RoomId;
     let selectedConfigIds: string[] = [];
     this.vm.configs.forEach((item: any) => {
@@ -203,7 +208,7 @@ export class RoomManagementComponent implements OnInit {
     this.vm.pattern = "edit";
     this.roomValidateForm.setValue({
       RoomName: currentRoom.RoomName,
-      BasePrice: currentRoom.BasePrice,
+      BasePrice: currentRoom.BasePrice || 0,
       RoomCount: currentRoom.RoomCount,
       Longitude: currentRoom.Longitude,
       Latitude: currentRoom.Latitude,
@@ -228,7 +233,21 @@ export class RoomManagementComponent implements OnInit {
       Description: currentRoom.Description,
       RoomInfoDetail: currentRoom.RoomInfoDetail
     };
-    this.priceConfigs = currentRoom.PriceConfigs ? currentRoom.PriceConfigs : [];
+    this.priceConfigs = [];
+    if (currentRoom.PriceConfigs) {
+      currentRoom.PriceConfigs.forEach(config => {
+        let temp: RoomPriceConfig = new RoomPriceConfig(
+          config.UID || uuid(),
+          config.PriceDateStart,
+          config.PriceDateEnd,
+          config.PriceDateStartString,
+          config.PriceDateEndString,
+          config.PricePercent,
+          config.ExtraPrice);
+        this.priceConfigs.push(temp);
+      });
+    }
+
     this.titleImgList = currentRoom.PicUrl ? [{
       name: currentRoom.PicUrl.split("/").pop(),
       url: currentRoom.PicUrl,
@@ -273,7 +292,7 @@ export class RoomManagementComponent implements OnInit {
    * 删除房产信息
    * @param data 房产对象
    */
-  handleDelteClick(data: Room): void {
+  handleDelteClick (data: Room): void {
     this._roomService.deleteRoom(data.RoomId).subscribe(rspd => {
       if (rspd) {
         this._message.create("success", "删除房产信息成功");
@@ -283,7 +302,7 @@ export class RoomManagementComponent implements OnInit {
   }
 
   // 处理表单提交
-  handleFormSubmit(): void {
+  handleFormSubmit (): void {
     let data: any = {};
     // 组装数据
     Object.assign(data, this.roomValidateForm.value);
@@ -295,7 +314,18 @@ export class RoomManagementComponent implements OnInit {
     data.RoomInfoPic = this.infoImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
     data.RoomInfoDetail = this.roomArticleData.RoomInfoDetail;
     data.Photos = this.bannerImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
-    data.PriceConfigs = this.priceConfigs;
+    data.PriceConfigs = [];
+    if (this.priceConfigs) {
+      this.priceConfigs.forEach(config => {
+        let temp: any = {
+          PriceDateStart: config.PriceDateStart,
+          PriceDateEnd: config.PriceDateEnd,
+          PricePercent: config.PricePercent,
+          ExtraPrice: config.ExtraPrice
+        };
+        data.PriceConfigs.push(temp);
+      });
+    }
     delete data.Configs;
     // 提交
     if (this.vm.pattern === "add") {
@@ -321,7 +351,7 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  handleFileSelected(uploaderName: string, input: any): void {
+  handleFileSelected (uploaderName: string, input: any): void {
     let uploader: FileUploader = this[uploaderName],
       imglist: UploadFile[];
     switch (uploaderName) {
@@ -395,13 +425,14 @@ export class RoomManagementComponent implements OnInit {
     input.value = "";
   }
 
-  uploadImg(imgFile: UploadFile, loader: string): void {
+  uploadImg (imgFile: UploadFile, loader: string): void {
     let uploader: FileUploader = this[loader];
     let file: FileItem = uploader.queue.find(file => file.file.name === imgFile.name);
+    imgFile.isUploading = true;
     file.upload();
   }
 
-  removeImg(imgFile: UploadFile, type: string): void {
+  removeImg (imgFile: UploadFile, type: string): void {
     let imglist: UploadFile[];
     let uploader: FileUploader;
     switch (type) {
@@ -429,7 +460,7 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  handleFileUploaded(item: any, response: any, status: any, headers: any, type: string): void {
+  handleFileUploaded (item: any, response: any, status: any, headers: any, type: string): void {
     let imglist: UploadFile[];
     let url: string = JSON.parse(response).Data;
     switch (type) {
@@ -452,25 +483,35 @@ export class RoomManagementComponent implements OnInit {
       img.isReady = true;
       img.isSuccess = true;
       img.isUploaded = true;
+      img.isUploading = false;
     }
   }
 
   // 查看图片
-  showModal(item: UploadFile): void {
+  showModal (item: UploadFile): void {
     this.vm.previewImgUrl = this.sanitizer.bypassSecurityTrustUrl(item.url);
     this.vm.previewImgHtml = this.sanitizer.bypassSecurityTrustHtml(`<img src=${item.url} style="width: 100%" />`);
     this.vm.isPreviewVisible = true;
   }
 
-  getFormControl(name: string): AbstractControl {
+  getFormControl (name: string): AbstractControl {
     return this.roomValidateForm.controls[name];
   }
+  getPriceFormControl (name: string): AbstractControl {
+    return this.priceConfigForm.controls[name];
+  }
 
-  formatterPercent = value => `${value || ""}%`;
+  formatterPercent = value => {
+    if (value) {
+      return value + "%";
+    } else {
+      return value === 0 ? 0 : "";
+    }
+  }
   parserPercent = value => value.replace("%", "");
 
   disabledStartDate = (startValue: Date): boolean => {
-    let endDate: Date = this.priceConfigForm.PriceDateEnd;
+    let endDate: Date = this.priceConfigForm.controls.PriceDateEnd.value;
     if (!endDate || !startValue) {
       return false;
     }
@@ -478,44 +519,56 @@ export class RoomManagementComponent implements OnInit {
   }
 
   disabledEndDate = (endValue: Date): boolean => {
-    let startDate: Date = this.priceConfigForm.PriceDateStart;
+    let startDate: Date = this.priceConfigForm.controls.PriceDateStart.value;
     if (!startDate || !endValue) {
       return false;
     }
     return endValue.getTime() <= startDate.getTime();
   }
 
-  handleAddPriceCalender(): void {
-    if (this.priceConfigs.indexOf(this.priceConfigForm) < 0) {
-      this.priceConfigForm.PriceDateStartString = this.formatDate(this.priceConfigForm.PriceDateStart);
-      this.priceConfigForm.PriceDateEndString = this.formatDate(this.priceConfigForm.PriceDateEnd);
-      this.priceConfigs.push(this.priceConfigForm);
+  openEditPriceConfigForm (config: RoomPriceConfig): void {
+    this.vm.isPriceCalenderFormVisible = true;
+    this.priceConfigForm.setValue({
+      UID: config.UID,
+      PriceDateStart: config.PriceDateStart,
+      PriceDateEnd: config.PriceDateEnd,
+      PricePercent: config.PricePercent,
+      ExtraPrice: config.ExtraPrice
+    });
+  }
+  handleAddPriceCalender (form: NgForm): void {
+    let temp: RoomPriceConfig = new RoomPriceConfig(
+      this.priceConfigForm.controls.UID.value || uuid(),
+      this.priceConfigForm.controls.PriceDateStart.value,
+      this.priceConfigForm.controls.PriceDateEnd.value,
+      this.formatDate(this.priceConfigForm.controls.PriceDateStart.value),
+      this.formatDate(this.priceConfigForm.controls.PriceDateEnd.value),
+      this.priceConfigForm.controls.PricePercent.value,
+      this.priceConfigForm.controls.ExtraPrice.value);
+    let index: number = this.priceConfigs.findIndex(config => config.UID === temp.UID);
+    if (index < 0) {
+      this.priceConfigs.push(temp);
+    } else {
+      Object.assign(this.priceConfigs[index], temp);
     }
-    this.priceConfigForm = {
-      PriceDateStart: null,
-      PriceDateStartString: "",
-      PriceDateEnd: null,
-      PriceDateEndString: "",
-      PricePercent: 1,
-      ExtraPrice: 0
-    };
+    this.priceConfigForm.reset();
     this.vm.isPriceCalenderFormVisible = false;
   }
 
-  trim(origin: string, char: string): string {
+  trim (origin: string, char: string): string {
     if (char) {
       return origin.replace(new RegExp(`^\\${char}+|\\${char}+$`, "g"), "");
     }
     return origin.replace(/^\s+|\s+$/g, "");
   }
 
-  private formatDate(date: Date): string {
+  private formatDate (date: Date): string {
     let Y: number = date.getFullYear(),
       M: number = date.getMonth() + 1,
-      d: number = date.getDay();
-    let yearString:string = Y.toString().slice(2);
-    let monthString: string = M >= 10 ? "M" : "0" + M;
-    let dayString: string = d >= 10 ? "d" : "0" + d;
+      d: number = date.getDate();
+    let yearString: string = Y.toString().slice(2);
+    let monthString: string = M >= 10 ? `${M}` : "0" + M;
+    let dayString: string = d >= 10 ? `${d}` : "0" + d;
     return `${yearString}-${monthString}-${dayString}`;
   }
 }
