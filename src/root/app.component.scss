@@ -4,24 +4,33 @@ main {
 
 .app-layout {
     height: inherit;
+
     .header {
         background: black;
         font-size: 18px;
-        >.logo {
+
+        > .logo {
             float: left;
             height: 40px;
             margin-top: 15px;
         }
-        >.title {
+
+        > .title {
             color: #5DBBAF;
             margin-left: 45px;
         }
     }
+
     .body {
         .nav-sider {
             padding: 24px 0;
             background: #404040;
+
+            .app-nav-item {
+                font-size: 16px;
+            }
         }
+
         .router-container {
             position: relative;
             height: calc(100% - 64px);

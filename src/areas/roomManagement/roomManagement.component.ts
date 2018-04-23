@@ -43,6 +43,7 @@ export class RoomManagementComponent implements OnInit {
 
   vm = {
     tableLoading: true,
+    tableScrollOption: { x: window.innerWidth - 200, y: window.innerHeight - 250 },
     isFormVisible: false,
     isPreviewVisible: false,
     isPriceCalenderFormVisible: false,
