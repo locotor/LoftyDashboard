@@ -1,6 +1,6 @@
 <nz-layout class="main-layout">
     <nz-sider class="thread-wrapper" [nzWidth]="350">
-        <nz-tabset class="tab-host" [nzSize]="'small'" [nzTabBarExtraTemplate]="tabBarExtraContent">
+        <nz-tabset class="tab-host" [nzSize]="'small'" [nzTabBarExtraContent]="tabBarExtraContent">
             <!-- 邮箱 -->
             <nz-tab (nzSelect)="handleTabChange(1)">
                 <ng-template #nzTabHeading>

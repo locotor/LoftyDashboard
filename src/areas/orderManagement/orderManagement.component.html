@@ -8,7 +8,7 @@
                             <label for="orderId">订单号</label>
                         </div>
                         <div nz-form-control>
-                            <nz-input name="orderId" [(ngModel)]="filterForm.orderId"></nz-input>
+                            <input nz-input name="orderId" [(ngModel)]="filterForm.orderId">
                         </div>
                     </div>
                     <div nz-form-item>
@@ -16,7 +16,7 @@
                             <label for="roomId">房产名</label>
                         </div>
                         <div nz-form-control>
-                            <nz-select style="width: 200px;" name="roomId" nzAllowClear [nzPlaceHolder]="'请输入房间关键字'" [nzFilter]="false" [(ngModel)]="filterForm.roomId" (nzSearchChange)="searchChange($event)" [nzNotFoundContent]="'无法找到'" nzShowSearch>
+                            <nz-select style="width: 200px;" name="roomId" nzAllowClear [nzPlaceHolder]="'请输入房间关键字'" [(ngModel)]="filterForm.roomId" (nzSearchChange)="searchChange($event)" [nzNotFoundContent]="'无法找到'" nzShowSearch>
                                 <nz-option *ngFor="let option of vm.searchOptions" [nzLabel]="option.Value" [nzValue]="option.Key">
                                 </nz-option>
                             </nz-select>
@@ -35,7 +35,7 @@
                 </form>
             </nz-header>
             <nz-content>
-                <nz-table #nzTable nzShowSizeChanger [nzAjaxData]="dataSet" [nzTotal]="tablePagination.total" [nzLoading]="vm.tableLoading" [nzBordered]="true" [nzShowSizeChanger]="false" [nzIsPageIndexReset]="false" [(nzPageIndex)]="tablePagination.pageIndex" [(nzPageSize)]="tablePagination.pageSize"
+                <nz-table #nzTable nzShowSizeChanger [nzData]="dataSet" [nzTotal]="tablePagination.total" [nzLoading]="vm.tableLoading" [nzBordered]="true" [nzShowSizeChanger]="false" [(nzPageIndex)]="tablePagination.pageIndex" [(nzPageSize)]="tablePagination.pageSize"
                     (nzPageIndexChange)="refreshData()">
                     <thead nz-thead>
                         <tr>
@@ -102,10 +102,10 @@
                             <label for="RoomId" nz-form-item-required>房产ID</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="8">
-                            <nz-input name="RoomId" [ngModelOptions]="{standalone: true}" style="width:100%" [nzSize]="'large'" [nzPlaceHolder]="'请选择一个房产'" [nzDisabled]="true" [(ngModel)]="getFormControl( 'RoomId').value"></nz-input>
+                            <input nz-input name="RoomId" [ngModelOptions]="{standalone: true}" style="width:100%" [nzSize]="'large'" [disabled]="true" [(ngModel)]="getFormControl( 'RoomId').value">
                         </div>
                         <div nz-form-control nz-col [nzSpan]="9" nzHasFeedback>
-                            <nz-select style="width:100%" nzAllowClear [nzSize]="'large'" [nzPlaceHolder]="'请输入房间关键字'" [nzFilter]="false" formControlName="RoomId" (nzSearchChange)="searchChange($event)" [nzNotFoundContent]="'无法找到'" nzShowSearch>
+                            <nz-select style="width:100%" nzAllowClear [nzSize]="'large'" [nzPlaceHolder]="'请输入房间关键字'" formControlName="RoomId" (nzSearchChange)="searchChange($event)" [nzNotFoundContent]="'无法找到'" nzShowSearch>
                                 <nz-option *ngFor="let option of vm.searchOptions" [nzLabel]="option.Value" [nzValue]="option.Key">
                                 </nz-option>
                             </nz-select>
@@ -117,7 +117,7 @@
                             <label for="PayTime" nz-form-item-required>支付时间</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                            <nz-datepicker style="width:100%" [nzSize]="'large'" formControlName="PayTime"></nz-datepicker>
+                            <input type="date" style="width:100%" nzSize="large" formControlName="PayTime">
                             <div nz-form-explain *ngIf="getFormControl('PayTime').dirty&&getFormControl('PayTime').hasError('required')">请输入支付时间!</div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                             <label for="Amount" nz-form-item-required>总金额</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                            <nz-input [nzSize]="'large'" formControlName="Amount"></nz-input>
+                            <input nz-input nzSize="large" formControlName="Amount">
                             <div nz-form-explain *ngIf="getFormControl('Amount').dirty&&getFormControl('Amount').hasError('required')">请输入订单总金额!</div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                             <label for="PhoneNumber" nz-form-item-required>订购电话</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                            <nz-input [nzSize]="'large'" formControlName="PhoneNumber"></nz-input>
+                            <input nzSize="large" formControlName="PhoneNumber">
                             <div nz-form-explain *ngIf="getFormControl('PhoneNumber').dirty&&getFormControl('PhoneNumber').hasError('required')">请输入订购电话!</div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                             <label for="UserId" nz-form-item-required>用户ID</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                            <nz-input [nzSize]="'large'" formControlName="UserId" [nzPlaceHolder]="'匿名游客或普吉岛用户则填-1'"></nz-input>
+                            <input nz-input [nzSize]="'large'" formControlName="UserId" [placeholder]="'匿名游客或普吉岛用户则填-1'">
                             <div nz-form-explain *ngIf="getFormControl('UserId').dirty&&getFormControl('UserId').hasError('required')">请输入用户ID</div>
                         </div>
                     </div>
@@ -166,7 +166,7 @@
                             <label for="StartTime" nz-form-item-required>入住时间</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                            <nz-datepicker style="width:100%" [nzSize]="'large'" formControlName="StartTime" [nzDisabledDate]="disabledStartDate" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
+                            <input type="date" nzSize="large" formControlName="StartTime" [disabled]="disabledStartDate">
                             <div nz-form-explain *ngIf="getFormControl('StartTime').dirty&&getFormControl('StartTime').hasError('required')">请输入订单入住时间!</div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                             <label for="EndTime" nz-form-item-required>退房时间</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                            <nz-datepicker style="width:100%" [nzSize]="'large'" formControlName="EndTime" [nzDisabledDate]="disabledEndDate" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
+                            <input type="date" nzSize="large" formControlName="EndTime" [disabled]="disabledEndDate">
                             <div nz-form-explain *ngIf="getFormControl('EndTime').dirty&&getFormControl('EndTime').hasError('required')">请输入退房时间!</div>
                         </div>
                     </div>

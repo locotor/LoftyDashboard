@@ -25,11 +25,11 @@ export class PersonalComponent implements OnInit {
 
   ngOnInit (): void {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      telphone: [null, [Validators.required]],
-      email: [null, [Validators.required]]
+      userName: ["", [Validators.required]],
+      password: ["", [Validators.required]],
+      name: ["", [Validators.required]],
+      telphone: ["", [Validators.required]],
+      email: ["", [Validators.required]]
     });
   }
 
