@@ -1,16 +1,10 @@
 import { RoomPriceConfig } from "./roomPriceConfig.model";
 export class Room {
-    RoomId?: number;
-    ConfigString: string; // 必填
-    Introduction?: string;
-    PicUrl?: string;
-    RoomName: string; // 必填
-    Longitude?: number;
-    Latitude?: number;
-    Address?: string;
+    // 必填项
+    ConfigString: string;
+    RoomName: string;
     BasePrice: number;
-    // 1民宿2别墅3酒店
-    RoomTypeValue: number;
+    RoomTypeValue: number;// 1民宿2别墅3酒店
     RoomCount: number;
     Area: number;
     BedCount: number;
@@ -18,6 +12,13 @@ export class Room {
     AdultCount: number;
     ChildCount: number;
     IsBargainPrice: boolean;
+    // 可空项
+    RoomId?: number;
+    Introduction?: string;
+    PicUrl?: string;
+    Longitude?: number;
+    Latitude?: number;
+    Address?: string;
     BargainPrice?: string;
     Description?: string;
     DescriptionPic?: string;
