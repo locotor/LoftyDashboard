@@ -1,0 +1,36 @@
+.main-layout {
+    height: 100%;
+
+    .content-wrapper {
+        height: inherit;
+    }
+
+    .filter-form {
+        margin-bottom: 10px;
+    }
+
+    .form-content {
+        position: relative;
+        height: calc(100% - 77px);
+    }
+
+    .form-footer {
+        border-top: 1px solid #ccc;
+    }
+}
+
+.avatar-uploader-trigger {
+    width: 150px;
+    height: 150px;
+    display: block;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.avatar-uploader-trigger {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 28px;
+    color: #999;
+}

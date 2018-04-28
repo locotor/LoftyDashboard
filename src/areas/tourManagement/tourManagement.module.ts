@@ -4,7 +4,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgZorroAntdModule } from "ng-zorro-antd";
 
-import { TourManagementComponent } from "./tourManagement.component";
+import { TourComponent } from "./tour/tour.component";
+import { TourGroupComponent } from "./tourGroup/tourGroup.component";
 import { TourManagementService } from "./tourManagement.service";
 
 @NgModule({
@@ -15,7 +16,7 @@ import { TourManagementService } from "./tourManagement.service";
     HttpClientModule,
     NgZorroAntdModule,
   ],
-  declarations: [TourManagementComponent],
+  declarations: [TourComponent],
   providers: [TourManagementService]
 })
 export class TourManagementModule { }

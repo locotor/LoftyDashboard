@@ -4,7 +4,7 @@ import { FormGroup, FormControl, AbstractControl, Validators } from "@angular/fo
 import { ActivatedRoute } from "@angular/router";
 import { NzMessageService } from "ng-zorro-antd";
 
-import { TourManagementService } from "./tourManagement.service";
+import { TourManagementService } from "../tourManagement.service";
 import { TourGroup } from "models/tour/tourGroup.model";
 import { Tour } from "models/tour/tour.model";
 import { TranspotCost } from "models/tour/transportCost.model";
@@ -13,7 +13,7 @@ import { TranspotCost } from "models/tour/transportCost.model";
   templateUrl: "./orderManagement.component.html",
   styleUrls: ["./orderManagement.component.scss"]
 })
-export class TourManagementComponent implements OnInit {
+export class TourComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
