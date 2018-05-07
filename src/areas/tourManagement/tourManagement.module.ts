@@ -16,7 +16,10 @@ import { TourManagementService } from "./tourManagement.service";
     HttpClientModule,
     NgZorroAntdModule,
   ],
-  declarations: [TourComponent],
+  declarations: [
+    TourGroupComponent,
+    TourComponent
+  ],
   providers: [TourManagementService]
 })
 export class TourManagementModule { }

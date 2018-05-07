@@ -6,6 +6,7 @@ import { MessagePageComponent } from "areas/message/message-page/message-page.co
 import { RoomManagementComponent } from "areas/roomManagement/roomManagement.component";
 import { OrderManagementComponent } from "areas/orderManagement/orderManagement.component";
 import { RefundManagementComponent } from "areas/refundManagement/refundManagement.component";
+import { TourGroupComponent } from "areas/tourManagement/tourGroup/tourGroup.component";
 import { RoomManagementResolver } from "areas/roomManagement/roomManagement.resolver.service";
 import { OrderManagementResolver } from "areas/orderManagement/orderManagement.resolver.service";
 
@@ -27,6 +28,12 @@ const appRoutes: Routes = [
     resolve: {
       rooms: OrderManagementResolver
     }
+  },
+  {
+    path: "tour",
+    children: [
+      { path: "tourGroup", component: TourGroupComponent }
+    ]
   },
   { path: "refund", component: RefundManagementComponent }
 ];

@@ -16,7 +16,7 @@
                             <i class="anticon anticon-search"></i>
                             <span>搜索</span>
                         </button>
-                        <button nz-button type="button" [nzType]="'primary'" (click)="openAddDialog()">
+                        <button nz-button type="button" [nzType]="'primary'" (click)="handleAddClick()">
                             <i class="anticon anticon-file-add"></i>
                             <span>新增旅行分组</span>
                         </button>
@@ -46,7 +46,9 @@
                     <tbody nz-tbody>
                         <tr nz-tbody-tr *ngFor="let data of nzTable.data">
                             <td nz-td>{{data.Name}}</td>
-                            <td nz-td>{{mapRoomName(data.CoverImage)}}</td>
+                            <td nz-td>
+                                <img [src]="data.CoverImage" />
+                            </td>
                             <td nz-td>{{data.Description}}</td>
                             <td nz-td>
                                 <span>
@@ -61,12 +63,12 @@
         </nz-layout>
 
         <!-- 编辑界面 -->
-        <nz-modal [nzVisible]="vm.isFormVisible" [nzTitle]="'新增订单'" [nzContent]="modalContent" [nzFooter]="modalFooter">
-            <ng-template #modalContent>
-                <form nz-form [formGroup]="this.tourGroupValidateForm">
+        <nz-modal [nzVisible]="vm.isFormVisible" [nzTitle]="'新增订单'" [nzContent]="formContent" [nzFooter]="formFooter">
+            <ng-template #formContent>
+                <form nz-form [formGroup]="tourGroupValidateForm">
                     <div nz-form-item nz-row>
                         <div nz-form-label nz-col [nzSpan]="5">
-                            <label for="PayTime" nz-form-item-required>分组名</label>
+                            <label for="Name" nz-form-item-required>分组名</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
                             <nz-input [nzSize]="'large'" formControlName="Name"></nz-input>
@@ -75,27 +77,30 @@
                     </div>
                     <div nz-form-item nz-row>
                         <div nz-form-label nz-col [nzSpan]="5">
-                            <label for="PayTime">分组描述</label>
+                            <label for="Description" nz-form-item-required>分组描述</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
                             <nz-input [nzSize]="'large'" [nzType]="'textarea'" formControlName="Description"></nz-input>
-                            <div nz-form-explain *ngIf="getFormControl('Description').dirty&&getFormControl('Description').hasError('required')">请输入分组名!</div>
+                            <div nz-form-explain *ngIf="getFormControl('Description').dirty&&getFormControl('Description').hasError('required')">请输入分组描述!</div>
                         </div>
                     </div>
-                    <div nz-row>
-                        <div nz-col [nzSpan]="5">
+                    <div nz-form-item nz-row>
+                        <div nz-form-label nz-col [nzSpan]="5">
                             <label>分组封面</label>
-                            <nz-upload class="avatar-uploader" nzAction="https://jsonplaceholder.typicode.com/posts/" nzName="avatar" [nzShowUploadList]="false"
-                                [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
-                                <i *ngIf="!avatarUrl" class="anticon anticon-plus avatar-uploader-trigger"></i>
-                                <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
+                        </div>
+                        <div nz-form-control nz-col [nzSpan]="17">
+                            <nz-upload class="avatar-uploader" nzAction="/Public/UploadFile" [nzShowUploadList]="false" (nzChange)="handleImgChange($event)">
+                                <nz-spin *ngIf="vm.isImgLoading" class="avatar-uploader-trigger"></nz-spin>
+                                <i *ngIf="!coverImageUrl&&!vm.isImgLoading" class="anticon anticon-plus avatar-uploader-trigger"></i>
+                                <span *ngIf="!coverImageUrl">上传封面</span>
+                                <img *ngIf="coverImageUrl&&!vm.isImgLoading" [src]="coverImageUrl" class="avatar">
                             </nz-upload>
                         </div>
                     </div>
                 </form>
             </ng-template>
-            <ng-template #modalFooter>
-                <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="vm.isFormVisible=false">
+            <ng-template #formFooter>
+                <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="vm.isFormVisible = false">
                     取消
                 </button>
                 <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleFormSubmit()" [nzLoading]="vm.isSubmitLoading">
@@ -105,7 +110,7 @@
         </nz-modal>
 
         <!-- 封面图片预览 -->
-        <nz-modal [nzVisible]="vm.previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
+        <nz-modal [nzVisible]="vm.isPreviewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
             <ng-template #modalContent>
                 <div [innerHtml]="this.previewImage" style="width: 100%"></div>
             </ng-template>

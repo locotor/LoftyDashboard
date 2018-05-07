@@ -20,6 +20,7 @@ import { PersonalModule } from "areas/personal/personal.module";
 import { RoomManagementModule } from "areas/roomManagement/roomManagement.module";
 import { OrderManagementModule } from "areas/orderManagement/orderManagement.module";
 import { RefundManagementModule } from "areas/refundManagement/refundManagement.module";
+import { TourManagementModule } from "areas/tourManagement/tourManagement.module";
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { RefundManagementModule } from "areas/refundManagement/refundManagement.
         PersonalModule,
         RoomManagementModule,
         OrderManagementModule,
-        RefundManagementModule
+        RefundManagementModule,
+        TourManagementModule
     ],
     declarations: [
         AppComponent
