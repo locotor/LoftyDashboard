@@ -14,14 +14,14 @@ export class RoomManagementService extends WebBaseService {
         super(http, notification);
     }
 
-    /**
-     * 获取房间列表
-     * @param pageIndex 当前页
-     * @param pageSize 每页数据条数
-     * @param text 房间名或地点，支持“+”分割
-     * @param RoomType 房间类型
+    /** 获取房间列表
+     * @param {number} pageIndex 当前页
+     * @param {number} pageSize 每页数据条数
+     * @param {String} [text] 房间名或地点，支持“+”分割
+     * @param {String} [roomType] 房间类型
+     * @returns {Observable<object>} 返回
      */
-    getRoomList(
+    getRoomList (
         pageIndex: number,
         pageSize: number,
         text?: String,
@@ -40,7 +40,7 @@ export class RoomManagementService extends WebBaseService {
      * 获取房间详情
      * @param id 房间ID
      */
-    getRoomDetail(id: Number): Observable<object> {
+    getRoomDetail (id: Number): Observable<object> {
         let url: string = "/Room/GetRoomDetailData",
             httpParam: object = {
                 id: id
@@ -51,32 +51,32 @@ export class RoomManagementService extends WebBaseService {
     /**
      * 获取房间配置项信息
      */
-    GetDistrictsAndRoomConfigs(): Observable<object> {
+    GetDistrictsAndRoomConfigs (): Observable<object> {
         let url: string = "/Room/GetDistrictsAndRoomConfigs";
         return this.getData(url, {});
     }
 
-    getRoomConfigs(): Observable<object> {
+    getRoomConfigs (): Observable<object> {
         let url: string = "/Room/GetRoomConfigs";
         return this.getData(url, {});
     }
 
-    getDistricts(): Observable<object> {
+    getDistricts (): Observable<object> {
         let url: string = "/Room/GetDistricts";
         return this.getData(url, {});
     }
 
-    createRoom(room: Room): Observable<object> {
+    createRoom (room: Room): Observable<object> {
         let url: string = "/Room/CreateRoom";
         return this.postData(url, room);
     }
 
-    updateRoom(room: Room): Observable<object> {
+    updateRoom (room: Room): Observable<object> {
         let url: string = "/Room/UpdateRoom";
         return this.postData(url, room);
     }
 
-    deleteRoom(id: number): Observable<object> {
+    deleteRoom (id: number): Observable<object> {
         let url: string = "/Room/DeleteRoom";
         return this.postData(url, { id: id });
     }
