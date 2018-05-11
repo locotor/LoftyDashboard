@@ -94,6 +94,24 @@ module.exports = function (options) {
                 include: [helpers.root('src/commons/styles')]
             },
             {
+                test: /\.less$/,
+                use: ['style-loader', 'css-loader', {
+                    loader: "less-loader",
+                    options: {
+                        javascriptEnabled: true
+                    }
+                }],
+                exclude: [helpers.root('src/commons/styles')]
+            },
+            {
+                test: /\.less$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'less-loader']
+                }),
+                include: [helpers.root('src/commons/styles')]
+            },
+            {
                 test: /\.json$/,
                 loader: 'json-loader'
             },

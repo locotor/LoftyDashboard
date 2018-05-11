@@ -1,74 +1,50 @@
 <div class="personal-container">
-    <form nz-form [nzLayout]="'horizontal'" [formGroup]="validateForm" (ngSubmit)="_submitForm()">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()">
         <!-- username -->
-        <div nz-form-item>
-            <div nz-form-label nz-form-item-required>
-                <label>用户名</label>
-            </div>
-            <div nz-form-control [nzValidateStatus]="validateForm.controls.userName">
-                <nz-input formControlName="userName" [nzPlaceHolder]="'Username'" [nzSize]="'large'">
-                    <ng-template #prefix>
-                        <i class="anticon anticon-user"></i>
-                    </ng-template>
-                </nz-input>
-                <div nz-form-explain *ngIf="validateForm.controls.userName.dirty&&validateForm.controls.userName.hasError('required')">请输入用户名</div>
-            </div>
-        </div>
+        <nz-form-item>
+            <nz-form-label nzRequired>用户名</nz-form-label>
+            <nz-form-control>
+                <nz-input-group nzPrefixIcon="anticon anticon-user">
+                    <input nz-input formControlName="userName" [nzSize]="'large'" [placeholder]="'Username'">
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
         <!-- password -->
-        <div nz-form-item>
-            <div nz-form-label nz-form-item-required nz-col>
-                <label>密码</label>
-            </div>
-            <div nz-form-control [nzValidateStatus]="validateForm.controls.password">
-                <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'Password'" [nzSize]="'large'">
-                    <ng-template #prefix>
-                        <i class="anticon anticon-lock"></i>
-                    </ng-template>
-                </nz-input>
-                <div nz-form-explain *ngIf="validateForm.controls.password.dirty&&validateForm.controls.password.hasError('required')">请输入密码</div>
-            </div>
-        </div>
+        <nz-form-item>
+            <nz-form-label nzRequired>密码</nz-form-label>
+            <nz-form-control>
+                <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                    <input nz-input formControlName="password" [nzSize]="'large'">
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
         <!-- realname -->
-        <div nz-form-item>
-            <div nz-form-label nz-form-item-required nz-col>
-                <label>姓名</label>
-            </div>
-            <div nz-form-control [nzValidateStatus]="validateForm.controls.name">
-                <nz-input formControlName="name" [nzType]="'name'" [nzPlaceHolder]="'name'" [nzSize]="'name'">
-                    <ng-template #prefix>
-                        <i class="anticon anticon-lock"></i>
-                    </ng-template>
-                </nz-input>
-                <div nz-form-explain *ngIf="validateForm.controls.name.dirty&&validateForm.controls.name.hasError('required')">请输入真实姓名</div>
-            </div>
-        </div>
+        <nz-form-item>
+            <nz-form-label nzRequired>姓名</nz-form-label>
+            <nz-form-control>
+                <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                    <input nz-input formControlName="name" [nzSize]="'name'" [placeholder]="'name'">
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
         <!-- telphone -->
-        <div nz-form-item>
-            <div nz-form-label nz-form-item-required nz-col>
-                <label>电话</label>
-            </div>
-            <div nz-form-control [nzValidateStatus]="validateForm.controls.telphone">
-                <nz-input formControlName="telphone" [nzType]="'telphone'" [nzPlaceHolder]="'telphone'" [nzSize]="'large'">
-                    <ng-template #prefix>
-                        <i class="anticon anticon-lock"></i>
-                    </ng-template>
-                </nz-input>
-                <div nz-form-explain *ngIf="validateForm.controls.telphone.dirty&&validateForm.controls.telphone.hasError('required')">请输入联系邮箱</div>
-            </div>
-        </div>
+        <nz-form-item>
+            <nz-form-label nzRequired nz-col>电话</nz-form-label>
+            <nz-form-control>
+                <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                    <input nz-input formControlName="telphone" [nzSize]="'large'">
+
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
         <!-- email -->
-        <div nz-form-item>
-            <div nz-form-label nz-form-item-required nz-col>
-                <label>邮箱</label>
-            </div>
-            <div nz-form-control [nzValidateStatus]="validateForm.controls.email">
-                <nz-input formControlName="email" [nzType]="'email'" [nzPlaceHolder]="'email'" [nzSize]="'large'">
-                    <ng-template #prefix>
-                        <i class="anticon anticon-lock"></i>
-                    </ng-template>
-                </nz-input>
-                <div nz-form-explain *ngIf="validateForm.controls.email.dirty&&validateForm.controls.email.hasError('required')">请输入密码</div>
-            </div>
-        </div>
+        <nz-form-item>
+            <nz-form-label nzRequired>邮箱</nz-form-label>
+            <nz-form-control>
+                <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                    <input nz-input formControlName="email" [nzSize]="'large'" [placeholder]="'email'">
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
     </form>
 </div>

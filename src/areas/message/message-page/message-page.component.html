@@ -1,10 +1,11 @@
 <nz-layout class="main-layout">
     <nz-sider class="thread-wrapper" [nzWidth]="350">
-        <nz-tabset class="tab-host" [nzSize]="'small'" [nzTabBarExtraTemplate]="tabBarExtraContent">
+        <nz-tabset class="tab-host" [nzSize]="'small'">
             <!-- 邮箱 -->
             <nz-tab (nzSelect)="handleTabChange(1)">
                 <ng-template #nzTabHeading>
-                    <i class="anticon anticon-mail"></i><span>邮箱留言</span>
+                    <i class="anticon anticon-mail"></i>
+                    <span>邮箱留言</span>
                 </ng-template>
                 <div class="scroller">
                     <i *ngIf="emailList.loading" class="anticon anticon-loading anticon-spin"></i>
@@ -17,12 +18,14 @@
                         </ul>
                     </ng-container>
                 </div>
-                <nz-pagination class="pagination" [(nzPageIndex)]="emailList.currentPage" [(nzPageSize)]="emailList.pageSize" [nzTotal]="emailList.totalAmount" nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getMessageList()" (nzPageSizeChange)="getMessageList()"></nz-pagination>
+                <nz-pagination class="pagination" [(nzPageIndex)]="emailList.currentPage" [(nzPageSize)]="emailList.pageSize" [nzTotal]="emailList.totalAmount"
+                    nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getMessageList()" (nzPageSizeChange)="getMessageList()"></nz-pagination>
             </nz-tab>
             <!-- 手机短信 -->
             <nz-tab (nzSelect)="handleTabChange(2)">
                 <ng-template #nzTabHeading>
-                    <i class="anticon anticon-phone"></i><span>手机留言</span>
+                    <i class="anticon anticon-phone"></i>
+                    <span>手机留言</span>
                 </ng-template>
                 <div class="scroller">
                     <i *ngIf="emailList.loading" class="anticon anticon-loading anticon-spin"></i>
@@ -35,7 +38,8 @@
                         </ul>
                     </ng-container>
                 </div>
-                <nz-pagination class="pagination" [(nzPageIndex)]="smsList.currentPage" [(nzPageSize)]="smsList.pageSize" [nzTotal]="smsList.totalAmount" nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getMessageList()" (nzPageSizeChange)="getMessageList()"></nz-pagination>
+                <nz-pagination class="pagination" [(nzPageIndex)]="smsList.currentPage" [(nzPageSize)]="smsList.pageSize" [nzTotal]="smsList.totalAmount"
+                    nzShowSizeChanger nzShowQuickJumper [nzSize]="'small'" (nzPageIndexChange)="getMessageList()" (nzPageSizeChange)="getMessageList()"></nz-pagination>
             </nz-tab>
             <ng-template #tabBarExtraContent>
                 <nz-select class="message-filter" [(ngModel)]="vm.status" (ngModelChange)="getMessageList()">

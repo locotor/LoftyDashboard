@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common"
-import { RouterModule, Routes } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PersonalComponent } from './personal.component';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { CommonModule } from "@angular/common";
+import { RouterModule, Routes } from "@angular/router";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { PersonalComponent } from "./personal.component";
+import { NgZorroAntdModule } from "ng-zorro-antd";
 
 const personalRoutes: Routes = [
     {

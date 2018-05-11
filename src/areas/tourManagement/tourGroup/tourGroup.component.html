@@ -8,7 +8,7 @@
                             <label for="name">分组名称</label>
                         </div>
                         <div nz-form-control>
-                            <nz-input name="name" [(ngModel)]="filterForm.name"></nz-input>
+                            <input nz-input name="name" [(ngModel)]="filterForm.name">
                         </div>
                     </div>
                     <div nz-form-item>
@@ -24,8 +24,8 @@
                 </form>
             </nz-header>
             <nz-content>
-                <nz-table #nzTable [nzAjaxData]="dataSet" [nzTotal]="tablePagination.total" [nzLoading]="vm.tableLoading" [nzBordered]="true"
-                    [nzShowSizeChanger]="false" [nzIsPageIndexReset]="false" [(nzPageIndex)]="tablePagination.pageIndex" [(nzPageSize)]="tablePagination.pageSize"
+                <nz-table #nzTable [nzData]="dataSet" [nzTotal]="pagination.total" [nzLoading]="vm.tableLoading" [nzBordered]="true"
+                    [nzShowSizeChanger]="false" [(nzPageIndex)]="pagination.pageIndex" [(nzPageSize)]="pagination.pageSize"
                     (nzPageIndexChange)="refreshData()">
                     <thead nz-thead>
                         <tr>
@@ -65,22 +65,22 @@
         <!-- 编辑界面 -->
         <nz-modal [nzVisible]="vm.isFormVisible" [nzTitle]="'新增订单'" [nzContent]="formContent" [nzFooter]="formFooter">
             <ng-template #formContent>
-                <form nz-form [formGroup]="tourGroupValidateForm">
+                <form nz-form [formGroup]="formGroup">
                     <div nz-form-item nz-row>
                         <div nz-form-label nz-col [nzSpan]="5">
-                            <label for="Name" nz-form-item-required>分组名</label>
+                            <label for="Name" nzRequired>分组名</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                            <nz-input [nzSize]="'large'" formControlName="Name"></nz-input>
+                            <input nz-input [nzSize]="'large'" formControlName="Name">
                             <div nz-form-explain *ngIf="getFormControl('Name').dirty&&getFormControl('Name').hasError('required')">请输入分组名!</div>
                         </div>
                     </div>
                     <div nz-form-item nz-row>
                         <div nz-form-label nz-col [nzSpan]="5">
-                            <label for="Description" nz-form-item-required>分组描述</label>
+                            <label for="Description" nzRequired>分组描述</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="17" nzHasFeedback>
-                            <nz-input [nzSize]="'large'" [nzType]="'textarea'" formControlName="Description"></nz-input>
+                            <input nz-input [nzSize]="'large'" formControlName="Description">
                             <div nz-form-explain *ngIf="getFormControl('Description').dirty&&getFormControl('Description').hasError('required')">请输入分组描述!</div>
                         </div>
                     </div>

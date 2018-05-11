@@ -25,6 +25,8 @@ import "reflect-metadata";
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { AppModule } from "./root/app.module";
 import "./commons/styles/init.css";
+import "ng-zorro-antd/src/ng-zorro-antd.less";
+
 
 require("expose-loader?echarts!echarts");
 require("expose-loader?$!jQuery");

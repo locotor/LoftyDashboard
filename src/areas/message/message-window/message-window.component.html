@@ -1,18 +1,12 @@
 <div class="window-wrapper">
     <div class="msg-content-wrapper">
         <nz-card [nzLoading]="isContentLoading" style="height:100%">
-            <ng-template #title>
-                留言详情
-            </ng-template>
-            <ng-template #extra>
-
-            </ng-template>
-            <ng-template #body *ngIf="currentMessage">
-                <h1 class="message-title">{{currentMessage.User?currentMessage.User.account:"匿名游客"+"留言："}}</h1>
-                <p class="message-content">{{currentMessage.Remark}}</p>
-                <p class="create-time">{{"创建时间： " + currentMessage.CreateTime}}</p>
-                <p class="contact-info">{{"联系方式：" + currentMessage.TargetAddress}}</p>
-            </ng-template>
+            <ng-template #title>留言详情</ng-template>
+            <ng-template #extra></ng-template>
+            <h1 class="message-title">{{currentMessage.User?currentMessage.User.account:"匿名游客"+"留言："}}</h1>
+            <p class="message-content">{{currentMessage.Remark}}</p>
+            <p class="create-time">{{"创建时间： " + currentMessage.CreateTime}}</p>
+            <p class="contact-info">{{"联系方式：" + currentMessage.TargetAddress}}</p>
         </nz-card>
     </div>
     <div *ngIf="currentMessage?.MessageStatus<3" class="msg-editor-container">
@@ -20,15 +14,10 @@
     </div>
     <div *ngIf="currentMessage?.MessageStatus==3" class="msg-content-wrapper" style="height:208px">
         <nz-card [nzLoading]="isContentLoading" style="height:100%">
-            <ng-template #title>
-                回复详情
-            </ng-template>
-            <ng-template #extra>
-            </ng-template>
-            <ng-template #body *ngIf="currentMessage">
-                <p class="message-content" [innerHTML]="safeReplyHtml"></p>
-                <p class="create-time">{{"回复时间： " + currentMessage.ReplyTime}}</p>
-            </ng-template>
+            <ng-template #title>回复详情</ng-template>
+            <ng-template #extra></ng-template>
+            <p class="message-content" [innerHTML]="safeReplyHtml"></p>
+            <p class="create-time">{{"回复时间： " + currentMessage.ReplyTime}}</p>
         </nz-card>
     </div>
 </div>

@@ -3,41 +3,36 @@
         <nz-layout *ngIf="!vm.isFormVisible" class="room-table-wrapper">
             <nz-header style="background: #fff;">
                 <form nz-form class="filter-form" [nzLayout]="'inline'">
-                    <div nz-form-item>
-                        <div nz-form-label>
-                            <label for="text">房间名/地点</label>
-                        </div>
-                        <div nz-form-control>
-                            <nz-input name="text" [(ngModel)]="filterForm.text"></nz-input>
-                        </div>
-                    </div>
-                    <div nz-form-item>
-                        <div nz-form-label>
-                            <label for="roomType">房间类型</label>
-                        </div>
-                        <div nz-form-control>
+                    <nz-form-item>
+                        <nz-form-label>房间名/地点</nz-form-label>
+                        <nz-form-control>
+                            <input name="text" [(ngModel)]="filterForm.text" nz-input>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>房间类型</nz-form-label>
+                        <nz-form-control>
                             <nz-select name="roomType" style="width:120px" [(ngModel)]="filterForm.roomType">
                                 <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                                <nz-option *ngFor="let option of vm.roomTypes" [nzLabel]="option.name" [nzValue]="option.value">
-                                </nz-option>
+                                <nz-option *ngFor="let option of vm.roomTypes" [nzLabel]="option.name" [nzValue]="option.value"></nz-option>
                             </nz-select>
-                        </div>
-                    </div>
-                    <div nz-form-item>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
                         <button nz-button type="button" [nzType]="'primary'" (click)="reset()">
                             <i class="anticon anticon-search"></i>
-                            <span>搜索</span>
+                            搜索
                         </button>
                         <button nz-button type="button" [nzType]="'primary'" (click)="openAddDialog()">
                             <i class="anticon anticon-file-add"></i>
-                            <span>新增房间</span>
+                            新增房间
                         </button>
-                    </div>
+                    </nz-form-item>
                 </form>
             </nz-header>
             <nz-content>
-                <nz-table #nzTable nzShowSizeChanger [nzAjaxData]="dataSet" [nzTotal]="tablePagination.total" [nzLoading]="vm.tableLoading"
-                    [nzBordered]="true" [nzShowSizeChanger]="false" [nzIsPageIndexReset]="false" [(nzPageIndex)]="tablePagination.pageIndex"
+                <nz-table #nzTable nzShowSizeChanger [nzData]="dataSet" [nzTotal]="tablePagination.total" [nzLoading]="vm.tableLoading"
+                    [nzBordered]="true" [nzShowSizeChanger]="false" [(nzPageIndex)]="tablePagination.pageIndex"
                     [(nzPageSize)]="tablePagination.pageSize" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData(true)">
                     <thead nz-thead>
                         <tr>
@@ -118,196 +113,163 @@
                             <form nz-form [formGroup]="this.roomValidateForm">
                                 <div nz-row [nzGutter]="40">
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="RoomName">房产名</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="RoomName" [nzSize]="'large'"></nz-input>
-                                                <div nz-form-explain *ngIf="getFormControl('RoomName').dirty&&getFormControl('RoomName').hasError('required')">请输入房产名称!</div>
-                                            </div>
-                                        </div>
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">房产名</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
+                                                <input formControlName="RoomName" [nzSize]="'large'" nz-input>
+                                                <nz-form-explain *ngIf="getFormControl('RoomName').dirty&&getFormControl('RoomName').hasError('required')">请输入房产名称!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="BasePrice">基准价格</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">基准价格</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
                                                 <nz-input-number style="width:100%" formControlName="BasePrice" [nzSize]="'large'"></nz-input-number>
-                                                <div nz-form-explain *ngIf="getFormControl('BasePrice').dirty&&getFormControl('BasePrice').hasError('required')">请输入每晚价格!</div>
-                                            </div>
-                                        </div>
+                                                <nz-form-explain *ngIf="getFormControl('BasePrice').dirty&&getFormControl('BasePrice').hasError('required')">请输入每晚价格!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="RoomCount">房间数量</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">房间数量</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
                                                 <nz-input-number style="width:100%" formControlName="RoomCount" [nzSize]="'large'"></nz-input-number>
-                                                <div nz-form-explain *ngIf="getFormControl('RoomCount').dirty&&getFormControl('RoomCount').hasError('required')">请输入房间数量!</div>
-                                            </div>
-                                        </div>
+                                                <nz-form-explain *ngIf="getFormControl('RoomCount').dirty&&getFormControl('RoomCount').hasError('required')">请输入房间数量!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                 </div>
                                 <div nz-row [nzGutter]="40">
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="Longitude">经度坐标</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="Longitude" [nzSize]="'large'"></nz-input>
-                                                <div nz-form-explain *ngIf="getFormControl('Longitude').dirty&&getFormControl('Longitude').hasError('required')">请输入经度坐标!</div>
-                                            </div>
-                                        </div>
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">经度坐标</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
+                                                <input formControlName="Longitude" [nzSize]="'large'" nz-input>
+                                                <nz-form-explain *ngIf="getFormControl('Longitude').dirty&&getFormControl('Longitude').hasError('required')">请输入经度坐标!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="Latitude">纬度坐标</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
-                                                <nz-input formControlName="Latitude" [nzSize]="'large'"></nz-input>
-                                                <div nz-form-explain *ngIf="getFormControl('Latitude').dirty&&getFormControl('Latitude').hasError('required')">请输入纬度坐标!</div>
-                                            </div>
-                                        </div>
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">纬度坐标</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
+                                                <input formControlName="Latitude" [nzSize]="'large'" nz-input>
+                                                <nz-form-explain *ngIf="getFormControl('Latitude').dirty&&getFormControl('Latitude').hasError('required')">请输入纬度坐标!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="Address">地址</label>
-                                            </div>
-                                            <div nz-form-control nz-col [nzSpan]="17">
-                                                <nz-input formControlName="Address" [nzSize]="'large'"></nz-input>
-                                            </div>
-                                        </div>
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">地址</nz-form-label>
+                                            <nz-form-control [nzSpan]="17">
+                                                <input formControlName="Address" [nzSize]="'large'" nz-input>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                 </div>
                                 <div nz-row [nzGutter]="40">
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="BedCount">床位数量</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">床位数量</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
                                                 <nz-input-number style="width:100%" formControlName="BedCount" [nzSize]="'large'"></nz-input-number>
-                                                <div nz-form-explain *ngIf="getFormControl('BedCount').dirty&&getFormControl('BedCount').hasError('required')">请输入房产床位数量!</div>
-                                            </div>
-                                        </div>
+                                                <nz-form-explain *ngIf="getFormControl('BedCount').dirty&&getFormControl('BedCount').hasError('required')">请输入房产床位数量!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="AdultCount">成人数量</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">成人数量</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
                                                 <nz-input-number style="width:100%" formControlName="AdultCount" [nzSize]="'large'"></nz-input-number>
-                                                <div nz-form-explain *ngIf="getFormControl('AdultCount').dirty&&getFormControl('AdultCount').hasError('required')">请输入可容纳成人数量!</div>
-                                            </div>
-                                        </div>
+                                                <nz-form-explain *ngIf="getFormControl('AdultCount').dirty&&getFormControl('AdultCount').hasError('required')">请输入可容纳成人数量!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="ChildCount">儿童数量</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">儿童数量</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
                                                 <nz-input-number style="width:100%" formControlName="ChildCount" [nzSize]="'large'"></nz-input-number>
-                                                <div nz-form-explain *ngIf="getFormControl('ChildCount').dirty&&getFormControl('ChildCount').hasError('required')">请输入可容纳儿童数量!</div>
-                                            </div>
-                                        </div>
+                                                <nz-form-explain *ngIf="getFormControl('ChildCount').dirty&&getFormControl('ChildCount').hasError('required')">请输入可容纳儿童数量!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                 </div>
                                 <div nz-row [nzGutter]="40">
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="Area">房产面积</label>
-                                            </div>
-                                            <div nz-form-control nzHasFeedback nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">房产面积</nz-form-label>
+                                            <nz-form-control nzHasFeedback [nzSpan]="17">
                                                 <nz-input-number style="width:100%" formControlName="Area" [nzSize]="'large'"></nz-input-number>
-                                                <div nz-form-explain *ngIf="getFormControl('Area').dirty&&getFormControl('Area').hasError('required')">请输入房产面积!</div>
-                                            </div>
-                                        </div>
+                                                <nz-form-explain *ngIf="getFormControl('Area').dirty&&getFormControl('Area').hasError('required')">请输入房产面积!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="DistrictId">所属区域</label>
-                                            </div>
-                                            <div nz-form-control nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">所属区域</nz-form-label>
+                                            <nz-form-control [nzSpan]="17">
                                                 <nz-select formControlName="DistrictId" [nzSize]="'large'" [nzPlaceHolder]="'请选择所属区域'">
-                                                    <nz-option *ngFor="let option of vm.districts" [nzLabel]="option.DistrictName" [nzValue]="option.DistrictId">
-                                                    </nz-option>
+                                                    <nz-option *ngFor="let option of vm.districts" [nzLabel]="option.DistrictName" [nzValue]="option.DistrictId"></nz-option>
                                                 </nz-select>
-                                                <div nz-form-explain *ngIf="getFormControl('DistrictId').dirty&&getFormControl('DistrictId').hasError('required')">请选择所属区域!</div>
-                                            </div>
-                                        </div>
+                                                <nz-form-explain *ngIf="getFormControl('DistrictId').dirty&&getFormControl('DistrictId').hasError('required')">请选择所属区域!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="RoomTypeValue">房产类型</label>
-                                            </div>
-                                            <div nz-form-control nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">房产类型</nz-form-label>
+                                            <nz-form-control [nzSpan]="17">
                                                 <nz-radio-group formControlName="RoomTypeValue" [nzSize]="'large'">
                                                     <label nz-radio-button *ngFor="let type of vm.roomTypes" [nzValue]="type.value">
                                                         <span>{{type.name}}</span>
                                                     </label>
                                                 </nz-radio-group>
-                                                <div nz-form-explain *ngIf="getFormControl('RoomTypeValue').dirty&&getFormControl('RoomTypeValue').hasError('required')">请选择房产类型!</div>
-                                            </div>
-                                        </div>
+                                                <nz-form-explain *ngIf="getFormControl('RoomTypeValue').dirty&&getFormControl('RoomTypeValue').hasError('required')">请选择房产类型!</nz-form-explain>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                 </div>
                                 <div nz-row [nzGutter]="40">
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="IsBargainPrice">是否特价</label>
-                                            </div>
-                                            <div nz-form-control nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">是否特价</nz-form-label>
+                                            <nz-form-control [nzSpan]="17">
                                                 <nz-switch formControlName="IsBargainPrice" [nzSize]="'large'"></nz-switch>
-                                            </div>
-                                        </div>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="BargainPrice">特价价格</label>
-                                            </div>
-                                            <div nz-form-control nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">特价价格</nz-form-label>
+                                            <nz-form-control [nzSpan]="17">
                                                 <nz-input-number style="width:100%" formControlName="BargainPrice" [nzSize]="'large'"></nz-input-number>
-                                            </div>
-                                        </div>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="Introduction">房间简介</label>
-                                            </div>
-                                            <div nz-form-control nz-col [nzSpan]="17">
-                                                <nz-input formControlName="Introduction" [nzType]="'textarea'" [nzRows]="'2'" [nzSize]="'large'"></nz-input>
-                                            </div>
-                                        </div>
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">房间简介</nz-form-label>
+                                            <nz-form-control [nzSpan]="17">
+                                                <textarea formControlName="Introduction"></textarea>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                 </div>
                                 <div nz-row [nzGutter]="40">
                                     <div nz-col [nzSpan]="8">
-                                        <div nz-form-item nz-row>
-                                            <div nz-form-label nz-col [nzSpan]="5">
-                                                <label for="Configs">房间配置</label>
-                                            </div>
-                                            <div nz-form-control nz-col [nzSpan]="17">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="5">房间配置</nz-form-label>
+                                            <nz-form-control [nzSpan]="17">
                                                 <!-- <nz-checkbox-group formControlName="Configs"></nz-checkbox-group> -->
                                                 <nz-select formControlName="Configs" [nzSize]="'large'" [nzPlaceHolder]="'请选择房间配置项'" [nzMode]="'multiple'">
                                                     <nz-option *ngFor=" let o of this.vm.configs" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
                                                 </nz-select>
                                                 <div nz-form-explain *ngIf="getFormControl('Configs').dirty&&getFormControl('Configs').hasError('required')">请选择房间配置!</div>
-                                            </div>
-                                        </div>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                 </div>
                             </form>
@@ -325,47 +287,47 @@
                                         <input type="file" ng2FileSelect #descriptionFileInput [uploader]="descriptionImgUploader" (onFileSelected)="handleFileSelected('descriptionImgUploader',descriptionFileInput)"
                                         />
                                         <!-- 图片上传列表 -->
-                                        <nz-table #nzTable [nzDataSource]="descriptionImgList" [nzIsPagination]="false">
-                                            <thead nz-thead>
-                                                <tr>
-                                                    <th nz-th>
-                                                        <span>文件名</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>状态</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>操作</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody nz-tbody>
-                                                <tr nz-tbody-tr *ngFor="let item of descriptionImgList">
-                                                    <td nz-td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
-                                                    <td nz-td>
-                                                        <span *ngIf="!item.isUploaded">
-                                                            <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
-                                                        </span>
-                                                        <span *ngIf="item.isSuccess">
-                                                            <i style="color: green" class="anticon anticon-check-circle"></i>已上传
-                                                        </span>
-                                                        <span *ngIf="item.isError">
-                                                            <i style="color: red" class="anticon anticon-close-circle"></i>上传失败
-                                                        </span>
-                                                    </td>
-                                                    <td nz-td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'descriptionImgUploader')" [nzLoading]="item.isUploading"
-                                                            [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                            {{item.isUploading?"上传中":"上传"}}
-                                                        </button>
-                                                        <span nz-table-divider></span>
-                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
-                                                        <span nz-table-divider></span>
-                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'descriptionImg')">移除</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </nz-table>
+                                        <nz-table #nzTable [nzData]="descriptionImgList" [nzShowPagination]="false">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <span>文件名</span>
+                                                        </th>
+                                                        <th>
+                                                            <span>状态</span>
+                                                        </th>
+                                                        <th>
+                                                            <span>操作</span>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of descriptionImgList">
+                                                        <td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
+                                                        <td>
+                                                            <span *ngIf="!item.isUploaded">
+                                                                <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>
+                                                                未上传
+                                                            </span>
+                                                            <span *ngIf="item.isSuccess">
+                                                                <i style="color: green" class="anticon anticon-check-circle"></i>
+                                                                已上传
+                                                            </span>
+                                                            <span *ngIf="item.isError">
+                                                                <i style="color: red" class="anticon anticon-close-circle"></i>
+                                                                上传失败
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'descriptionImgUploader')" [nzLoading]="item.isUploading" [disabled]="item.isReady || item.isUploading || item.isSuccess">{{item.isUploading?"上传中":"上传"}}</button>
+                                                            <nz-divider nzType="vertical"></nz-divider>
+                                                            <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
+                                                            <nz-divider nzType="vertical"></nz-divider>
+                                                            <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'descriptionImg')">移除</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </nz-table>
                                     </div>
                                     <div class="msg-editor-container">
                                         <editor [isEmitOnChange]="true" [content]="this.roomArticleData.Description" (onOutput)="this.roomArticleData.Description=$event"></editor>
@@ -379,7 +341,7 @@
                                         <input type="file" ng2FileSelect #infoFileInput [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader',infoFileInput)"
                                         />
                                         <!-- 图片上传列表 -->
-                                        <nz-table #nzTable [nzDataSource]="infoImgList" [nzIsPagination]="false">
+                                        <nz-table #nzTable [nzData]="infoImgList" [nzShowPagination]="false">
                                             <thead nz-thead>
                                                 <tr>
                                                     <th nz-th>
@@ -431,7 +393,7 @@
                                         <input type="file" ng2FileSelect #titleFileInput [uploader]="titleImgUploader" (onFileSelected)="handleFileSelected('titleImgUploader',titleFileInput)"
                                         />
                                         <!-- 图片上传列表 -->
-                                        <nz-table #nzTable [nzDataSource]="titleImgList" [nzIsPagination]="false">
+                                        <nz-table #nzTable [nzData]="titleImgList" [nzShowPagination]="false">
                                             <thead nz-thead>
                                                 <tr>
                                                     <th nz-th>
@@ -480,7 +442,7 @@
                                     <div class="img-uploader">
                                         <input type="file" #bannerFileInput ng2FileSelect [uploader]="bannerImgsUploader" multiple (onFileSelected)="handleFileSelected('bannerImgsUploader',bannerFileInput)"
                                         />
-                                        <nz-table #nzTable [nzScroll]="{y:440}" [nzDataSource]="bannerImgList" [nzIsPagination]="false">
+                                        <nz-table #nzTable [nzScroll]="{y:440}" [nzData]="bannerImgList" [nzShowPagination]="false">
                                             <ng-template #nzFixedHeader>
                                                 <thead nz-thead>
                                                     <tr>
@@ -536,7 +498,7 @@
                             </div>
                             <div nz-row>
                                 <div nz-col [nzSpan]="12">
-                                    <nz-table #nzTable [nzScroll]="{y:500}" [nzDataSource]="priceConfigs" [nzBordered]="true" [nzIsPagination]="false">
+                                    <nz-table #nzTable [nzScroll]="{y:500}" [nzData]="priceConfigs" [nzBordered]="true" [nzShowPagination]="false">
                                         <ng-template #nzFixedHeader>
                                             <thead nz-thead>
                                                 <tr>
@@ -601,9 +563,9 @@
     <nz-modal [nzVisible]="vm.isPriceCalenderFormVisible" [nzTitle]="'新增价格日历'" [nzContent]="priceCalenderFormContent" [nzFooter]="priceCalenderFormFooter">
         <ng-template #priceCalenderFormContent>
             <form nz-form [formGroup]="priceConfigForm">
-                <div nz-form-item nz-row>
+                <!-- <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="5">
-                        <label for="StartTime" nz-form-item-required>开始时间</label>
+                        <label for="StartTime" nzRequired>开始时间</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="17">
                         <nz-datepicker style="width:100%" [nzSize]="'large'" formControlName="PriceDateStart" [nzAllowClear]="true" [nzDisabledDate]="disabledStartDate"
@@ -613,17 +575,17 @@
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="5">
-                        <label for="EndTime" nz-form-item-required>结束时间</label>
+                        <label for="EndTime" nzRequired>结束时间</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="17">
                         <nz-datepicker style="width:100%" [nzSize]="'large'" formControlName="PriceDateEnd" [nzAllowClear]="true" [nzDisabledDate]="disabledEndDate"
                             [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
                         <div nz-form-explain *ngIf="getPriceFormControl('PriceDateEnd').dirty&&getPriceFormControl('PriceDateEnd').hasError('required')">请输入价格配置结束时间!</div>
                     </div>
-                </div>
+                </div> -->
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="5">
-                        <label for="PricePercent" nz-form-item-required>百分比</label>
+                        <label for="PricePercent" nzRequired>百分比</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="17">
                         <nz-input-number style="width:100%" [nzSize]="'large'" formControlName="PricePercent" [nzMin]="0" [nzStep]="10" [nzFormatter]="formatterPercent"
