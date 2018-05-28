@@ -1,11 +1,9 @@
-main {
+main{
     height: 100%;
 }
-
 .app-layout {
-    height: inherit;
+    height: 100%;
     .header {
-        background: black;
         font-size: 18px;
         >.logo {
             float: left;
@@ -19,14 +17,9 @@ main {
     }
     .body {
         .nav-sider {
-            padding: 24px 0;
-            background: #404040;
+            margin: 24px 0 24px 24px
         }
         .router-container {
-            position: relative;
-            height: calc(100% - 64px);
-            height: -webkit-calc(100% - 64px);
-            height: -moz-calc(100% - 64px);
             margin: 24px;
             background: #fff;
         }
