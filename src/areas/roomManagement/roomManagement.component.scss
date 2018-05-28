@@ -17,6 +17,7 @@
         .form-layout-row {
             position: absolute;
             height: calc(100% - 48px);
+            overflow: auto;
             width: 100%;
             .form-title {
                 padding-bottom: 10px;

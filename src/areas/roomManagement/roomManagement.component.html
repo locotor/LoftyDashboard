@@ -32,69 +32,48 @@
                 <nz-table #nzTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzData]="dataSet" [nzLoading]="vm.tableLoading"
                     [(nzPageIndex)]="tablePagination.pageIndex" (nzPageIndexChange)="refreshData()" [(nzPageSize)]="tablePagination.pageSize"
                     (nzPageSizeChange)="refreshData(true)" [nzTotal]="tablePagination.total">
-                    <thead nz-thead>
+                    <thead>
                         <tr>
-                            <th nz-th>
-                                <span>房间名</span>
-                            </th>
-                            <th nz-th>
-                                <span>经度坐标</span>
-                            </th>
-                            <th nz-th>
-                                <span>纬度坐标</span>
-                            </th>
-                            <th nz-th>
-                                <span>基准价格</span>
-                            </th>
-                            <th nz-th>
-                                <span>面积</span>
-                            </th>
-                            <th nz-th>
-                                <span>床位</span>
-                            </th>
-                            <th nz-th>
-                                <span>所属区域</span>
-                            </th>
-                            <th nz-th>
-                                <span>是否特价</span>
-                            </th>
-                            <th nz-th>
-                                <span>特价</span>
-                            </th>
-                            <th nz-th>
-                                <span>成人数量</span>
-                            </th>
-                            <th nz-th>
-                                <span>儿童数量</span>
-                            </th>
-                            <th nz-th>
-                                <span>操作</span>
-                            </th>
+                            <th nzShowExpand></th>
+                            <th>房间名</th>
+                            <th>基准价格(rmb)</th>
+                            <th>床位</th>
+                            <th>是否特价</th>
+                            <th>特价(rmb)</th>
+                            <th>操作</th>
                         </tr>
                     </thead>
-                    <tbody nz-tbody>
-                        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-                            <td nz-td>{{data.RoomName}}</td>
-                            <td nz-td>{{data.Longitude}}</td>
-                            <td nz-td>{{data.Latitude}}</td>
-                            <td nz-td>{{data.BasePrice}}</td>
-                            <td nz-td>{{data.Area}}</td>
-                            <td nz-td>{{data.BedCount}}</td>
-                            <td nz-td>{{data.District}}</td>
-                            <td nz-td>{{data.IsBargainPrice}}</td>
-                            <td nz-td>{{data.BargainPrice}}</td>
-                            <td nz-td>{{data.AdultCount}}</td>
-                            <td nz-td>{{data.ChildCount}}</td>
-                            <td nz-td>
-                                <span>
-                                    <a (click)="handleEditClick(data)">编辑</a>
-                                    <span nz-table-divider></span>
-                                    <nz-popconfirm [nzTitle]="'确定要删除这个房间吗？'" (nzOnConfirm)="handleDelteClick(data)">
-                                        <a nz-popconfirm>删除</a>
-                                    </nz-popconfirm>
-                                </span>
-                            </td>
-                        </tr>
+                    <tbody>
+                        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+                            <tr>
+                                <td nzShowExpand [(nzExpand)]="data.expand"></td>
+                                <td nz-td>{{data.RoomName}}</td>
+                                <td nz-td>{{data.BasePrice}}</td>
+                                <td nz-td>{{data.BedCount}}</td>
+                                <td nz-td>{{data.IsBargainPrice}}</td>
+                                <td nz-td>{{data.BargainPrice}}</td>
+                                <td nz-td>
+                                    <span>
+                                        <a (click)="handleEditClick(data)">编辑</a>
+                                        <span nz-table-divider></span>
+                                        <nz-popconfirm [nzTitle]="'确定要删除这个房间吗？'" (nzOnConfirm)="handleDelteClick(data)">
+                                            <a nz-popconfirm>删除</a>
+                                        </nz-popconfirm>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr [nzExpand]="data.expand">
+                                <td></td>
+                                <td colspan="6">
+                                    <p>经度坐标: {{data.Longitude}}</p>
+                                    <p>纬度坐标: {{data.Latitude}}</p>
+                                    <p>面积: {{data.Area}}</p>
+                                    <p>所属区域: {{data.District}}</p>
+                                    <p>成人数量: {{data.AdultCount}}</p>
+                                    <p>儿童数量: {{data.ChildCount}}</p>
+                                </td>
+                            </tr>
+                        </ng-template>
                     </tbody>
                 </nz-table>
             </nz-content>
@@ -258,9 +237,8 @@
                                         <nz-form-item>
                                             <nz-form-label nzSpan="5">房间配置</nz-form-label>
                                             <nz-form-control nzSpan="17">
-                                                <!-- <nz-checkbox-group formControlName="Configs"></nz-checkbox-group> -->
-                                                <nz-select formControlName="Configs" nzSize="large" [nzPlaceHolder]="'请选择房间配置项'" [nzMode]="'multiple'">
-                                                    <nz-option *ngFor=" let o of this.vm.configs" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+                                                <nz-select formControlName="Configs" style="width: 100%;" nzSize="large" nzPlaceHolder="请选择房间配置项" nzMode="multiple">
+                                                    <nz-option *ngFor="let option of vm.configs" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
                                                 </nz-select>
                                                 <div nz-form-explain *ngIf="getFormControl('Configs').dirty&&getFormControl('Configs').hasError('required')">请选择房间配置!</div>
                                             </nz-form-control>
@@ -269,112 +247,37 @@
                                 </div>
                             </form>
                         </nz-tab>
-                        <nz-tab nzTitle="房间图文描述">
+                        <nz-tab nzTitle="房间额外配置">
                             <div nz-row nzGutter="40" class="form-layout-row">
-                                <!-- 房产简介 -->
                                 <div nz-col nzSpan="8" style="border-right:1px solid #ccc;height:inherit;">
+                                    <!-- 房产简介 -->
                                     <h2 class="form-title">房产简介</h2>
                                     <div class="img-uploader">
-                                        <span>简介配图:</span>
-                                        <input type="file" ng2FileSelect #descriptionFileInput [uploader]="descriptionImgUploader" (onFileSelected)="handleFileSelected('descriptionImgUploader',descriptionFileInput)"
-                                        />
-                                        <!-- 图片上传列表 -->
-                                        <nz-table #nzTable [nzData]="descriptionImgList" [nzShowPagination]="false">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <span>文件名</span>
-                                                    </th>
-                                                    <th>
-                                                        <span>状态</span>
-                                                    </th>
-                                                    <th>
-                                                        <span>操作</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let item of descriptionImgList">
-                                                    <td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
-                                                    <td>
-                                                        <span *ngIf="!item.isUploaded">
-                                                            <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>
-                                                            未上传
-                                                        </span>
-                                                        <span *ngIf="item.isSuccess">
-                                                            <i style="color: green" class="anticon anticon-check-circle"></i>
-                                                            已上传
-                                                        </span>
-                                                        <span *ngIf="item.isError">
-                                                            <i style="color: red" class="anticon anticon-close-circle"></i>
-                                                            上传失败
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'descriptionImgUploader')" [nzLoading]="item.isUploading"
-                                                            [disabled]="item.isReady || item.isUploading || item.isSuccess">{{item.isUploading?"上传中":"上传"}}</button>
-                                                        <nz-divider nzType="vertical"></nz-divider>
-                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
-                                                        <nz-divider nzType="vertical"></nz-divider>
-                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'descriptionImg')">移除</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </nz-table>
+                                        <nz-upload nzAction="/Public/UploadFile" nzListType="picture" [(nzFileList)]="descriptionImg" [nzMultiple]="true" [nzPreview]="hanldeImgPreview"
+                                            (nzChange)="hanldeImgChange($event,'descriptionImg')">
+                                            <button nz-button>
+                                                <span>
+                                                    <i class="anticon anticon-upload"></i>
+                                                    简介配图
+                                                </span>
+                                            </button>
+                                        </nz-upload>
                                     </div>
                                     <div class="msg-editor-container">
                                         <editor [isEmitOnChange]="true" [content]="this.roomArticleData.Description" (onOutput)="this.roomArticleData.Description=$event"></editor>
                                     </div>
-                                </div>
-                                <!-- 房产详情 -->
-                                <div nz-col nzSpan="8" style="border-right:1px solid #ccc;height:inherit">
+                                    <!-- 房产详情 -->
                                     <h2 class="form-title">房产详情</h2>
                                     <div class="img-uploader">
-                                        <span>详情配图:</span>
-                                        <input type="file" ng2FileSelect #infoFileInput [uploader]="infoImgUploader" (onFileSelected)="handleFileSelected('infoImgUploader',infoFileInput)"
-                                        />
-                                        <!-- 图片上传列表 -->
-                                        <nz-table #nzTable [nzData]="infoImgList" [nzShowPagination]="false">
-                                            <thead nz-thead>
-                                                <tr>
-                                                    <th nz-th>
-                                                        <span>文件名</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>状态</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>操作</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody nz-tbody>
-                                                <tr nz-tbody-tr *ngFor="let item of infoImgList">
-                                                    <td nz-td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
-                                                    <td nz-td>
-                                                        <span *ngIf="!item.isUploaded">
-                                                            <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
-                                                        </span>
-                                                        <span *ngIf="item.isSuccess">
-                                                            <i style="color: green" class="anticon anticon-check-circle"></i>已上传
-                                                        </span>
-                                                        <span *ngIf="item.isError">
-                                                            <i style="color: red" class="anticon anticon-close-circle"></i>上传失败
-                                                        </span>
-                                                    </td>
-                                                    <td nz-td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'infoImgUploader')" [nzLoading]="item.isUploading"
-                                                            [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                            {{item.isUploading?"上传中":"上传"}}
-                                                        </button>
-                                                        <span nz-table-divider></span>
-                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
-                                                        <span nz-table-divider></span>
-                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'infoImg')">移除</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </nz-table>
+                                        <nz-upload nzAction="/Public/UploadFile" nzListType="picture" [(nzFileList)]="infoImg" [nzMultiple]="true" [nzPreview]="hanldeImgPreview"
+                                            (nzChange)="hanldeImgChange($event,'infoImg')">
+                                            <button nz-button>
+                                                <span>
+                                                    <i class="anticon anticon-upload"></i>
+                                                    详情配图
+                                                </span>
+                                            </button>
+                                        </nz-upload>
                                     </div>
                                     <div class="msg-editor-container">
                                         <editor [isEmitOnChange]="true" [content]="this.roomArticleData.RoomInfoDetail" (onOutput)="this.roomArticleData.RoomInfoDetail=$event"></editor>
@@ -382,129 +285,54 @@
                                     <!-- 房产封面 -->
                                     <h2 class="form-title" style="margin-top:15px">房产封面</h2>
                                     <div class="img-uploader">
-                                        <span>房产封面:</span>
-                                        <input type="file" ng2FileSelect #titleFileInput [uploader]="titleImgUploader" (onFileSelected)="handleFileSelected('titleImgUploader',titleFileInput)"
-                                        />
-                                        <!-- 图片上传列表 -->
-                                        <nz-table #nzTable [nzData]="titleImgList" [nzShowPagination]="false">
-                                            <thead nz-thead>
-                                                <tr>
-                                                    <th nz-th>
-                                                        <span>文件名</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>状态</span>
-                                                    </th>
-                                                    <th nz-th>
-                                                        <span>操作</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody nz-tbody>
-                                                <tr nz-tbody-tr *ngFor="let item of titleImgList">
-                                                    <td nz-td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
-                                                    <td nz-td>
-                                                        <span *ngIf="!item.isUploaded">
-                                                            <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
-                                                        </span>
-                                                        <span *ngIf="item.isSuccess">
-                                                            <i style="color: green" class="anticon anticon-check-circle"></i>已上传
-                                                        </span>
-                                                        <span *ngIf="item.isError">
-                                                            <i style="color: red" class="anticon anticon-close-circle"></i>上传失败
-                                                        </span>
-                                                    </td>
-                                                    <td nz-td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'titleImgUploader')" [nzLoading]="item.isUploading"
-                                                            [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                            {{item.isUploading?"上传中":"上传"}}
-                                                        </button>
-                                                        <span nz-table-divider></span>
-                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
-                                                        <span nz-table-divider></span>
-                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'titleImg')">移除</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </nz-table>
+                                        <nz-upload nzAction="/Public/UploadFile" nzListType="picture" [(nzFileList)]="titleImg" [nzMultiple]="true" [nzPreview]="hanldeImgPreview"
+                                            (nzChange)="hanldeImgChange($event,'titleImg')">
+                                            <button nz-button>
+                                                <span>
+                                                    <i class="anticon anticon-upload"></i>
+                                                    房产封面
+                                                </span>
+                                            </button>
+                                        </nz-upload>
+                                    </div>
+                                </div>
+                                <div nz-col nzSpan="8" style="border-right:1px solid #ccc;height:inherit">
+                                    <h2 class="form-title">轮播图组</h2>
+                                    <div class="img-uploader">
+                                        <nz-upload nzAction="/Public/UploadFile" [(nzFileList)]="bannerImg" [nzMultiple]="true" [nzPreview]="hanldeImgPreview" (nzChange)="hanldeImgChange($event,'bannerImg')">
+                                            <button nz-button>
+                                                <span>
+                                                    <i class="anticon anticon-upload"></i>
+                                                    房产封面
+                                                </span>
+                                            </button>
+                                        </nz-upload>
                                     </div>
                                 </div>
                                 <!-- banner图组 -->
                                 <div nz-col nzSpan="8">
-                                    <h2 class="form-title">轮播图组</h2>
-                                    <div class="img-uploader">
-                                        <input type="file" #bannerFileInput ng2FileSelect [uploader]="bannerImgsUploader" multiple (onFileSelected)="handleFileSelected('bannerImgsUploader',bannerFileInput)"
-                                        />
-                                        <nz-table #nzTable [nzScroll]="{y:440}" [nzData]="bannerImgList" [nzShowPagination]="false">
-                                            <ng-template #nzFixedHeader>
-                                                <thead nz-thead>
-                                                    <tr>
-                                                        <th nz-th [nzWidth]="'125px'">
-                                                            <span>文件名</span>
-                                                        </th>
-                                                        <th nz-th [nzWidth]="'100px'">
-                                                            <span>状态</span>
-                                                        </th>
-                                                        <th nz-th>
-                                                            <span>操作</span>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                            </ng-template>
-                                            <tbody nz-tbody>
-                                                <tr nz-tbody-tr *ngFor="let item of bannerImgList">
-                                                    <td nz-td>{{item.name.length>15?item.name.slice(0,15)+'...':item.name}}</td>
-                                                    <td nz-td>
-                                                        <span *ngIf="!item.isUploaded">
-                                                            <i style="color: orange" class="anticon anticon-exclamation-circle-o"></i>未上传
-                                                        </span>
-                                                        <span *ngIf="item.isSuccess">
-                                                            <i style="color: green" class="anticon anticon-check-circle"></i>已上传
-                                                        </span>
-                                                        <span *ngIf="item.isError">
-                                                            <i style="color: red" class="anticon anticon-close-circle"></i>上传失败
-                                                        </span>
-                                                    </td>
-                                                    <td nz-td>
-                                                        <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="uploadImg(item,'bannerImgsUploader')" [nzLoading]="item.isUploading"
-                                                            [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                                            {{item.isUploading?"上传中":"上传"}}
-                                                        </button>
-                                                        <span nz-table-divider></span>
-                                                        <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="showModal(item)">查看</button>
-                                                        <span nz-table-divider></span>
-                                                        <button nz-button [nzType]="'danger'" [nzSize]="'small'" (click)="removeImg(item,'bannerImg')">移除</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </nz-table>
+                                    <!-- 房间价格配置 -->
+                                    <h2 class="form-title">房间价格配置</h2>
+                                    <div style="margin-bottom: 16px;">
+                                        <button type="button" nz-button [nzType]="'primary'" (click)="vm.isPriceCalenderFormVisible=true;">新增</button>
                                     </div>
-                                </div>
-                            </div>
-                        </nz-tab>
-                        <nz-tab nzTitle="房间价格配置">
-                            <div style="margin-bottom: 16px;">
-                                <button type="button" nz-button [nzType]="'primary'" (click)="vm.isPriceCalenderFormVisible=true;">新增</button>
-                            </div>
-                            <div nz-row>
-                                <div nz-col nzSpan="12">
                                     <nz-table #nzTable nzBordered [nzScroll]="{y:500}" [nzData]="priceConfigs" [nzShowPagination]="false">
                                         <ng-template #nzFixedHeader>
                                             <thead nz-thead>
                                                 <tr>
-                                                    <th nz-th [nzWidth]="'150px'">
+                                                    <th [nzWidth]="'150px'">
                                                         <span>开始时间</span>
                                                     </th>
-                                                    <th nz-th [nzWidth]="'150px'">
+                                                    <th [nzWidth]="'150px'">
                                                         <span>结束时间</span>
                                                     </th>
-                                                    <th nz-th [nzWidth]="'80px'">
+                                                    <th [nzWidth]="'80px'">
                                                         <span>百分比</span>
                                                     </th>
-                                                    <th nz-th [nzWidth]="'80px'">
+                                                    <th [nzWidth]="'80px'">
                                                         <span>额外价格</span>
                                                     </th>
-                                                    <th nz-th [nzWidth]="'150px'">
+                                                    <th [nzWidth]="'150px'">
                                                         <span>操作</span>
                                                     </th>
                                                 </tr>
@@ -541,13 +369,8 @@
     </nz-content>
     <!-- 弹窗 -->
     <!-- 预览图片 -->
-    <nz-modal [nzVisible]="vm.isPreviewVisible" [nzTitle]="'图片详情'" [nzClosable]="false" [nzContent]="modalContent" [nzFooter]="modalFooter">
-        <ng-template #modalContent>
-            <div [innerHtml]="this.vm.previewImgHtml" style="width: 100%"></div>
-        </ng-template>
-        <ng-template #modalFooter>
-            <button nz-button [nzType]="'primary'" (click)="vm.isPreviewVisible=false">关 闭</button>
-        </ng-template>
+    <nz-modal [nzVisible]="isPreviewVisible" [nzFooter]="null" (nzOnCancel)="isPreviewVisible=false">
+        <div [innerHtml]="previewImage" [ngStyle]="{width:'100%',padding: '15px'}"></div>
     </nz-modal>
     <!-- 价格日历编辑/新增 -->
     <nz-modal [nzVisible]="vm.isPriceCalenderFormVisible" [nzTitle]="'新增价格日历'" [nzContent]="priceCalenderFormContent" [nzFooter]="priceCalenderFormFooter">

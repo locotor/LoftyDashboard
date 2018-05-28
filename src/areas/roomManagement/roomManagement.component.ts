@@ -2,24 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { DomSanitizer, SafeUrl, SafeHtml } from "@angular/platform-browser";
 import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
-import { NzMessageService } from "ng-zorro-antd";
+import { NzMessageService, UploadFile } from "ng-zorro-antd";
 import { RoomManagementService } from "./roomManagement.service";
-import { FileUploader, FileSelectDirective, FileItem } from "ng2-file-upload";
 import { Room } from "models/room/room.model";
 import { RoomPriceConfig } from "models/room/roomPriceConfig.model";
 import { NgForm } from "@angular/forms";
 import uuid from "commons/utilities/uuid";
-
-const URL: string = "/Public/UploadFile";
-class UploadFile {
-  name: string;
-  url: string;
-  isReady: boolean;
-  isUploading: boolean;
-  isUploaded: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-}
 
 @Component({
   templateUrl: "./roomManagement.component.html",
@@ -35,11 +23,12 @@ export class RoomManagementComponent implements OnInit {
   }
 
   /*--- properties---*/
-  // 图片上传器
-  titleImgUploader: FileUploader = new FileUploader({ url: URL });
-  descriptionImgUploader: FileUploader = new FileUploader({ url: URL });
-  infoImgUploader: FileUploader = new FileUploader({ url: URL });
-  bannerImgsUploader: FileUploader = new FileUploader({ url: URL });
+  isPreviewVisible: boolean = false;
+  previewImage: SafeHtml;
+  descriptionImg = [];
+  infoImg = [];
+  titleImg = [];
+  bannerImg = [];
 
   vm = {
     tableLoading: true,
@@ -86,27 +75,14 @@ export class RoomManagementComponent implements OnInit {
   priceConfigForm: FormGroup;
   priceConfigs: RoomPriceConfig[] = [];
   // 图片列表
-  titleImgList: UploadFile[] = [];
-  descriptionImgList: UploadFile[] = [];
-  infoImgList: UploadFile[] = [];
-  bannerImgList: UploadFile[] = [];
+  titleImgList = [];
+  descriptionImgList = [];
+  infoImgList = [];
+  bannerImgList = [];
 
 
   ngOnInit (): void {
     this.refreshData();
-    // 上传器事件绑定
-    this.bannerImgsUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.handleFileUploaded(item, response, status, headers, "bannerImg");
-    };
-    this.descriptionImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.handleFileUploaded(item, response, status, headers, "descriptionImg");
-    };
-    this.infoImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.handleFileUploaded(item, response, status, headers, "infoImg");
-    };
-    this.titleImgUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.handleFileUploaded(item, response, status, headers, "titleImg");
-    };
     // 表单验证规则
     this.roomValidateForm = new FormGroup({
       RoomName: new FormControl("", [Validators.required]),
@@ -148,15 +124,13 @@ export class RoomManagementComponent implements OnInit {
 
   /*--- functions---*/
 
-  /**
-   * 重新获取表格数据
+  /** 重新获取表格数据
    */
   reset (): void {
     this.refreshData(true);
   }
 
-  /**
-   * 刷新数据
+  /** 刷新数据
    * @param reset 是否重置表格数据
    */
   refreshData (reset: boolean = false): void {
@@ -176,8 +150,7 @@ export class RoomManagementComponent implements OnInit {
     });
   }
 
-  /**
-   * 打开房产新建列表
+  /** 打开房产新建列表
    */
   openAddDialog (): void {
     this.vm.pattern = "add";
@@ -192,18 +165,11 @@ export class RoomManagementComponent implements OnInit {
     this.vm.isFormVisible = true;
   }
 
-  /**
-   * 打开房产编辑界面
+  /** 打开房产编辑界面
    * @param currentRoom 房产对象
    */
   handleEditClick (currentRoom: Room): void {
     this.currentRoomId = currentRoom.RoomId;
-    let selectedConfigIds: string[] = [];
-    this.vm.configs.forEach((item: any) => {
-      if (currentRoom.ConfigString ? currentRoom.ConfigString.includes(item.value) : false) {
-        selectedConfigIds.push(item.value);
-      }
-    });
     this.vm.isFormVisible = true;
     this.vm.pattern = "edit";
     this.roomValidateForm.setValue({
@@ -222,7 +188,9 @@ export class RoomManagementComponent implements OnInit {
       IsBargainPrice: currentRoom.IsBargainPrice,
       BargainPrice: currentRoom.BargainPrice,
       Introduction: currentRoom.Introduction,
-      Configs: selectedConfigIds
+      Configs: this.vm.configs.filter(config => {
+        return currentRoom.ConfigString ? currentRoom.ConfigString.includes(config.value) : false;
+      }).map(config => config.value)
     });
     for (let cName in this.roomValidateForm.controls) {
       if (this.roomValidateForm.controls.hasOwnProperty(cName)) {
@@ -247,49 +215,25 @@ export class RoomManagementComponent implements OnInit {
         this.priceConfigs.push(temp);
       });
     }
+    this.titleImg = this.assembleSaveImgList(currentRoom.PicUrl);
+    this.descriptionImg = this.assembleSaveImgList(currentRoom.DescriptionPic);
+    this.infoImg = this.assembleSaveImgList(currentRoom.RoomInfoPic);
+    this.bannerImg = this.assembleSaveImgList(currentRoom.Photos);
+  }
 
-    this.titleImgList = currentRoom.PicUrl ? [{
-      name: currentRoom.PicUrl.split("/").pop(),
-      url: currentRoom.PicUrl,
-      isError: false,
-      isReady: true,
-      isSuccess: true,
-      isUploaded: true,
-      isUploading: false
-    }] : [];
-    this.descriptionImgList = currentRoom.DescriptionPic ? [{
-      name: currentRoom.DescriptionPic.split("/").pop(),
-      url: currentRoom.DescriptionPic,
-      isError: false,
-      isReady: true,
-      isSuccess: true,
-      isUploaded: true,
-      isUploading: false
-    }] : [];
-    this.infoImgList = currentRoom.RoomInfoPic ? [{
-      name: currentRoom.RoomInfoPic.split("/").pop(),
-      url: currentRoom.RoomInfoPic,
-      isError: false,
-      isReady: true,
-      isSuccess: true,
-      isUploaded: true,
-      isUploading: false
-    }] : [];
-    this.bannerImgList = currentRoom.Photos ? currentRoom.Photos.split(",").map(photo => {
+  private assembleSaveImgList (imgUrls: string): any[] {
+    return imgUrls ? imgUrls.replace(/[\r\n]/g, "").split(",").map(img => {
       return {
-        name: photo.split("/").pop(),
-        url: photo,
-        isError: false,
-        isReady: true,
-        isSuccess: true,
-        isUploaded: true,
-        isUploading: false
+        uid: uuid(),
+        name: img.split("/").pop(),
+        status: "done",
+        url: img,
+        thumbUrl: img
       };
     }) : [];
   }
 
-  /**
-   * 删除房产信息
+  /** 删除房产信息
    * @param data 房产对象
    */
   handleDelteClick (data: Room): void {
@@ -305,27 +249,25 @@ export class RoomManagementComponent implements OnInit {
   handleFormSubmit (): void {
     let data: any = {};
     // 组装数据
-    Object.assign(data, this.roomValidateForm.value);
-    data.RoomId = this.currentRoomId;
-    data.ConfigString = data.Configs.join(",");
-    data.PicUrl = this.titleImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
-    data.DescriptionPic = this.descriptionImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
-    data.Description = this.roomArticleData.Description;
-    data.RoomInfoPic = this.infoImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
-    data.RoomInfoDetail = this.roomArticleData.RoomInfoDetail;
-    data.Photos = this.bannerImgList.filter(img => img.isUploaded && img.isSuccess).map(img => img.url).join(",");
-    data.PriceConfigs = [];
-    if (this.priceConfigs) {
-      this.priceConfigs.forEach(config => {
-        let temp: any = {
+    Object.assign(data, this.roomValidateForm.value, {
+      RoomId: this.currentRoomId,
+      Description: this.roomArticleData.Description,
+      RoomInfoDetail: this.roomArticleData.RoomInfoDetail,
+      PicUrl: this.titleImg.map(img => img.url).join(","),
+      DescriptionPic: this.descriptionImg.map(img => img.url).join(","),
+      RoomInfoPic: this.infoImg.map(img => img.url).join(","),
+      Photos: this.bannerImg.map(img => img.url).join(","),
+      PriceConfigs: this.priceConfigs.map(config => {
+        return {
           PriceDateStart: config.PriceDateStart,
           PriceDateEnd: config.PriceDateEnd,
           PricePercent: config.PricePercent,
           ExtraPrice: config.ExtraPrice
         };
-        data.PriceConfigs.push(temp);
-      });
-    }
+      })
+    });
+
+    data.ConfigString = data.Configs.join(",");
     delete data.Configs;
     // 提交
     if (this.vm.pattern === "add") {
@@ -351,144 +293,25 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  handleFileSelected (uploaderName: string, input: any): void {
-    let uploader: FileUploader = this[uploaderName],
-      imglist: UploadFile[];
-    switch (uploaderName) {
-      case "titleImgUploader":
-        if (uploader.queue.length > 1) {
-          uploader.queue[0].remove();
-        }
-        imglist = this.titleImgList;
-        imglist.push({
-          name: uploader.queue[0].file.name,
-          url: "",
-          isReady: false,
-          isUploading: false,
-          isSuccess: false,
-          isError: false,
-          isUploaded: false
-        });
-        if (imglist.length > 1) {
-          imglist.splice(0, imglist.length - 1);
-        }
-        break;
-      case "descriptionImgUploader":
-        if (uploader.queue.length > 1) {
-          uploader.queue[0].remove();
-        }
-        imglist = this.descriptionImgList;
-        imglist.push({
-          name: uploader.queue[0].file.name,
-          url: "",
-          isReady: false,
-          isUploading: false,
-          isSuccess: false,
-          isError: false,
-          isUploaded: false
-        });
-        if (imglist.length > 1) {
-          imglist.splice(0, imglist.length - 1);
-        }
-        break;
-      case "infoImgUploader":
-        if (uploader.queue.length > 1) {
-          uploader.queue[0].remove();
-        }
-        imglist = this.infoImgList;
-        imglist.push({
-          name: uploader.queue[0].file.name,
-          url: "",
-          isReady: false,
-          isUploading: false,
-          isSuccess: false,
-          isError: false,
-          isUploaded: false
-        });
-        if (imglist.length > 1) {
-          imglist.splice(0, imglist.length - 1);
-        }
-        break;
-      case "bannerImgsUploader":
-        let index: number = uploader.queue.length - 1;
-        imglist = this.bannerImgList;
-        imglist.unshift({
-          name: uploader.queue[index].file.name,
-          url: "",
-          isReady: false,
-          isUploading: false,
-          isSuccess: false,
-          isError: false,
-          isUploaded: false
-        });
-    }
-    input.value = "";
-  }
-
-  uploadImg (imgFile: UploadFile, loader: string): void {
-    let uploader: FileUploader = this[loader];
-    let file: FileItem = uploader.queue.find(file => file.file.name === imgFile.name);
-    imgFile.isUploading = true;
-    file.upload();
-  }
-
-  removeImg (imgFile: UploadFile, type: string): void {
-    let imglist: UploadFile[];
-    let uploader: FileUploader;
-    switch (type) {
-      case "titleImg":
-        imglist = this.titleImgList;
-        uploader = this.titleImgUploader;
-        break;
-      case "descriptionImg":
-        imglist = this.descriptionImgList;
-        uploader = this.descriptionImgUploader;
-        break;
-      case "infoImg":
-        imglist = this.infoImgList;
-        uploader = this.infoImgUploader;
-        break;
-      case "bannerImg":
-        imglist = this.bannerImgList;
-        uploader = this.bannerImgsUploader;
-        break;
-    }
-    imglist.splice(imglist.findIndex(img => img.name === imgFile.name), 1);
-    let file: FileItem = uploader.queue.find(item => item.file.name === imgFile.name);
-    if (file) {
-      file.remove();
+  hanldeImgChange (info: { file: UploadFile }, imglist: string): void {
+    if (info && info.file.status === "done") {
+      info.file.url = info.file.response.Data;
+      if (imglist === "bannerImg") {
+        this[imglist].push(info.file);
+      } else {
+        this[imglist] = [info.file];
+      }
     }
   }
 
-  handleFileUploaded (item: any, response: any, status: any, headers: any, type: string): void {
-    let imglist: UploadFile[];
-    let url: string = JSON.parse(response).Data;
-    switch (type) {
-      case "titleImg":
-        imglist = this.titleImgList;
-        break;
-      case "descriptionImg":
-        imglist = this.descriptionImgList;
-        break;
-      case "infoImg":
-        imglist = this.infoImgList;
-        break;
-      case "bannerImg":
-        imglist = this.bannerImgList;
-        break;
-    }
-    let img: UploadFile = imglist.find(img => img.name === item.file.name);
-    if (img) {
-      img.url = this.trim(url, "\"");
-      img.isReady = true;
-      img.isSuccess = true;
-      img.isUploaded = true;
-      img.isUploading = false;
-    }
+  hanldeImgPreview = (file: UploadFile): void => {
+    this.isPreviewVisible = true;
+    let image: string = file.url || file.thumbUrl;
+    this.previewImage = this.sanitizer.bypassSecurityTrustHtml(`<img src=${image} style="width: 100%" />`);
   }
 
   // 查看图片
-  showModal (item: UploadFile): void {
+  showModal (item: any): void {
     this.vm.previewImgUrl = this.sanitizer.bypassSecurityTrustUrl(item.url);
     this.vm.previewImgHtml = this.sanitizer.bypassSecurityTrustHtml(`<img src=${item.url} style="width: 100%" />`);
     this.vm.isPreviewVisible = true;
