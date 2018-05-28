@@ -1,71 +1,69 @@
-<main>
-    <nz-layout class="app-layout">
-        <nz-header class="header">
-            <img class="logo" src="/assets/images/logo/logo.png" />
-            <h1 class="title">ng test dashboard</h1>
-        </nz-header>
-        <nz-layout class="body">
-            <nz-sider class="nav-sider" [nzWidth]="200">
-                <ul nz-menu [nzMode]="'inline'" style="height:100%">
+<nz-layout class="app-layout">
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="0" [nzTrigger]="triggerTemplate" nzBreakpoint="lg" class="nav-sider">
+        <div class="logo">
+        </div>
+        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+            <li nz-menu-item>
+                <a routerLink="/room">
+                    <i class="anticon anticon-database"></i>
+                    <span>房间管理</span>
+                </a>
+            </li>
+            <li nz-menu-item>
+                <a routerLink="/message">
+                    <i class="anticon anticon-mail"></i>
+                    <span>留言箱</span>
+                </a>
+            </li>
+            <li nz-menu-item>
+                <a routerLink="/chat">
+                    <i class="anticon anticon-message"></i>
+                    <span>聊天列表</span>
+                </a>
+            </li>
+            <li nz-submenu>
+                <span title>
+                    <i class="anticon anticon-environment"></i>
+                    <span class="nav-text">玩在普及</span>
+                </span>
+                <ul>
                     <li nz-menu-item>
-                        <a routerLink="/room">
-                            <i class="anticon anticon-database"></i>
-                            <span>房间管理</span>
+                        <a routerLink="/tour/tourGroup">
+                            <span>分组管理</span>
                         </a>
                     </li>
                     <li nz-menu-item>
-                        <a routerLink="/message">
-                            <i class="anticon anticon-mail"></i>
-                            <span>留言箱</span>
-                        </a>
-                    </li>
-                    <li nz-menu-item>
-                        <a routerLink="/chat">
-                            <i class="anticon anticon-message"></i>
-                            <span>聊天列表</span>
-                        </a>
-                    </li>
-                    <li nz-submenu>
-                        <span title>
-                            <i class="anticon anticon-environment"></i>
-                            玩在普及
-                        </span>
-                        <ul>
-                            <li nz-menu-item>
-                                <a routerLink="/tour/tourGroup">
-                                    <span>分组管理</span>
-                                </a>
-                            </li>
-                            <li nz-menu-item>
-                                <span>旅游项管理</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li nz-menu-item>
-                        <a routerLink="/order">
-                            <i class="anticon anticon-book"></i>
-                            <span>订单管理</span>
-                        </a>
-                    </li>
-                    <li nz-menu-item>
-                        <a routerLink="/refund">
-                            <i class="anticon anticon-book"></i>
-                            <span>退订处理</span>
-                        </a>
-                    </li>
-                    <li nz-menu-item>
-                        <a routerLink="/personal">
-                            <i class="anticon anticon-idcard"></i>
-                            <span>个人设置</span>
-                        </a>
+                        <span>旅游项管理</span>
                     </li>
                 </ul>
-            </nz-sider>
-            <nz-layout class="main-layout">
-                <nz-content class="router-container">
-                    <router-outlet></router-outlet>
-                </nz-content>
-            </nz-layout>
-        </nz-layout>
+            </li>
+            <li nz-menu-item>
+                <a routerLink="/order">
+                    <i class="anticon anticon-book"></i>
+                    <span>订单管理</span>
+                </a>
+            </li>
+            <li nz-menu-item>
+                <a routerLink="/refund">
+                    <i class="anticon anticon-book"></i>
+                    <span>退订处理</span>
+                </a>
+            </li>
+            <li nz-menu-item>
+                <a routerLink="/personal">
+                    <i class="anticon anticon-idcard"></i>
+                    <span>个人设置</span>
+                </a>
+            </li>
+        </ul>
+    </nz-sider>
+    <nz-layout class="main-container">
+        <nz-header style="background: #fff; padding:0;">
+            <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
+            <span class="title">ng test dashboard</span>
+        </nz-header>
+        <nz-content class="router-container">
+            <router-outlet></router-outlet>
+        </nz-content>
     </nz-layout>
-</main>
+</nz-layout>

@@ -1,27 +1,38 @@
-main{
+:host {
     height: 100%;
 }
+
+:host ::ng-deep .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color .3s;
+}
+
+:host ::ng-deep .trigger:hover {
+    color: #5DBBAF;
+}
+
 .app-layout {
     height: 100%;
-    .header {
-        font-size: 18px;
-        >.logo {
-            float: left;
-            height: 40px;
-            margin-top: 15px;
-        }
-        >.title {
-            color: #5DBBAF;
-            margin-left: 45px;
+    .nav-sider {
+        .logo {
+            height: 32px;
+            background: rgba(255, 255, 255, .2);
+            margin: 14px;
         }
     }
-    .body {
-        .nav-sider {
-            margin: 24px 0 24px 24px
+    .main-container {
+        background: #5DBBAF;
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #5DBBAF;
         }
         .router-container {
+            height: calc(100% - 112px);
             margin: 24px;
-            background: #fff;
         }
     }
 }
