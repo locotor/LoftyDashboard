@@ -5,9 +5,14 @@ import {
   ViewChild,
   TemplateRef
 } from "@angular/core";
+import { registerLocaleData } from "@angular/common";
+import zh from "@angular/common/locales/zh";
+
 import User from "models/user/user.model";
 import { Observable } from "rxjs/Observable";
 import { AppContextService } from "commons/utilities/app-context.service";
+
+registerLocaleData(zh);
 
 @Component({
   selector: "app-root",
@@ -23,7 +28,7 @@ export class AppComponent implements OnInit {
   }
 
   constructor(private _context: AppContextService) { }
-  ngOnInit (): void {
+  ngOnInit(): void {
     let adminDom: JQuery<HTMLElement> = $("#admin-id");
     let adminUser: User = new User(
       Number.parseInt(adminDom.data("user-id")),
