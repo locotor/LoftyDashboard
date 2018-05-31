@@ -7,10 +7,14 @@ import {
 } from "@angular/core";
 
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { registerLocaleData } from "@angular/common";
+import zh from "@angular/common/locales/zh";
 
 import User from "models/user/user.model";
 import { Observable } from "rxjs/Observable";
 import { AppContextService } from "commons/utilities/app-context.service";
+
+registerLocaleData(zh);
 
 @Component({
   selector: "app-root",

@@ -81,9 +81,9 @@ export class RoomManagementComponent implements OnInit {
   bannerImgList = [];
 
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.refreshData();
-    // 表单验证规则
+    // 房间基本信息表单项
     this.roomValidateForm = new FormGroup({
       RoomName: new FormControl("", [Validators.required]),
       BasePrice: new FormControl(0, [Validators.required]),
@@ -102,10 +102,11 @@ export class RoomManagementComponent implements OnInit {
       Introduction: new FormControl(null),
       Address: new FormControl(null)
     });
+    // 房间价格配置表单项
     this.priceConfigForm = new FormGroup({
       UID: new FormControl(""),
-      PriceDateStart: new FormControl(null, [Validators.required]),
-      PriceDateEnd: new FormControl(null, [Validators.required]),
+      PriceDateStart: new FormControl(new Date(), [Validators.required]),
+      PriceDateEnd: new FormControl(new Date(), [Validators.required]),
       PricePercent: new FormControl(0, [Validators.min(1)]),
       ExtraPrice: new FormControl(0),
     });
@@ -126,14 +127,14 @@ export class RoomManagementComponent implements OnInit {
 
   /** 重新获取表格数据
    */
-  reset (): void {
+  reset(): void {
     this.refreshData(true);
   }
 
   /** 刷新数据
    * @param reset 是否重置表格数据
    */
-  refreshData (reset: boolean = false): void {
+  refreshData(reset: boolean = false): void {
     if (reset) {
       this.tablePagination.pageIndex = 1;
     }
@@ -152,7 +153,7 @@ export class RoomManagementComponent implements OnInit {
 
   /** 打开房产新建列表
    */
-  openAddDialog (): void {
+  openAddDialog(): void {
     this.vm.pattern = "add";
     this.roomValidateForm.reset();
     this.getFormControl("Configs").setValue([]);
@@ -168,7 +169,7 @@ export class RoomManagementComponent implements OnInit {
   /** 打开房产编辑界面
    * @param currentRoom 房产对象
    */
-  handleEditClick (currentRoom: Room): void {
+  handleEditClick(currentRoom: Room): void {
     this.currentRoomId = currentRoom.RoomId;
     this.vm.isFormVisible = true;
     this.vm.pattern = "edit";
@@ -221,7 +222,7 @@ export class RoomManagementComponent implements OnInit {
     this.bannerImg = this.assembleSaveImgList(currentRoom.Photos);
   }
 
-  private assembleSaveImgList (imgUrls: string): any[] {
+  private assembleSaveImgList(imgUrls: string): any[] {
     return imgUrls ? imgUrls.replace(/[\r\n]/g, "").split(",").map(img => {
       return {
         uid: uuid(),
@@ -236,7 +237,7 @@ export class RoomManagementComponent implements OnInit {
   /** 删除房产信息
    * @param data 房产对象
    */
-  handleDelteClick (data: Room): void {
+  handleDelteClick(data: Room): void {
     this._roomService.deleteRoom(data.RoomId).subscribe(rspd => {
       if (rspd) {
         this._message.create("success", "删除房产信息成功");
@@ -246,7 +247,7 @@ export class RoomManagementComponent implements OnInit {
   }
 
   // 处理表单提交
-  handleFormSubmit (): void {
+  handleFormSubmit(): void {
     let data: any = {};
     // 组装数据
     Object.assign(data, this.roomValidateForm.value, {
@@ -293,7 +294,7 @@ export class RoomManagementComponent implements OnInit {
     }
   }
 
-  hanldeImgChange (info: { file: UploadFile }, imglist: string): void {
+  hanldeImgChange(info: { file: UploadFile }, imglist: string): void {
     if (info && info.file.status === "done") {
       info.file.url = info.file.response.Data;
       if (imglist === "bannerImg") {
@@ -311,16 +312,16 @@ export class RoomManagementComponent implements OnInit {
   }
 
   // 查看图片
-  showModal (item: any): void {
+  showModal(item: any): void {
     this.vm.previewImgUrl = this.sanitizer.bypassSecurityTrustUrl(item.url);
     this.vm.previewImgHtml = this.sanitizer.bypassSecurityTrustHtml(`<img src=${item.url} style="width: 100%" />`);
     this.vm.isPreviewVisible = true;
   }
 
-  getFormControl (name: string): AbstractControl {
+  getFormControl(name: string): AbstractControl {
     return this.roomValidateForm.controls[name];
   }
-  getPriceFormControl (name: string): AbstractControl {
+  getPriceFormControl(name: string): AbstractControl {
     return this.priceConfigForm.controls[name];
   }
 
@@ -349,7 +350,7 @@ export class RoomManagementComponent implements OnInit {
     return endValue.getTime() <= startDate.getTime();
   }
 
-  openEditPriceConfigForm (config: RoomPriceConfig): void {
+  openEditPriceConfigForm(config: RoomPriceConfig): void {
     this.vm.isPriceCalenderFormVisible = true;
     this.priceConfigForm.setValue({
       UID: config.UID,
@@ -359,7 +360,7 @@ export class RoomManagementComponent implements OnInit {
       ExtraPrice: config.ExtraPrice
     });
   }
-  handleAddPriceCalender (form: NgForm): void {
+  handleAddPriceCalender(form: NgForm): void {
     let temp: RoomPriceConfig = new RoomPriceConfig(
       this.priceConfigForm.controls.UID.value || uuid(),
       this.priceConfigForm.controls.PriceDateStart.value,
@@ -378,14 +379,14 @@ export class RoomManagementComponent implements OnInit {
     this.vm.isPriceCalenderFormVisible = false;
   }
 
-  trim (origin: string, char: string): string {
+  trim(origin: string, char: string): string {
     if (char) {
       return origin.replace(new RegExp(`^\\${char}+|\\${char}+$`, "g"), "");
     }
     return origin.replace(/^\s+|\s+$/g, "");
   }
 
-  private formatDate (date: Date): string {
+  private formatDate(date: Date): string {
     let Y: number = date.getFullYear(),
       M: number = date.getMonth() + 1,
       d: number = date.getDate();
