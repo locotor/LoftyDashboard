@@ -5,6 +5,9 @@ import {
   ViewChild,
   TemplateRef
 } from "@angular/core";
+
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+
 import User from "models/user/user.model";
 import { Observable } from "rxjs/Observable";
 import { AppContextService } from "commons/utilities/app-context.service";
@@ -16,13 +19,24 @@ import { AppContextService } from "commons/utilities/app-context.service";
 })
 export class AppComponent implements OnInit {
   isCollapsed = false;
+  isLargeSreen = false;
   triggerTemplate = null;
+
   @ViewChild("trigger") customTrigger: TemplateRef<void>;
-  changeTrigger(): void {
+  changeTrigger (): void {
     this.triggerTemplate = this.customTrigger;
   }
 
-  constructor(private _context: AppContextService) { }
+  constructor(private _context: AppContextService,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    this.breakpointObserver.observe([
+      "(max-width: 992px)"
+    ]).subscribe(result => {
+      this.isLargeSreen = result.matches;
+    });
+  }
+
   ngOnInit (): void {
     let adminDom: JQuery<HTMLElement> = $("#admin-id");
     let adminUser: User = new User(

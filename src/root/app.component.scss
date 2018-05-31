@@ -16,20 +16,30 @@
 
 .app-layout {
     height: 100%;
+
     .nav-sider {
+        position: fixed;
+        z-index: 1;
+        height: 100%;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+
         .logo {
             height: 32px;
-            background: rgba(255, 255, 255, .2);
+            background: rgba(255, 255, 255, 0.2);
             margin: 14px;
         }
     }
+
     .main-container {
         background: #5DBBAF;
+        margin-left: 200px;
+
         .title {
             font-size: 32px;
             font-weight: bold;
             color: #5DBBAF;
         }
+
         .router-container {
             height: calc(100% - 112px);
             margin: 24px;

@@ -1,5 +1,5 @@
 <nz-layout class="app-layout">
-    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="0" [nzTrigger]="triggerTemplate" nzBreakpoint="lg" class="nav-sider">
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="0" [nzBreakpoint]="'lg'" class="nav-sider">
         <div class="logo">
         </div>
         <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
@@ -57,10 +57,10 @@
             </li>
         </ul>
     </nz-sider>
-    <nz-layout class="main-container">
-        <nz-header style="background: #fff; padding:0;">
-            <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
+    <nz-layout class="main-container" [style.margin-left]="isLargeSreen||isCollapsed ? '0' : '200px'">
+        <nz-header style="background: #fff;">
             <span class="title">ng test dashboard</span>
+            <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
         </nz-header>
         <nz-content class="router-container">
             <router-outlet></router-outlet>

@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
+import { LayoutModule } from "@angular/cdk/layout";
 import { NgZorroAntdModule } from "ng-zorro-antd";
 
 
@@ -29,6 +30,7 @@ import { TourManagementModule } from "areas/tourManagement/tourManagement.module
         BrowserAnimationsModule,
         FormsModule,
         HttpModule,
+        LayoutModule,
         NgZorroAntdModule.forRoot(),
         AppRoutingModule,
         // project Module

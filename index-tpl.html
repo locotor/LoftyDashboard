@@ -10,17 +10,29 @@
         <%= htmlWebpackPlugin.options.title %>
     </title>
     <base href="/Home/Dashboard/">
+    <link rel="stylesheet" href="/css/public/adminLoading.css">
     <% if (webpackConfig.htmlElements.headTags) { %>
         <%= webpackConfig.htmlElements.headTags %>
             <% } %>
-    <% if (htmlWebpackPlugin.options.metadata.isDevPattern) { %>
-        <script type="text/javascript" src="../../dashboardDll/Dll.js"></script>
-        <% } %>
+                <% if (htmlWebpackPlugin.options.metadata.isDevPattern) { %>
+                    <script type="text/javascript" src="../../dashboardDll/Dll.js"></script>
+                    <% } %>
 </head>
 
 <body>
     <app-root>
-        Loading...
+        <div class="preloader">
+            <div class="cs-loader">
+                <div class="cs-loader-inner">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                </div>
+            </div>
+        </div>
     </app-root>
     <!-- <script src="/webpack-dev-server.js"></script> -->
     <script src="/js/jquery.min.js"></script>
